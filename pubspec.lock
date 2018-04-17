@@ -78,14 +78,12 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.14.1"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
   flutter:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  flutter_localizations:
     dependency: "direct main"
     description: flutter
     source: sdk
@@ -137,6 +135,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.1"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.15.4"
   io:
     dependency: transitive
     description:
@@ -388,4 +393,4 @@ packages:
     source: hosted
     version: "2.1.13"
 sdks:
-  dart: ">=2.0.0-dev.28.0 <=2.0.0-edge.0d5cf900b021bf5c9fa593ffa12b15bcd1cc5fe0"
+  dart: ">=2.0.0-dev.23.0 <=2.0.0-edge.0d5cf900b021bf5c9fa593ffa12b15bcd1cc5fe0"
