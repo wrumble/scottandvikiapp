@@ -4,8 +4,9 @@ description: White label wedding app
 dependencies:
   flutter:
     sdk: flutter
+  image_picker: ^0.4.1
   flutter_localizations:
-      sdk: flutter
+          sdk: flutter
 
 dev_dependencies:
   flutter_test:
