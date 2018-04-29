@@ -34,5 +34,6 @@ flutter:
     - assets/5.jpg
     - assets/6.jpg
     - assets/7.jpg
+    - backIcon.png
 
   uses-material-design: true

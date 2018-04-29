@@ -5,6 +5,13 @@ import 'package:image_picker/image_picker.dart';
 import 'Localisations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+var backgroundImage = new BoxDecoration(
+  image: new DecorationImage(
+    image: new AssetImage('assets/background.png'),
+    fit: BoxFit.cover,
+  ),
+);
+
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -85,12 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
         style: new TextStyle(fontFamily: 'CallingAngelsPersonalUse',
         fontSize: 50.0,
         color: Colors.black)
-    );
-    var backgroundImage = new BoxDecoration(
-        image: new DecorationImage(
-         image: new AssetImage('assets/background.png'),
-        fit: BoxFit.cover,
-      ),
     );
 
     var cameraButton = new FlatButton(
@@ -278,18 +279,46 @@ class _MyHomePageState extends State<MyHomePage> {
 class OrderOfTheDay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    var statusBarHeight = MediaQuery.of(context).padding.top;
+    var titleText = new Flexible(
+        child: new Container(
+          child: new Text('Order of the day',
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: new TextStyle(fontFamily: 'CallingAngelsPersonalUse',
+                  fontSize: 40.0,
+                  color: Colors.black)
+          ),
+        )
+    );
+    var mainContainer = new Container(
+        padding: EdgeInsets.only(top: statusBarHeight),
+        height: double.infinity,
+        width: double.infinity,
+        decoration: backgroundImage,
+        child: new Column(
+            children: <Widget>[
+              new Container(
+                  child: new Row(
+                    children: <Widget>[
+                      new Container(
+                        height: 70.0,
+                        width: 70.0,
+                        child: new FlatButton(
+                            onPressed: () { Navigator.pop(context); },
+                            child: new Image(image: new AssetImage('assets/backIcon.png'))
+                        ),
+                      ),
+                      titleText
+                    ],
+                  )
+              )
+            ])
+    );
+
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Order of the day"),
-      ),
-      body: new Center(
-        child: new RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: new Text('Go back!'),
-        ),
-      ),
+      body: mainContainer
     );
   }
 }
@@ -297,18 +326,29 @@ class OrderOfTheDay extends StatelessWidget {
 class MapsAndDirections extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var statusBarHeight = MediaQuery.of(context).padding.top;
+    var titleText = new Text('Maps and Directions',
+        textAlign: TextAlign.center,
+        style: new TextStyle(fontFamily: 'CallingAngelsPersonalUse',
+            fontSize: 50.0,
+            color: Colors.black)
+    );
+    var mainContainer = new Container(
+        padding: EdgeInsets.only(top: statusBarHeight),
+        height: double.infinity,
+        width: double.infinity,
+        decoration: backgroundImage,
+        child: new Column(
+            children: <Widget>[
+              new Container(
+                  margin: EdgeInsets.only(top: 10.0),
+                  child: titleText
+              )
+            ])
+    );
+
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Maps and Directions"),
-      ),
-      body: new Center(
-        child: new RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: new Text('Go back!'),
-        ),
-      ),
+        body: mainContainer
     );
   }
 }
@@ -316,18 +356,29 @@ class MapsAndDirections extends StatelessWidget {
 class HotelsAndTaxis extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var statusBarHeight = MediaQuery.of(context).padding.top;
+    var titleText = new Text('Hotels and Taxis',
+        textAlign: TextAlign.center,
+        style: new TextStyle(fontFamily: 'CallingAngelsPersonalUse',
+            fontSize: 50.0,
+            color: Colors.black)
+    );
+    var mainContainer = new Container(
+        padding: EdgeInsets.only(top: statusBarHeight),
+        height: double.infinity,
+        width: double.infinity,
+        decoration: backgroundImage,
+        child: new Column(
+            children: <Widget>[
+              new Container(
+                  margin: EdgeInsets.only(top: 10.0),
+                  child: titleText
+              )
+            ])
+    );
+
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Hotels and Taxis"),
-      ),
-      body: new Center(
-        child: new RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: new Text('Go back!'),
-        ),
-      ),
+        body: mainContainer
     );
   }
 }
@@ -335,18 +386,29 @@ class HotelsAndTaxis extends StatelessWidget {
 class TheBridesmaids extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var statusBarHeight = MediaQuery.of(context).padding.top;
+    var titleText = new Text('The Bridesmaids',
+        textAlign: TextAlign.center,
+        style: new TextStyle(fontFamily: 'CallingAngelsPersonalUse',
+            fontSize: 50.0,
+            color: Colors.black)
+    );
+    var mainContainer = new Container(
+        padding: EdgeInsets.only(top: statusBarHeight),
+        height: double.infinity,
+        width: double.infinity,
+        decoration: backgroundImage,
+        child: new Column(
+            children: <Widget>[
+              new Container(
+                  margin: EdgeInsets.only(top: 10.0),
+                  child: titleText
+              )
+            ])
+    );
+
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("The Bridesmaids"),
-      ),
-      body: new Center(
-        child: new RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: new Text('Go back!'),
-        ),
-      ),
+        body: mainContainer
     );
   }
 }
@@ -354,18 +416,29 @@ class TheBridesmaids extends StatelessWidget {
 class TheGroomsmen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var statusBarHeight = MediaQuery.of(context).padding.top;
+    var titleText = new Text('The Groomsmen',
+        textAlign: TextAlign.center,
+        style: new TextStyle(fontFamily: 'CallingAngelsPersonalUse',
+            fontSize: 50.0,
+            color: Colors.black)
+    );
+    var mainContainer = new Container(
+        padding: EdgeInsets.only(top: statusBarHeight),
+        height: double.infinity,
+        width: double.infinity,
+        decoration: backgroundImage,
+        child: new Column(
+            children: <Widget>[
+              new Container(
+                  margin: EdgeInsets.only(top: 10.0),
+                  child: titleText
+              )
+            ])
+    );
+
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("The Groomsmen"),
-      ),
-      body: new Center(
-        child: new RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: new Text('Go back!'),
-        ),
-      ),
+        body: mainContainer
     );
   }
 }
@@ -373,18 +446,29 @@ class TheGroomsmen extends StatelessWidget {
 class Camping extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var statusBarHeight = MediaQuery.of(context).padding.top;
+    var titleText = new Text('Camping',
+        textAlign: TextAlign.center,
+        style: new TextStyle(fontFamily: 'CallingAngelsPersonalUse',
+            fontSize: 50.0,
+            color: Colors.black)
+    );
+    var mainContainer = new Container(
+        padding: EdgeInsets.only(top: statusBarHeight),
+        height: double.infinity,
+        width: double.infinity,
+        decoration: backgroundImage,
+        child: new Column(
+            children: <Widget>[
+              new Container(
+                  margin: EdgeInsets.only(top: 10.0),
+                  child: titleText
+              )
+            ])
+    );
+
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Camping"),
-      ),
-      body: new Center(
-        child: new RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: new Text('Go back!'),
-        ),
-      ),
+        body: mainContainer
     );
   }
 }
