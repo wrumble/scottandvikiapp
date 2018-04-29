@@ -104,7 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    var imageListView = new List<Container>();
     var container1 = new Container(
       margin: EdgeInsets.all(8.0),
       child: new Stack(
@@ -113,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
           new Positioned(
             left: 8.0,
             bottom: 8.0,
-            child: new Text('Order of The Day',
+            child: new Text('Order of the day',
               style: new TextStyle(
                   fontFamily: 'CallingAngelsPersonalUse',
                   fontSize: 30.0,
@@ -220,13 +219,15 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-
-    imageListView.add(container1);
-    imageListView.add(container2);
-    imageListView.add(container3);
-    imageListView.add(container4);
-    imageListView.add(container5);
-    imageListView.add(container6);
+    var containers = [container1, container2, container3, container4, container5, container6];
+    var listView = new ListView.builder(
+        itemCount: 6,
+        itemBuilder: (BuildContext context, int index) {
+          return new GestureDetector( //You need to make my child interactive
+            onTap: () => print('Tapped at ${index}'),
+            child: containers[index]
+          );
+        });
 
     var mainContainer = new Container(
       padding: EdgeInsets.only(top: statusBarHeight),
@@ -247,9 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 new Expanded(child:
                     new Container(
-                      child: new ListView(
-                        children: imageListView,
-                      ),
+                      child: listView,
                     )
                 ),
                 new Container(
