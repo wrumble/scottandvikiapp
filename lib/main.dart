@@ -68,6 +68,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
+    getBottomMargin() {
+      var mediaQuery = MediaQuery.of(context);
+      if (Platform.isIOS) {
+        var size = mediaQuery.size;
+        if (size.height == 812.0 || size.width == 812.0) {
+          return mediaQuery.padding.bottom;
+        }
+      }
+      return mediaQuery.padding.bottom + 8;
+    }
+
     var statusBarHeight = MediaQuery.of(context).padding.top;
     var titleText = new Text(Localize.of(context).appTitle,
         textAlign: TextAlign.center,
@@ -245,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 44.0,
                   width: MediaQuery.of(context).size.width,
                   child: cameraButton,
-                  margin: new EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom, top: 8.0),
+                  margin: new EdgeInsets.only(bottom: getBottomMargin(), top: 8.0),
                 )],
             ),
           )
