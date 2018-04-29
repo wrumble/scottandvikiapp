@@ -220,11 +220,17 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     var containers = [container1, container2, container3, container4, container5, container6];
+    var screens = [new OrderOfTheDay(), new MapsAndDirections(), new HotelsAndTaxis(), new TheBridesmaids(), new TheGroomsmen(), new Camping()];
     var listView = new ListView.builder(
         itemCount: 6,
         itemBuilder: (BuildContext context, int index) {
           return new GestureDetector( //You need to make my child interactive
-            onTap: () => print('Tapped at ${index}'),
+            onTap: () {
+              Navigator.push(
+                context,
+                new MaterialPageRoute(builder: (context) => screens[index]),
+              );
+            },
             child: containers[index]
           );
         });
@@ -265,6 +271,120 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return new Scaffold(
       body: mainContainer,
+    );
+  }
+}
+
+class OrderOfTheDay extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Order of the day"),
+      ),
+      body: new Center(
+        child: new RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: new Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
+class MapsAndDirections extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Maps and Directions"),
+      ),
+      body: new Center(
+        child: new RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: new Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
+class HotelsAndTaxis extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Hotels and Taxis"),
+      ),
+      body: new Center(
+        child: new RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: new Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
+class TheBridesmaids extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("The Bridesmaids"),
+      ),
+      body: new Center(
+        child: new RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: new Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
+class TheGroomsmen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("The Groomsmen"),
+      ),
+      body: new Center(
+        child: new RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: new Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
+class Camping extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Camping"),
+      ),
+      body: new Center(
+        child: new RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: new Text('Go back!'),
+        ),
+      ),
     );
   }
 }
