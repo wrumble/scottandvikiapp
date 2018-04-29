@@ -96,60 +96,119 @@ class _MyHomePageState extends State<MyHomePage> {
     var imageListView = new List<Container>();
     var container1 = new Container(
       margin: EdgeInsets.all(8.0),
-      child: new Image(
-        image: new AssetImage('assets/SVSunset.jpg'),
-        fit: BoxFit.cover,
+      child: new Stack(
+        children: <Widget>[
+          new Image(image: new AssetImage('assets/SVSunset.jpg')),
+          new Positioned(
+            left: 8.0,
+            bottom: 8.0,
+            child: new Text('Order of The Day',
+              style: new TextStyle(
+                  fontFamily: 'CallingAngelsPersonalUse',
+                  fontSize: 30.0,
+                  color: Colors.white
+              ),
+            ),
+          )
+        ],
       ),
     );
     var container2 = new Container(
       margin: EdgeInsets.all(8.0),
-      child: new Image(
-        image: new AssetImage('assets/1.jpg'),
-        fit: BoxFit.cover,
+      child: new Stack(
+        children: <Widget>[
+          new Image(image: new AssetImage('assets/2.jpg')),
+          new Positioned(
+            left: 8.0,
+            bottom: 8.0,
+            child: new Text('Maps and Directions',
+              style: new TextStyle(
+                  fontFamily: 'CallingAngelsPersonalUse',
+                  fontSize: 30.0,
+                  color: Colors.white
+              ),
+            ),
+          )
+        ],
       ),
     );
     var container3 = new Container(
       margin: EdgeInsets.all(8.0),
-      child: new Image(
-        image: new AssetImage('assets/2.jpg'),
-        fit: BoxFit.cover,
+      child: new Stack(
+        children: <Widget>[
+          new Image(image: new AssetImage('assets/3.jpg')),
+          new Positioned(
+            left: 8.0,
+            bottom: 8.0,
+            child: new Text('Hotels and Taxis',
+              style: new TextStyle(
+                  fontFamily: 'CallingAngelsPersonalUse',
+                  fontSize: 30.0,
+                  color: Colors.black
+              ),
+            ),
+          )
+        ],
       ),
     );
     var container4 = new Container(
       margin: EdgeInsets.all(8.0),
-      child: new Image(
-        image: new AssetImage('assets/3.jpg'),
-        fit: BoxFit.cover,
+      child: new Stack(
+        children: <Widget>[
+          new Image(image: new AssetImage('assets/4.jpg')),
+          new Positioned(
+            left: 8.0,
+            bottom: 8.0,
+            child: new Text('The Bridesmaids',
+              style: new TextStyle(
+                  fontFamily: 'CallingAngelsPersonalUse',
+                  fontSize: 30.0,
+                  color: Colors.white
+              ),
+            ),
+          )
+        ],
       ),
     );
     var container5 = new Container(
       margin: EdgeInsets.all(8.0),
-      child: new Image(
-        image: new AssetImage('assets/4.jpg'),
-        fit: BoxFit.cover,
+      child: new Stack(
+        children: <Widget>[
+          new Image(image: new AssetImage('assets/5.jpg')),
+          new Positioned(
+            left: 8.0,
+            bottom: 8.0,
+            child: new Text('The Groomsmen',
+              style: new TextStyle(
+                  fontFamily: 'CallingAngelsPersonalUse',
+                  fontSize: 30.0,
+                  color: Colors.white
+              ),
+            ),
+          )
+        ],
       ),
     );
     var container6 = new Container(
       margin: EdgeInsets.all(8.0),
-      child: new Image(
-        image: new AssetImage('assets/5.jpg'),
-        fit: BoxFit.cover,
+      child: new Stack(
+        children: <Widget>[
+          new Image(image: new AssetImage('assets/6.jpg')),
+          new Positioned(
+            left: 8.0,
+            bottom: 8.0,
+            child: new Text('Camping',
+              style: new TextStyle(
+                  fontFamily: 'CallingAngelsPersonalUse',
+                  fontSize: 30.0,
+                  color: Colors.white
+              ),
+            ),
+          )
+        ],
       ),
     );
-    var container7 = new Container(
-      margin: EdgeInsets.all(8.0),
-      child: new Image(
-        image: new AssetImage('assets/6.jpg'),
-        fit: BoxFit.cover,
-      ),
-    );
-    var container8 = new Container(
-      margin: EdgeInsets.all(8.0),
-      child: new Image(
-        image: new AssetImage('assets/7.jpg'),
-        fit: BoxFit.cover,
-      ),
-    );
+
 
     imageListView.add(container1);
     imageListView.add(container2);
@@ -157,9 +216,6 @@ class _MyHomePageState extends State<MyHomePage> {
     imageListView.add(container4);
     imageListView.add(container5);
     imageListView.add(container6);
-    imageListView.add(container7);
-    imageListView.add(container8);
-
 
     var mainContainer = new Container(
       padding: EdgeInsets.only(top: statusBarHeight),
