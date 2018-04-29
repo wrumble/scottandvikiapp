@@ -82,6 +82,85 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
+    var cameraButton = new FlatButton(
+      textColor: Colors.white,
+      color: Colors.black,
+      onPressed: () => _onImageButtonPressed(ImageSource.camera),
+      child: new Text(Localize.of(context).takeAPhoto,
+        style: new TextStyle(fontFamily: 'DancingScript-Regular',
+            fontSize: 30.0,
+            color: Colors.white),
+      ),
+    );
+
+    var imageListView = new List<Container>();
+    var container1 = new Container(
+      margin: EdgeInsets.all(8.0),
+      child: new Image(
+        image: new AssetImage('assets/SVSunset.jpg'),
+        fit: BoxFit.cover,
+      ),
+    );
+    var container2 = new Container(
+      margin: EdgeInsets.all(8.0),
+      child: new Image(
+        image: new AssetImage('assets/1.jpg'),
+        fit: BoxFit.cover,
+      ),
+    );
+    var container3 = new Container(
+      margin: EdgeInsets.all(8.0),
+      child: new Image(
+        image: new AssetImage('assets/2.jpg'),
+        fit: BoxFit.cover,
+      ),
+    );
+    var container4 = new Container(
+      margin: EdgeInsets.all(8.0),
+      child: new Image(
+        image: new AssetImage('assets/3.jpg'),
+        fit: BoxFit.cover,
+      ),
+    );
+    var container5 = new Container(
+      margin: EdgeInsets.all(8.0),
+      child: new Image(
+        image: new AssetImage('assets/4.jpg'),
+        fit: BoxFit.cover,
+      ),
+    );
+    var container6 = new Container(
+      margin: EdgeInsets.all(8.0),
+      child: new Image(
+        image: new AssetImage('assets/5.jpg'),
+        fit: BoxFit.cover,
+      ),
+    );
+    var container7 = new Container(
+      margin: EdgeInsets.all(8.0),
+      child: new Image(
+        image: new AssetImage('assets/6.jpg'),
+        fit: BoxFit.cover,
+      ),
+    );
+    var container8 = new Container(
+      margin: EdgeInsets.all(8.0),
+      child: new Image(
+        image: new AssetImage('assets/7.jpg'),
+        fit: BoxFit.cover,
+      ),
+    );
+
+    imageListView.add(container1);
+    imageListView.add(container2);
+    imageListView.add(container3);
+    imageListView.add(container4);
+    imageListView.add(container5);
+    imageListView.add(container6);
+    imageListView.add(container7);
+    imageListView.add(container8);
+
+
     var mainContainer = new Container(
       padding: EdgeInsets.only(top: statusBarHeight),
       height: double.infinity,
@@ -92,32 +171,34 @@ class _MyHomePageState extends State<MyHomePage> {
               new Container(
                 margin: EdgeInsets.only(top: 10.0),
                 child: titleText
+          ),
+          new Expanded(
+            child: new Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                new Expanded(child:
+                    new Container(
+                      child: new ListView(
+                        children: imageListView,
+                      ),
+                    )
+                ),
+                new Container(
+                  height: 44.0,
+                  width: MediaQuery.of(context).size.width,
+                  child: cameraButton,
+                  margin: new EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom, top: 8.0),
+                )],
+            ),
           )
         ],
       ),
-
     );
 
     return new Scaffold(
       body: mainContainer,
-      floatingActionButton: new Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          new FloatingActionButton(
-            onPressed: () => _onImageButtonPressed(ImageSource.gallery),
-            tooltip: 'Pick Image from gallery',
-            child: new Icon(Icons.photo_library),
-          ),
-          new Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: new FloatingActionButton(
-              onPressed: () => _onImageButtonPressed(ImageSource.camera),
-              tooltip: 'Take a Photo',
-              child: new Icon(Icons.camera_alt),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

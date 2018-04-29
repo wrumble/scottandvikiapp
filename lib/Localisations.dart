@@ -16,7 +16,8 @@ class Localize {
   static Map<String, Map<String, String>> _localizedValues = {
     'en': {
       'appTitle': 'Scott and Viki',
-      'welcomeMessage': 'Welcome to Scott and Vikis wedding App'
+      'welcomeMessage': 'Welcome to Scott and Vikis wedding App',
+      'takeAPhoto': 'Take A Photo'
     }
   };
 
@@ -25,6 +26,9 @@ class Localize {
   }
   String get welcomeMessage {
     return _localizedValues[locale.languageCode]['welcomeMessage'];
+  }
+  String get takeAPhoto {
+    return _localizedValues[locale.languageCode]['takeAPhoto'];
   }
 }
 
