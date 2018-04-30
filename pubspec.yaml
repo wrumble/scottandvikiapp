@@ -2,10 +2,10 @@ name: scott_and_viki
 description: White label wedding app
 
 dependencies:
-  map_view: "^0.0.12"
+  map_view: ^0.0.12
+  image_picker: ^0.4.1
   flutter:
     sdk: flutter
-  image_picker: ^0.4.1
   flutter_localizations:
           sdk: flutter
 
