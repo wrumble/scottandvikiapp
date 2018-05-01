@@ -72,7 +72,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Future<File> _imageFile;
+  Future<File> _imageFile; //TODO: send to firebase
 
   void _onImageButtonPressed(ImageSource source) {
     setState(() {
