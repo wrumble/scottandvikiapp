@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:map_view/map_view.dart';
 import 'ChurchMap.dart';
+import 'FarmMap.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -12,38 +14,199 @@ class MapsAndDirections extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    void _onHotelMApButtonPressed() {
-      var hotelMap = ChurchMap();
-      hotelMap.showMap();
-    }
-
     var titleText = new Text('Maps and Directions',
         style: new TextStyle(fontFamily: 'CallingAngelsPersonalUse',
             fontSize: 25.0,
             color: Colors.white)
     );
-    var hotelMapButton = new FlatButton(
-      textColor: Colors.white,
-      color: Colors.black,
-      onPressed: () => _onHotelMApButtonPressed(),
-      child: new Text('View Church On Map',
-        style: new TextStyle(fontFamily: 'DancingScript-Regular',
-            fontSize: 30.0,
-            color: Colors.white),
-      ),
+    var churchMarkers = [ new Marker("Church", "St Dunstan's Church", 51.0206245,0.2605629, color: Colors.red)];
+    var farmMarkers = [ new Marker("Farm", "Juddwood Farm", 51.172825, 0.221990, color: Colors.red)];
+    var churchLocation = new Location(51.0206245,0.2605629);
+    var farmLocation = new Location(51.172825, 0.221990);
+    var staticMapProvider = new StaticMapProvider("AIzaSyDV1GknO-dNqnX9RbaKPh7Er6eohOXCZ24");
+    var churchStaticMapUri = staticMapProvider.getStaticUriWithMarkers(
+        churchMarkers,
+        maptype: StaticMapViewType.roadmap,
+        center: churchLocation
     );
+
+    var farmStaticMapUri = staticMapProvider.getStaticUriWithMarkers(
+        farmMarkers,
+        maptype: StaticMapViewType.roadmap,
+        center: farmLocation
+    );
+
+    var churchTextContainer = new Container(
+      child: new Text("St Dunstan's Church",
+          textAlign: TextAlign.center,
+          style: new TextStyle(fontFamily: 'DancingScript-Regular',
+              fontSize: 30.0,
+              color: Colors.black,
+              fontWeight: FontWeight.bold)
+      ),
+      margin: new EdgeInsets.only(left: 8.0, top: 16.0, right: 8.0),
+    );
+
+    var churchMapContainer = new Container(
+      child: new InkWell(
+        child: new Center(
+          child: new Image.network(churchStaticMapUri.toString()),
+        ),
+        onTap: () { ChurchMap().showMap(); },
+      ),
+      margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+    );
+
+    var churchAddressContainer = new Container(
+      child: new Text("St Dunstan’s Church, Mayfield TN20 6AB",
+          textAlign: TextAlign.center,
+          style: new TextStyle(fontFamily: 'DancingScript-Regular',
+              fontSize: 25.0,
+              color: Colors.black,
+              fontWeight: FontWeight.bold)
+      ),
+      margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+    );
+
+    var churchDirectionsContainer = new Container(
+      child: new Text("Mayfield village is signposted on the A267 and the church is situated in the middle of the village on the High Street.",
+          textAlign: TextAlign.center,
+          style: new TextStyle(fontFamily: 'DancingScript-Regular',
+              fontSize: 25.0,
+              color: Colors.black)
+      ),
+      margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+    );
+
+    var churchLocationImageContainer = new Container(
+      child: new Image(image: new AssetImage('assets/churchLocation.png')),
+      margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+    );
+
+    var carParkDirectionsContainer = new Container(
+      child: new Text("The car park is sign posted on the right-hand side of the High Street as you are driving up the hill. The easiest way to get to the church from the car park is to walk through the car park for The Middle House as seen on the map. The marked car park in Mayfield is free.",
+          textAlign: TextAlign.center,
+          style: new TextStyle(fontFamily: 'DancingScript-Regular',
+              fontSize: 25.0,
+              color: Colors.black)
+      ),
+      margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 16.0),
+    );
+
+    var churchAndMapContainer = new Container(
+        child: new Column(
+          children: <Widget>[
+            churchTextContainer,
+            churchMapContainer,
+            churchAddressContainer,
+            churchDirectionsContainer,
+            churchLocationImageContainer,
+            carParkDirectionsContainer,
+          ],
+        ),
+        margin: new EdgeInsets.only(left: 8.0, top: 16.0, right: 8.0, bottom: 16.0),
+        decoration: new BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              new BoxShadow(
+                  color: Colors.black38,
+                  blurRadius: 5.0,
+                  offset: new Offset(3.0, 5.0)
+              ),
+            ]
+        )
+    );
+
+    var farmTextContainer = new Container(
+      child: new Text("Reception",
+          textAlign: TextAlign.center,
+          style: new TextStyle(fontFamily: 'DancingScript-Regular',
+              fontSize: 30.0,
+              color: Colors.black,
+              fontWeight: FontWeight.bold)
+      ),
+      margin: new EdgeInsets.only(left: 8.0, top: 16.0, right: 8.0),
+    );
+
+    var farmTimeContainer = new Container(
+      child: new Text("The drive from St Dunstan’s Church to the reception at Juddwood Farm is approximately 30 minutes.",
+          textAlign: TextAlign.center,
+          style: new TextStyle(fontFamily: 'DancingScript-Regular',
+              fontSize: 25.0,
+              color: Colors.black)
+      ),
+      margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+    );
+
+    var farmAddressContainer = new Container(
+      child: new Text("Juddwood Farm, Haysden Lane, Tonbridge TN11 8AB",
+          textAlign: TextAlign.center,
+          style: new TextStyle(fontFamily: 'DancingScript-Regular',
+              fontSize: 25.0,
+              color: Colors.black,
+              fontWeight: FontWeight.bold)
+      ),
+      margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 16.0),
+    );
+
+    var farmMapContainer = new Container(
+      child: new InkWell(
+        child: new Center(
+          child: new Image.network(farmStaticMapUri.toString()),
+        ),
+        onTap: () { FarmMap().showMap(); },
+      ),
+      margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+    );
+
+    var farmLocationImageContainer = new Container(
+      child: new Image(image: new AssetImage('assets/farmLocation.png')),
+      margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 16.0),
+    );
+
+    var farmLocationContainer = new Container(
+        child: new Column(
+          children: <Widget>[
+            farmTextContainer,
+            farmTimeContainer,
+            farmMapContainer,
+            farmAddressContainer,
+            farmLocationImageContainer
+          ],
+        ),
+        margin: new EdgeInsets.only(left: 8.0, top: 16.0, right: 8.0, bottom: 16.0),
+        decoration: new BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              new BoxShadow(
+                  color: Colors.black38,
+                  blurRadius: 5.0,
+                  offset: new Offset(3.0, 5.0)
+              ),
+            ]
+        )
+    );
+
+    var listContainers = [
+      churchAndMapContainer,
+      farmLocationContainer
+    ];
+
+    var listView = new ListView.builder(
+        itemCount: listContainers.length,
+        itemBuilder: (BuildContext context, int index) {
+          return new Container(
+              child: listContainers[index]
+          );
+        });
+
     var mainContainer = new Container(
         height: double.infinity,
         width: double.infinity,
         decoration: backgroundImage,
-        child: new Column(
-            children: <Widget>[
-              new Container(
-                child: hotelMapButton,
-                margin: new EdgeInsets.only(left: 8.0, top: 16.0, right: 8.0, bottom: 8.0),
-              )
-
-            ])
+        child: new Container(
+              child: listView,
+            )
     );
 
     return new Scaffold(

@@ -229,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var containers = [container1, container2, container3, container4, container5, container6];
     var screens = [new OrderOfTheDay(), new MapsAndDirections(), new HotelsAndTaxis(), new TheBridesmaids(), new TheGroomsmen(), new Camping()];
     var listView = new ListView.builder(
-        itemCount: 6,
+        itemCount: containers.length,
         itemBuilder: (BuildContext context, int index) {
           return new GestureDetector( //You need to make my child interactive
             onTap: () {
