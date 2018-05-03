@@ -7,10 +7,10 @@ var backgroundImage = new BoxDecoration(
   ),
 );
 
-class HotelsAndTaxis extends StatelessWidget {
+class TaxiNumbers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var titleText = new Text('Hotels and Taxis',
+    var titleText = new Text('Taxi numbers',
         style: new TextStyle(fontFamily: 'CallingAngelsPersonalUse',
             fontSize: 30.0,
             color: Colors.white)

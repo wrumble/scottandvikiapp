@@ -7,7 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:map_view/map_view.dart';
 import 'OrderOfTheDay.dart';
 import 'MapsAndDirections.dart';
-import 'HotelsAndTaxis.dart';
+import 'TaxiNumbers.dart';
 import 'TheBridesmaids.dart';
 import 'TheGroomsmen.dart';
 import 'Camping.dart';
@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    var container1 = new Container(
+    var orderOfTheDay = new Container(
       margin: EdgeInsets.all(8.0),
       child: new Stack(
         children: <Widget>[
@@ -130,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
-    var container2 = new Container(
+    var mapsAndDirections = new Container(
       margin: EdgeInsets.all(8.0),
       child: new Stack(
         children: <Widget>[
@@ -149,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
-    var container3 = new Container(
+    var taxiNumbers = new Container(
       margin: EdgeInsets.all(8.0),
       child: new Stack(
         children: <Widget>[
@@ -157,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
           new Positioned(
             left: 8.0,
             bottom: 8.0,
-            child: new Text('Hotels and Taxis',
+            child: new Text('Taxi Numbers',
               style: new TextStyle(
                   fontFamily: 'CallingAngelsPersonalUse',
                   fontSize: 30.0,
@@ -168,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
-    var container4 = new Container(
+    var theBridesmaids = new Container(
       margin: EdgeInsets.all(8.0),
       child: new Stack(
         children: <Widget>[
@@ -187,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
-    var container5 = new Container(
+    var theGroomsmen = new Container(
       margin: EdgeInsets.all(8.0),
       child: new Stack(
         children: <Widget>[
@@ -206,30 +206,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
-    var container6 = new Container(
-      margin: EdgeInsets.all(8.0),
-      child: new Stack(
-        children: <Widget>[
-          new Image(image: new AssetImage('assets/6.jpg')),
-          new Positioned(
-            left: 8.0,
-            bottom: 8.0,
-            child: new Text('Camping',
-              style: new TextStyle(
-                  fontFamily: 'CallingAngelsPersonalUse',
-                  fontSize: 30.0,
-                  color: Colors.white
-              ),
-            ),
-          )
-        ],
-      ),
-    );
 
-    var containers = [container1, container2, container3, container4, container5, container6];
-    var screens = [new OrderOfTheDay(), new MapsAndDirections(), new HotelsAndTaxis(), new TheBridesmaids(), new TheGroomsmen(), new Camping()];
+    var cardList = [theBridesmaids, theGroomsmen, orderOfTheDay, mapsAndDirections, taxiNumbers];
+    var screens = [new OrderOfTheDay(), new MapsAndDirections(), new TaxiNumbers(), new TheBridesmaids(), new TheGroomsmen(), new Camping()];
     var listView = new ListView.builder(
-        itemCount: containers.length,
+        itemCount: cardList.length,
         itemBuilder: (BuildContext context, int index) {
           return new GestureDetector( //You need to make my child interactive
             onTap: () {
@@ -238,7 +219,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 new MaterialPageRoute(builder: (context) => screens[index]),
               );
             },
-            child: containers[index]
+            child: cardList[index]
           );
         });
 
