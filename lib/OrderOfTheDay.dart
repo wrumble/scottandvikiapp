@@ -65,7 +65,7 @@ class OrderOfTheDay extends StatelessWidget {
                   )
               ),
               new Container(
-                  child: new Text("12:00 - There will be a cash bar until midnight.",
+                  child: new Text("00:00 - There will be a cash bar until midnight.",
                     style: new TextStyle(
                         fontFamily: 'DancingScript-Regular',
                         fontSize: 30.0,
