@@ -208,7 +208,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     var cardList = [theBridesmaids, theGroomsmen, orderOfTheDay, mapsAndDirections, taxiNumbers];
-    var screens = [new OrderOfTheDay(), new MapsAndDirections(), new TaxiNumbers(), new TheBridesmaids(), new TheGroomsmen(), new Camping()];
+    var screens = [new TheBridesmaids(), new TheGroomsmen(), new OrderOfTheDay(), new MapsAndDirections(), new TaxiNumbers()];
     var listView = new ListView.builder(
         itemCount: cardList.length,
         itemBuilder: (BuildContext context, int index) {
