@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Use your location when using the map</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -26,6 +24,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Can we use your camera please?</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Use your location when using the map</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Can we use your photos please?</string>
 	<key>UILaunchStoryboardName</key>

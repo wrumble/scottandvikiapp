@@ -4,7 +4,7 @@ description: White label wedding app
 dependencies:
   map_view: ^0.0.12
   image_picker: ^0.4.1
-  zoomable_image:
+  url_launcher: ^3.0.0
   flutter:
     sdk: flutter
   flutter_localizations:

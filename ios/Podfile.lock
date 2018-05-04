@@ -10,11 +10,14 @@ PODS:
   - map_view (0.0.1):
     - Flutter
     - GoogleMaps
+  - url_launcher (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Pods/.symlinks/flutter/ios`)
   - image_picker (from `Pods/.symlinks/plugins/image_picker/ios`)
   - map_view (from `Pods/.symlinks/plugins/map_view/ios`)
+  - url_launcher (from `Pods/.symlinks/plugins/url_launcher/ios`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -27,12 +30,15 @@ EXTERNAL SOURCES:
     :path: Pods/.symlinks/plugins/image_picker/ios
   map_view:
     :path: Pods/.symlinks/plugins/map_view/ios
+  url_launcher:
+    :path: Pods/.symlinks/plugins/url_launcher/ios
 
 SPEC CHECKSUMS:
   Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
   GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
   image_picker: ee00aab0487cedc80a304085219503cc6d0f2e22
   map_view: da5875d2bc7b2871e4b7ed3e9e8e4509fc62d7bd
+  url_launcher: 92b89c1029a0373879933c21642958c874539095
 
 PODFILE CHECKSUM: 4a84dacbef64ac05c9af2aaa687ffb08fbe5545c
 
