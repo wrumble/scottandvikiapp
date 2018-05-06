@@ -54,7 +54,7 @@ class TaxiNumbers extends StatelessWidget {
                         fontSize: 25.0,
                         color: Colors.black)
                 ),
-                onTap: () => launch("tel:01892 541589"),
+                onTap: () => launch("tel:01892541589"),
               ),
               margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 8.0),
             )
@@ -86,7 +86,7 @@ class TaxiNumbers extends StatelessWidget {
                         fontSize: 25.0,
                         color: Colors.black)
                 ),
-                onTap: () => launch("tel:01732 400200"),
+                onTap: () => launch("tel:01732400200"),
               ),
               margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 8.0),
             )
@@ -119,7 +119,7 @@ class TaxiNumbers extends StatelessWidget {
                         fontSize: 25.0,
                         color: Colors.black)
                 ),
-                onTap: () => launch("tel:01732 363637"),
+                onTap: () => launch("tel:01732363637"),
               ),
               margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 8.0),
             )
@@ -153,7 +153,7 @@ class TaxiNumbers extends StatelessWidget {
                         fontSize: 25.0,
                         color: Colors.black)
                 ),
-                onTap: () => launch("tel:01732 363636"),
+                onTap: () => launch("tel:01732363636"),
               ),
               margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 8.0),
             )
@@ -186,7 +186,7 @@ class TaxiNumbers extends StatelessWidget {
                         fontSize: 25.0,
                         color: Colors.black)
                 ),
-                onTap: () => launch("tel:01892 646646"),
+                onTap: () => launch("tel:01892646646"),
               ),
               margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 8.0),
             )
@@ -219,7 +219,7 @@ class TaxiNumbers extends StatelessWidget {
                         fontSize: 25.0,
                         color: Colors.black)
                 ),
-                onTap: () => launch("tel:01892 802803"),
+                onTap: () => launch("tel:01892802803"),
               ),
               margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 8.0),
             )
@@ -251,7 +251,7 @@ class TaxiNumbers extends StatelessWidget {
                         fontSize: 25.0,
                         color: Colors.black)
                 ),
-                onTap: () => launch("tel:01892 535535"),
+                onTap: () => launch("tel:01892535535"),
               ),
               margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 8.0),
             )
@@ -283,7 +283,7 @@ class TaxiNumbers extends StatelessWidget {
                         fontSize: 25.0,
                         color: Colors.black)
                 ),
-                onTap: () => launch("tel:07821 579982"),
+                onTap: () => launch("tel:07821579982"),
               ),
               margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 8.0),
             )
@@ -315,7 +315,7 @@ class TaxiNumbers extends StatelessWidget {
                         fontSize: 25.0,
                         color: Colors.black)
                 ),
-                onTap: () => launch("tel:01892 535735"),
+                onTap: () => launch("tel:01892535735"),
               ),
               margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 8.0),
             )
@@ -334,7 +334,7 @@ class TaxiNumbers extends StatelessWidget {
         )
     );
 
-    var number9 = new Container(
+    var number10 = new Container(
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -347,7 +347,7 @@ class TaxiNumbers extends StatelessWidget {
                         fontSize: 25.0,
                         color: Colors.black)
                 ),
-                onTap: () => launch("tel:07941 504678"),
+                onTap: () => launch("tel:07941504678"),
               ),
               margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 8.0),
             )
