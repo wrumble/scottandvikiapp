@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
-import 'ChurchMap.dart';
-import 'FarmMap.dart';
+import 'package:scott_and_viki/Text/TitleText.dart';
+import 'CustomMap.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -14,24 +14,21 @@ class MapsAndDirections extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var titleText = new Text('Maps and Directions',
-        style: new TextStyle(fontFamily: 'CallingAngelsPersonalUse',
-            fontSize: 25.0,
-            color: Colors.white)
-    );
-    var churchMarkers = [ new Marker("Church", "St Dunstan's Church", 51.0206245,0.2605629, color: Colors.red)];
-    var farmMarkers = [ new Marker("Farm", "Juddwood Farm", 51.172825, 0.221990, color: Colors.red)];
+    var titleText = TitleText('Maps and Directions', 25.0);
+    var churchStaticMarkers = [ new Marker("Church", "St Dunstan's Church", 51.0206245,0.2605629, color: Colors.red)];
     var churchLocation = new Location(51.0206245,0.2605629);
+    var farmStaticMarkers = [ new Marker("Farm", "Juddwood Farm", 51.172825, 0.221990, color: Colors.red)];
     var farmLocation = new Location(51.172825, 0.221990);
     var staticMapProvider = new StaticMapProvider("AIzaSyDV1GknO-dNqnX9RbaKPh7Er6eohOXCZ24");
+
     var churchStaticMapUri = staticMapProvider.getStaticUriWithMarkers(
-        churchMarkers,
+        churchStaticMarkers,
         maptype: StaticMapViewType.roadmap,
         center: churchLocation
     );
 
     var farmStaticMapUri = staticMapProvider.getStaticUriWithMarkers(
-        farmMarkers,
+        farmStaticMarkers,
         maptype: StaticMapViewType.roadmap,
         center: farmLocation
     );
@@ -47,12 +44,19 @@ class MapsAndDirections extends StatelessWidget {
       margin: new EdgeInsets.only(left: 8.0, top: 16.0, right: 8.0),
     );
 
+    var churchMapTitle = 'Church Location';
+    List<Marker> churchMapMarkers = <Marker>[
+      new Marker("Church", "St Dunstan's Church", 51.0206245,0.2605629, color: Colors.red),
+    ];
+    var churchPosition = new CameraPosition(
+        churchLocation, 10.0
+    );
     var churchMapContainer = new Container(
       child: new InkWell(
         child: new Center(
           child: new Image.network(churchStaticMapUri.toString()),
         ),
-        onTap: () { ChurchMap().showMap(); },
+        onTap: () { CustomMap(churchMapTitle, churchMapMarkers, churchPosition).showMap(); },
       ),
       margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
     );
@@ -149,12 +153,17 @@ class MapsAndDirections extends StatelessWidget {
       margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 16.0),
     );
 
+    List<Marker> farmMarkers = <Marker>[
+      new Marker("Farm", "Juddwood Farm", 51.172825, 0.221990, color: Colors.red),
+    ];
+    var farmTitle = "Reception location";
+    var farmPosition = new CameraPosition(farmLocation, 10.0);
     var farmMapContainer = new Container(
       child: new InkWell(
         child: new Center(
           child: new Image.network(farmStaticMapUri.toString()),
         ),
-        onTap: () { FarmMap().showMap(); },
+        onTap: () { CustomMap(farmTitle, farmMarkers, farmPosition).showMap(); },
       ),
       margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
     );

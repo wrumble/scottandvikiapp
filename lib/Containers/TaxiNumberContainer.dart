@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:scott_and_viki/Constants/FontNames.dart';
 
 class TaxiNumberContainer extends StatelessWidget {
   final String name;
@@ -18,7 +19,7 @@ class TaxiNumberContainer extends StatelessWidget {
                 child: new Text("${this.name} - ${this.number}",
                     textAlign: TextAlign.left,
                     style: new TextStyle(
-                        fontFamily: 'DancingScript-Regular',
+                        fontFamily: FontName.normalFont,
                         fontSize: 25.0,
                         color: Colors.black)
                 ),

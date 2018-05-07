@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scott_and_viki/Text/TitleText.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -11,11 +12,7 @@ class OrderOfTheDay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var titleText = new Text('Order of the day',
-        style: new TextStyle(fontFamily: 'CallingAngelsPersonalUse',
-            fontSize: 30.0,
-            color: Colors.white)
-    );
+    var titleText = new TitleText('Order of the day', 30.0);
 
     var ceremonyContainer = new Container(
         child: new Text("12:30 - Wedding ceremony at St Dunstan’s Church, Mayfield followed by the wedding breakfast at Juddwood Farm",

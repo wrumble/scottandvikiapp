@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scott_and_viki/Factories/TaxiNumberFactory.dart';
+import 'package:scott_and_viki/Constants/FontNames.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -8,11 +9,11 @@ var backgroundImage = new BoxDecoration(
   ),
 );
 
-class TaxiNumbers extends StatelessWidget {
+class TaxiNumberCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var titleText = new Text('Taxi numbers',
-        style: new TextStyle(fontFamily: 'CallingAngelsPersonalUse',
+        style: new TextStyle(fontFamily: FontName.titleFont,
             fontSize: 30.0,
             color: Colors.white)
     );
@@ -26,7 +27,7 @@ class TaxiNumbers extends StatelessWidget {
               child: new Text("Tap a Number to call it",
                   textAlign: TextAlign.center,
                   style: new TextStyle(
-                      fontFamily: 'CallingAngelsPersonalUse',
+                      fontFamily: FontName.titleFont,
                       fontSize: 30.0,
                       color: Colors.white,
                   )
@@ -37,11 +38,16 @@ class TaxiNumbers extends StatelessWidget {
         ),
         margin: new EdgeInsets.only(top: 16.0),
         decoration: new BoxDecoration(
-            color: Colors.black,
-        )
+        color: Colors.black,
+        boxShadow: [
+          new BoxShadow(
+              color: Colors.black38,
+              blurRadius: 5.0,
+              offset: new Offset(3.0, 5.0)
+          ),
+        ]
+    )
     );
-
-    var taxiNumberList = new TaxiNumberFactory()
 
     var mainContainer = new Container(
       height: double.infinity,
@@ -58,7 +64,7 @@ class TaxiNumbers extends StatelessWidget {
                 tapToCall,
                 new Expanded(
                     child: new Container(
-                      child: taxiNumberList,
+                      child: new TaxiNumberFactory(),
                     )
                 )
               ],

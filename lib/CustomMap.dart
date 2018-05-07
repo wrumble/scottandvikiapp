@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 import 'CompositionSubscription.dart';
 
-class ChurchMap {
+class CustomMap {
+  final String mapTitle;
+  final List<Marker> markers;
+  final CameraPosition initialPosition;
+
+  CustomMap(this.mapTitle, this.markers, this.initialPosition);
 
   MapView mapView = new MapView();
   var compositeSubscription = new CompositeSubscription();
-
-  List<Marker> _markers = <Marker>[
-    new Marker("Church", "St Dunstan's Church", 51.0206245,0.2605629, color: Colors.red),
-  ];
 
   showMap() {
 
@@ -17,15 +17,13 @@ class ChurchMap {
         new MapOptions(
             mapViewType: MapViewType.normal,
             showUserLocation: true,
-            initialCameraPosition: new CameraPosition(
-                new Location(51.0206245,0.2605629), 10.0
-            ),
-            title: "Church location"),
+            initialCameraPosition: initialPosition,
+            title: mapTitle),
         toolbarActions: [new ToolbarAction("Close", 1)]
     );
 
     var setMarkers = mapView.onMapReady.listen((_) {
-      mapView.setMarkers(_markers);
+      mapView.setMarkers(markers);
       mapView.zoomToFit(padding: 100);
     });
     compositeSubscription.add(setMarkers);
