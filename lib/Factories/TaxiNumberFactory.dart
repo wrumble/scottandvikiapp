@@ -15,7 +15,7 @@ class TaxiNumberFactory extends StatelessWidget {
   static final number9 = new TaxiNumberContainer("Express Cars", "01892 535735");
   static final number10 = new TaxiNumberContainer("Joe's Taxi Service", "07941 504678");
 
-  var taxiList = [
+  final taxiList = [
     number1,
     number2,
     number3,
