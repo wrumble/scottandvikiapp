@@ -30,7 +30,7 @@ class HomeScreenCardFactory extends StatelessWidget {
     new TaxiNumberCard()
   ];
 
-  var cardListView = new ListView.builder(
+  static final cardListView = new ListView.builder(
       itemCount: cardList.length,
       itemBuilder: (BuildContext context, int index) {
         return new GestureDetector( //You need to make my child interactive

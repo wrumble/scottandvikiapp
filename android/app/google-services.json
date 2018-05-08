@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "5195857090",
+    "firebase_url": "https://svflutterapp.firebaseio.com",
+    "project_id": "svflutterapp",
+    "storage_bucket": "svflutterapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5195857090:android:181c5e2997257913",
+        "android_client_info": {
+          "package_name": "com.example.scottandviki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5195857090-qpe6htlseht3gh0ep6f3nji24en981vo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDckAHdYEwy4H-kS0DAdVNUQVZwb3e24GE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

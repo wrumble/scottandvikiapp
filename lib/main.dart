@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'Localisations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -39,7 +43,6 @@ class App extends StatelessWidget {
 }
 
 void main() {
-  MapView.setApiKey("AIzaSyA3V8XTkmpTZOeCTUd4J4WZceMOL_Cg-NU");
   runApp(new MyApp());
 }
 
@@ -69,12 +72,31 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<HomeScreen> {
-  Future<File> _imageFile; //TODO: send to firebase
+  Future<File> imageFile;
+  File savedImage;
 
   void _onImageButtonPressed(ImageSource source) {
     setState(() {
-      _imageFile = ImagePicker.pickImage(source: source);
+      imageFile = ImagePicker.pickImage(source: source);
+      imageFile.then((image) {
+        savedImage = image;
+        uploadFile();
+      });
     });
+  }
+
+  Future<Null> uploadFile() async {
+
+    final String folderName = "Waynes Photos";
+    final String imageName = "1";
+    final String currentDateTime = "${DateTime.now()}";
+    final StorageReference ref = FirebaseStorage.instance.ref().child(folderName).child('$imageName-$currentDateTime.jpg');
+    final StorageUploadTask uploadTask = ref.putFile(savedImage, const StorageMetadata(contentLanguage: "en"));
+    final Uri downloadUrl = (await uploadTask.future).downloadUrl;
+    final http.Response downloadData = await http.get(downloadUrl);
+
+    print(downloadUrl);
+    print(downloadData);
   }
 
   @override

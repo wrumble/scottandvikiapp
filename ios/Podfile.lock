@@ -1,19 +1,55 @@
 PODS:
+  - Firebase/Core (4.13.0):
+    - FirebaseAnalytics (= 4.2.0)
+    - FirebaseCore (= 4.0.20)
+  - Firebase/Storage (4.13.0):
+    - Firebase/Core
+    - FirebaseStorage (= 2.2.0)
+  - firebase_core (0.0.1):
+    - Firebase/Core
+    - Flutter
+  - firebase_storage (0.0.1):
+    - Firebase/Storage
+    - Flutter
+  - FirebaseAnalytics (4.2.0):
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - nanopb (~> 0.3)
+  - FirebaseCore (4.0.20):
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+  - FirebaseInstanceID (2.0.10):
+    - FirebaseCore (~> 4.0)
+  - FirebaseStorage (2.2.0):
+    - FirebaseAnalytics (~> 4.1)
+    - FirebaseCore (~> 4.0)
+    - GTMSessionFetcher/Core (~> 1.1)
   - Flutter (1.0.0)
   - GoogleMaps (2.7.0):
     - GoogleMaps/Maps (= 2.7.0)
   - GoogleMaps/Base (2.7.0)
   - GoogleMaps/Maps (2.7.0):
     - GoogleMaps/Base
+  - GoogleToolboxForMac/Defines (2.1.4)
+  - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GTMSessionFetcher/Core (1.1.15)
   - image_picker (0.0.1):
     - Flutter
   - map_view (0.0.1):
     - Flutter
     - GoogleMaps
+  - nanopb (0.3.8):
+    - nanopb/decode (= 0.3.8)
+    - nanopb/encode (= 0.3.8)
+  - nanopb/decode (0.3.8)
+  - nanopb/encode (0.3.8)
   - url_launcher (0.0.1):
     - Flutter
 
 DEPENDENCIES:
+  - firebase_core (from `Pods/.symlinks/plugins/firebase_core/ios`)
+  - firebase_storage (from `Pods/.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Pods/.symlinks/flutter/ios`)
   - image_picker (from `Pods/.symlinks/plugins/image_picker/ios`)
   - map_view (from `Pods/.symlinks/plugins/map_view/ios`)
@@ -21,9 +57,21 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - Firebase
+    - FirebaseAnalytics
+    - FirebaseCore
+    - FirebaseInstanceID
+    - FirebaseStorage
     - GoogleMaps
+    - GoogleToolboxForMac
+    - GTMSessionFetcher
+    - nanopb
 
 EXTERNAL SOURCES:
+  firebase_core:
+    :path: Pods/.symlinks/plugins/firebase_core/ios
+  firebase_storage:
+    :path: Pods/.symlinks/plugins/firebase_storage/ios
   Flutter:
     :path: Pods/.symlinks/flutter/ios
   image_picker:
@@ -34,10 +82,20 @@ EXTERNAL SOURCES:
     :path: Pods/.symlinks/plugins/url_launcher/ios
 
 SPEC CHECKSUMS:
+  Firebase: 5ec5e863d269d82d66b4bf56856726f8fb8f0fb3
+  firebase_core: c96aa8b2fcf7f5167d32f22034f502f9304952b8
+  firebase_storage: e34d30ff8bb57e691191b70e9d255ec2eba2351f
+  FirebaseAnalytics: 7ef69e76a5142f643aeb47c780e1cdce4e23632e
+  FirebaseCore: 90cb1c53d69b556f112a1bf72b5fcfaad7650790
+  FirebaseInstanceID: 8d20d890d65c917f9f7d9950b6e10a760ad34321
+  FirebaseStorage: 0c223481c8f89ed300cf1239ddd2d9833622c65f
   Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
   GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
+  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
+  GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
   image_picker: ee00aab0487cedc80a304085219503cc6d0f2e22
   map_view: da5875d2bc7b2871e4b7ed3e9e8e4509fc62d7bd
+  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   url_launcher: 92b89c1029a0373879933c21642958c874539095
 
 PODFILE CHECKSUM: 4a84dacbef64ac05c9af2aaa687ffb08fbe5545c
