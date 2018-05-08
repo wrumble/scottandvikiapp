@@ -1,17 +1,15 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'Localisations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
-import 'package:map_view/map_view.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'package:scott_and_viki/Factories/HomeScreenCardFactory.dart';
+import 'WelcomeScreen.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -59,7 +57,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: [
         const Locale('en', '')
       ],
-      home: new HomeScreen(),
+      home: new WelcomeScreen(),
     );
   }
 }
