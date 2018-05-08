@@ -30,14 +30,22 @@ class HomeScreenCardFactory extends StatelessWidget {
     new TaxiNumberCard()
   ];
 
+  var cardListView = new ListView.builder(
+      itemCount: cardList.length,
+      itemBuilder: (BuildContext context, int index) {
+        return new GestureDetector( //You need to make my child interactive
+            onTap: () {
+              Navigator.push(
+                context,
+                new MaterialPageRoute(builder: (context) => screensList[index]),
+              );
+            },
+            child: cardList[index]
+        );
+      });
+
   @override
   Widget build(BuildContext context) {
-    return new ListView.builder(
-        itemCount: cardList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return new Container(
-              child: cardList[index]
-          );
-        });
+    return cardListView;
   }
 }
