@@ -19,6 +19,7 @@ class WelcomeScreen extends StatelessWidget {
     var titleText = new TitleText(Localize.of(context).appTitle);
     var doneButton = new FlatButton(
       textColor: Colors.white,
+      padding: new EdgeInsets.only(top: 16.0),
       color: Colors.black,
       onPressed: () => () {
         Navigator.pushReplacement(
@@ -48,12 +49,41 @@ class WelcomeScreen extends StatelessWidget {
           style: new TextStyle(
               fontFamily: FontName.normalFont,
               fontSize: 30.0,
-              color: Colors.black,
+              color: Colors.white,
           ),
           textAlign: TextAlign.center,
         ),
-        margin: new EdgeInsets.only(left: 8.0, top: 16.0, right: 8.0, bottom: 8.0),
-        padding: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 8.0),
+        margin: new EdgeInsets.only(top: 16.0, bottom: 8.0),
+        padding: new EdgeInsets.only(left: 8.0, top: 16.0, right: 8.0, bottom: 8.0),
+        decoration: new BoxDecoration(
+            color: Colors.black,
+            boxShadow: [
+              new BoxShadow(
+                  color: Colors.black38,
+                  blurRadius: 5.0,
+                  offset: new Offset(3.0, 5.0)
+              ),
+            ]
+        )
+    );
+
+    var firstNameContainer = new Container(
+        child: new TextFormField(
+          style: new TextStyle(
+            fontFamily: FontName.normalFont,
+            fontSize: 20.0,
+            color: Colors.black,
+          ),
+          keyboardType: TextInputType.text,
+          autofocus: true,
+          decoration: new InputDecoration(
+            labelText: 'First Name',
+            fillColor: Colors.white,
+
+          ),
+        ),
+        margin: new EdgeInsets.only(top: 16.0, bottom: 8.0),
+        padding: new EdgeInsets.only(left: 8.0, top: 8.0,  right: 8.0, bottom: 8.0),
         decoration: new BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -66,58 +96,57 @@ class WelcomeScreen extends StatelessWidget {
         )
     );
 
-    var firstNameField = new TextFormField(
-      decoration: new InputDecoration(
-          labelText: 'First Name'
-      ),
-    );
-
-    var lastNameField = new TextFormField(
-      style: new TextStyle(
-        fontFamily: FontName.normalFont,
-        fontSize: 20.0,
-        color: Colors.black,
-      ),
-      keyboardType: TextInputType.text,
-      autofocus: true,
-      decoration: new InputDecoration(
-        labelText: 'Last Name',
-        fillColor: Colors.white,
-
-      ),
-    );
-
-    var mainContainer = new Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        new Expanded(
-          child: new Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                new Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    requestTextContainer
-                  ],
-                ),
-                firstNameField,
-                lastNameField,
-                new Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    new Container(
-                      height: 44.0,
-                      width: MediaQuery.of(context).size.width,
-                      child: doneButton,
-                      margin: new EdgeInsets.only(bottom: getBottomMargin(), top: 8.0),
-                    )],
-                ),
-              ]
+    var lastNameContainer = new Container(
+        child: new TextFormField(
+          style: new TextStyle(
+            fontFamily: FontName.normalFont,
+            fontSize: 20.0,
+            color: Colors.black,
           ),
+          keyboardType: TextInputType.text,
+          autofocus: true,
+          decoration: new InputDecoration(
+            labelText: 'Last Name',
+            fillColor: Colors.white,
+
+          ),
+        ),
+        margin: new EdgeInsets.only(top: 16.0, bottom: 8.0),
+        padding: new EdgeInsets.only(left: 8.0, top: 8.0,  right: 8.0, bottom: 8.0),
+        decoration: new BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              new BoxShadow(
+                  color: Colors.black38,
+                  blurRadius: 5.0,
+                  offset: new Offset(3.0, 5.0)
+              ),
+            ]
         )
-      ],
+    );
+
+    var list = [
+      requestTextContainer,
+      firstNameContainer,
+      lastNameContainer,
+      doneButton
+    ];
+
+    var listView = new ListView.builder(
+        itemCount: list.length,
+        itemBuilder: (BuildContext context, int index) {
+          return new Container(
+              child: list[index]
+          );
+        });
+
+    var mainContainer = new Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: backgroundImage,
+        child: new Container(
+          child: listView,
+        )
     );
 
     return new Scaffold(

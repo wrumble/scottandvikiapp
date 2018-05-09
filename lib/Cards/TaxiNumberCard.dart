@@ -27,7 +27,7 @@ class TaxiNumberCard extends StatelessWidget {
               child: new Text("Tap a Number to call it",
                   textAlign: TextAlign.center,
                   style: new TextStyle(
-                      fontFamily: FontName.titleFont,
+                      fontFamily: FontName.normalFont,
                       fontSize: 30.0,
                       color: Colors.white,
                   )
