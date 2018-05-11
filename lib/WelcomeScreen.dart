@@ -221,8 +221,6 @@ class TextFormFieldDemo extends StatefulWidget {
 
 class PersonData {
   String name = '';
-  String phoneNumber = '';
-  String email = '';
   String password = '';
 }
 
@@ -257,16 +255,24 @@ class _PasswordFieldState extends State<PasswordField> {
     return new TextFormField(
       key: widget.fieldKey,
       obscureText: _obscureText,
-      maxLength: 8,
       onSaved: widget.onSaved,
       validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,
       decoration: new InputDecoration(
         border: const UnderlineInputBorder(),
-        filled: true,
         hintText: widget.hintText,
         labelText: widget.labelText,
         helperText: widget.helperText,
+        labelStyle: new TextStyle(
+          fontFamily: FontName.normalFont,
+          fontSize: 25.0,
+          color: Colors.black,
+        ),
+        hintStyle: new TextStyle(
+          fontFamily: FontName.normalFont,
+          fontSize: 20.0,
+          color: Colors.black,
+        ),
         suffixIcon: new GestureDetector(
           onTap: () {
             setState(() {
@@ -310,7 +316,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
       showInSnackBar('Please fix the errors in red before submitting.');
     } else {
       form.save();
-      showInSnackBar('Welcome, ${person.name}\'!');
+      showInSnackBar('Welcome, ${person.name}!');
       showHomeScreen();
     }
   }
@@ -319,9 +325,9 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
     _formWasEdited = true;
     if (value.isEmpty)
       return 'Full Name is required.';
-    final RegExp nameExp = new RegExp(r"^[a-z ,.'-]+$/i");
+    final RegExp nameExp = new RegExp(r"^([a-zA-Z]{2,}\s[a-zA-z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)", caseSensitive: false);
     if (!nameExp.hasMatch(value))
-      return 'Please your full name.';
+      return 'Please enter your full name.';
     return null;
   }
 
@@ -349,11 +355,11 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
           content: const Text('Really leave this form?'),
           actions: <Widget> [
             new FlatButton(
-              child: const Text('YES'),
+              child: const Text('Yes'),
               onPressed: () { Navigator.of(context).pop(true); },
             ),
             new FlatButton(
-              child: const Text('NO'),
+              child: const Text('No'),
               onPressed: () { Navigator.of(context).pop(false); },
             ),
           ],
@@ -362,12 +368,19 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
     ) ?? false;
   }
 
+  final labelStyle = new TextStyle(
+    fontFamily: FontName.normalFont,
+    fontSize: 25.0,
+    color: Colors.black,
+  );
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: new AppBar(
-        title: const Text('Text fields'),
+        title: new TitleText(Localize.of(context).appTitle),
+        backgroundColor: Colors.black,
       ),
       body: new SafeArea(
         top: false,
@@ -383,10 +396,21 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
               children: <Widget>[
                 const SizedBox(height: 24.0),
                 new TextFormField(
+                  style: new TextStyle(
+                      fontFamily: FontName.normalFont,
+                      fontSize: 25.0,
+                      color: Colors.black,
+                  ),
                   decoration: const InputDecoration(
                     border: const UnderlineInputBorder(),
                     hintText: 'First and Last name',
                     labelText: 'Name',
+                    hintStyle: new TextStyle(
+                      fontFamily: FontName.normalFont,
+                      fontSize: 25.0,
+                      color: Colors.black,
+                    ),
+                    labelStyle: labelStyle,
                   ),
                   onSaved: (String value) { person.name = value; },
                   validator: _validateName,
@@ -396,17 +420,18 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
                   fieldKey: _passwordFieldKey,
                   helperText: 'Ask Scott or Viki',
                   labelText: 'App Password',
-                  onFieldSubmitted: (String value) {
-                    setState(() {
-                      person.password = value;
-                    });
-                  },
+                  validator: _validatePassword,
                 ),
                 const SizedBox(height: 24.0),
-                new Center(
-                  child: new RaisedButton(
-                    child: const Text('Done!'),
-                    onPressed: _handleSubmitted,
+                new FlatButton(
+                  textColor: Colors.white,
+                  padding: new EdgeInsets.only(top: 8.0, bottom: 8.0),
+                  color: Colors.black,
+                  onPressed: () => _handleSubmitted,
+                  child: new Text('Done!',
+                    style: new TextStyle(fontFamily: FontName.normalFont,
+                        fontSize: 30.0,
+                        color: Colors.white),
                   ),
                 ),
                 const SizedBox(height: 24.0)
