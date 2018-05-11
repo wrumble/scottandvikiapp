@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: [
         const Locale('en', '')
       ],
-      home: new WelcomeScreen(),
+      home: new TextFormFieldDemo(),
     );
   }
 }
