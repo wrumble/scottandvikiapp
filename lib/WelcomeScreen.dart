@@ -224,6 +224,57 @@ class PersonData {
   String password = '';
 }
 
+class NameField extends StatefulWidget {
+  const NameField({
+    this.fieldKey,
+    this.hintText,
+    this.labelText,
+    this.helperText,
+    this.onSaved,
+    this.validator,
+    this.onFieldSubmitted,
+  });
+
+  final Key fieldKey;
+  final String hintText;
+  final String labelText;
+  final String helperText;
+  final FormFieldSetter<String> onSaved;
+  final FormFieldValidator<String> validator;
+  final ValueChanged<String> onFieldSubmitted;
+
+  @override
+  _NameFieldState createState() => new _NameFieldState();
+}
+
+class _NameFieldState extends State<NameField> {
+
+  @override
+  Widget build(BuildContext context) {
+    return new TextFormField(
+      onSaved: widget.onSaved,
+      validator: widget.validator,
+      onFieldSubmitted: widget.onFieldSubmitted,
+      decoration: new InputDecoration(
+        border: const UnderlineInputBorder(),
+        hintText: widget.hintText,
+        labelText: widget.labelText,
+        helperText: widget.helperText,
+        labelStyle: new TextStyle(
+          fontFamily: FontName.normalFont,
+          fontSize: 25.0,
+          color: Colors.black,
+        ),
+        hintStyle: new TextStyle(
+          fontFamily: FontName.normalFont,
+          fontSize: 20.0,
+          color: Colors.black,
+        ),
+      )
+    );
+  }
+}
+
 class PasswordField extends StatefulWidget {
   const PasswordField({
     this.fieldKey,
@@ -301,7 +352,10 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
   bool _formWasEdited = false;
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final GlobalKey<FormFieldState<String>> _nameFieldKey = new GlobalKey<FormFieldState<String>>();
   final GlobalKey<FormFieldState<String>> _passwordFieldKey = new GlobalKey<FormFieldState<String>>();
+
+
 
   void showHomeScreen() {
     Navigator.pushReplacement(
@@ -323,18 +377,23 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
 
   String _validateName(String value) {
     _formWasEdited = true;
-    if (value.isEmpty)
+    final FormFieldState<String> nameField = _nameFieldKey.currentState;
+    print(value);
+    print(nameField.value);
+    if (nameField.value.isEmpty)
       return 'Full Name is required.';
     final RegExp nameExp = new RegExp(r"^([a-zA-Z]{2,}\s[a-zA-z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)", caseSensitive: false);
-    if (!nameExp.hasMatch(value))
+    if (!nameExp.hasMatch(nameField.value))
       return 'Please enter your full name.';
     return null;
   }
 
   String _validatePassword(String value) {
     _formWasEdited = true;
-    var password = 'Password';
     final FormFieldState<String> passwordField = _passwordFieldKey.currentState;
+    print(value);
+    print(passwordField.value);
+    var password = 'Password';
     if (passwordField.value == null || passwordField.value.isEmpty)
       return 'Please enter a password.';
     if (passwordField.value != password)
@@ -368,12 +427,6 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
     ) ?? false;
   }
 
-  final labelStyle = new TextStyle(
-    fontFamily: FontName.normalFont,
-    fontSize: 25.0,
-    color: Colors.black,
-  );
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -390,29 +443,15 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
           autovalidate: _autoValidate,
           onWillPop: _warnUserAboutInvalidData,
           child: new SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 const SizedBox(height: 24.0),
-                new TextFormField(
-                  style: new TextStyle(
-                      fontFamily: FontName.normalFont,
-                      fontSize: 25.0,
-                      color: Colors.black,
-                  ),
-                  decoration: const InputDecoration(
-                    border: const UnderlineInputBorder(),
-                    hintText: 'First and Last name',
-                    labelText: 'Name',
-                    hintStyle: new TextStyle(
-                      fontFamily: FontName.normalFont,
-                      fontSize: 25.0,
-                      color: Colors.black,
-                    ),
-                    labelStyle: labelStyle,
-                  ),
-                  onSaved: (String value) { person.name = value; },
+                new NameField(
+                  fieldKey: _nameFieldKey,
+                  helperText: 'Enter first and last name',
+                  labelText: 'Whole Name',
                   validator: _validateName,
                 ),
                 const SizedBox(height: 24.0),
@@ -434,7 +473,6 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
                         color: Colors.white),
                   ),
                 ),
-                const SizedBox(height: 24.0)
               ],
             ),
           ),
