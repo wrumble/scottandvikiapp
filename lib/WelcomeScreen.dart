@@ -105,7 +105,6 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
   }
   void _handleSubmitted() {
     final FormState form = _formKey.currentState;
-    print("here");
     if (!form.validate()) {
       _autoValidate = true; // Start validating on every change.
       showInSnackBar('Please fix the errors in red before submitting.');
@@ -173,68 +172,120 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
       appBar: new AppBar(
         title: new TitleText(Localize.of(context).appTitle),
         backgroundColor: Colors.black,
+        centerTitle: true,
       ),
-      body: new SafeArea(
-        top: false,
-        bottom: false,
+      body: new Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: new BoxDecoration(
+          image: new DecorationImage(
+            image: new AssetImage('assets/background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: new Form(
           key: _formKey,
           autovalidate: _autoValidate,
           onWillPop: _warnUserAboutInvalidData,
           child: new SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+            padding: const EdgeInsets.only(top: 8.0, bottom: 16.0),
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                const SizedBox(height: 24.0),
-                new Text("Welcome",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontFamily: FontName.titleFont,
-                    fontSize: 40.0,
-                    color: Colors.black,
+                const SizedBox(height: 8.0),
+                new Container(
+                  child: new Column(
+                    children: <Widget>[
+                      new Text("Welcome",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontFamily: FontName.titleFont,
+                          fontSize: 40.0,
+                          color: Colors.black,
+                        ),
+                      ),
+                      new Text("Please enter your whole name and password to enter the app. If you cant remember the password just ask Scott or Viki.",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontFamily: FontName.normalFont,
+                          fontSize: 20.0,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                new Text("Please enter you information",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontFamily: FontName.normalFont,
-                    fontSize: 20.0,
-                    color: Colors.black,
-                  ),
+                  padding: const EdgeInsets.only(top: 16.0, bottom: 8.0, left: 8.0, right: 8.0),
+                  decoration: new BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        new BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 5.0,
+                            offset: new Offset(3.0, 5.0)
+                        ),
+                      ]
+                  )
                 ),
                 const SizedBox(height: 24.0),
-                new TextFormField(
-                  decoration: const InputDecoration(
-                    border: const UnderlineInputBorder(),
-                    filled: true,
-                    helperText: 'First and Last Name',
-                    labelText: 'Whole Name',
-                    labelStyle: const TextStyle(
-                      fontFamily: FontName.normalFont,
-                      fontSize: 25.0,
-                      color: Colors.black,
+                new Container(
+                  child: new TextFormField(
+                    decoration: const InputDecoration(
+                      border: const UnderlineInputBorder(),
+                      filled: true,
+                      helperText: 'First and Last Name',
+                      labelText: 'Whole Name',
+                      labelStyle: const TextStyle(
+                        fontFamily: FontName.normalFont,
+                        fontSize: 25.0,
+                        color: Colors.black,
+                      ),
+                      helperStyle: const TextStyle(
+                        fontFamily: FontName.normalFont,
+                        fontSize: 20.0,
+                        color: Colors.grey,
+                      ),
                     ),
-                    helperStyle: const TextStyle(
-                      fontFamily: FontName.normalFont,
-                      fontSize: 20.0,
-                      color: Colors.grey,
-                    ),
+                    onSaved: (String value) { person.name = value; },
+                    validator: _validateName,
                   ),
-                  onSaved: (String value) { person.name = value; },
-                  validator: _validateName,
+                  margin: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  decoration: new BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        new BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 5.0,
+                            offset: new Offset(3.0, 5.0)
+                        ),
+                      ]
+                  )
                 ),
                 const SizedBox(height: 24.0),
-                new PasswordField(
-                  fieldKey: _passwordFieldKey,
-                  helperText: 'Ask Scott or Viki',
-                  labelText: 'App Password',
-                  validator: _validatePassword,
+                new Container(
+                  child: new PasswordField(
+                    fieldKey: _passwordFieldKey,
+                    helperText: 'Ask Scott or Viki',
+                    labelText: 'App Password',
+                    validator: _validatePassword,
+                  ),
+                  decoration: new BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        new BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 5.0,
+                            offset: new Offset(3.0, 5.0)
+                        ),
+                      ]
+                  ),
+                  margin: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  padding: const EdgeInsets.only(bottom: 8.0),
                 ),
                 const SizedBox(height: 24.0),
                 new FlatButton(
                   textColor: Colors.white,
-                  padding: new EdgeInsets.only(top: 16.0, bottom: 8.0),
+                  padding: new EdgeInsets.only(top: 8.0, bottom: 8.0),
                   color: Colors.black,
                   onPressed: () => _handleSubmitted(),
                   child: new Text('Done!',
@@ -243,6 +294,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
                         color: Colors.white),
                   ),
                 ),
+                const SizedBox(height: 8.0),
               ],
             ),
           ),
