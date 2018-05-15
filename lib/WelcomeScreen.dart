@@ -141,7 +141,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
     _formWasEdited = true;
     if (value.isEmpty)
       return 'Full Name is required.';
-    final RegExp nameExp = new RegExp(r"^([a-zA-Z]{2,}\s[a-zA-z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)", caseSensitive: false);
+    final RegExp nameExp = new RegExp(r"^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)", caseSensitive: false);
     if (!nameExp.hasMatch(value))
       return 'Please enter your full name.';
     return null;
