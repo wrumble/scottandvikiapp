@@ -10,6 +10,7 @@ import 'package:scott_and_viki/Text/TitleText.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'package:scott_and_viki/Factories/HomeScreenCardFactory.dart';
 import 'WelcomeScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -45,19 +46,41 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      onGenerateTitle: (BuildContext context) => Localize.of(context).appTitle,
-      localizationsDelegates: [
-        const LocalizeDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en', '')
-      ],
-      home: new TextFormFieldDemo(),
+    return new FutureBuilder<SharedPreferences>(
+        future: SharedPreferences.getInstance(),
+        builder:(BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
+          print("Rsult of initial name fetch ${snapshot.data.getString('FullName')}");
+          if ((snapshot.data.getString('FullName')) == null) {
+            return new MaterialApp(
+              onGenerateTitle: (BuildContext context) => Localize.of(context).appTitle,
+              localizationsDelegates: [
+                const LocalizeDelegate(),
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: [
+                const Locale('en', '')
+              ],
+              home: new TextFormFieldDemo(),
+            );
+          } else {
+            return new MaterialApp(
+              onGenerateTitle: (BuildContext context) => Localize.of(context).appTitle,
+              localizationsDelegates: [
+                const LocalizeDelegate(),
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: [
+                const Locale('en', '')
+              ],
+              home: new HomeScreen(),
+            );
+          }
+        }
     );
   }
 }

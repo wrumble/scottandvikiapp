@@ -5,8 +5,8 @@ dependencies:
   map_view: ^0.0.12
   image_picker: ^0.4.1
   url_launcher: ^3.0.0
-  shared_preferences: ^0.4.1
   firebase_storage: ^0.3.4
+  shared_preferences: ^0.4.1
   flutter:
     sdk: flutter
   flutter_localizations:

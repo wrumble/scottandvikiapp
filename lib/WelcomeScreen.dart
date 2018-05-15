@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Localisations.dart';
 import 'main.dart';
 import 'dart:async';
@@ -103,6 +104,12 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
       new MaterialPageRoute(builder: (context) => new HomeScreen()),
     );
   }
+
+  void saveUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('FullName', person.name);
+  }
+
   void _handleSubmitted() {
     final FormState form = _formKey.currentState;
     if (!form.validate()) {
@@ -110,6 +117,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
       showInSnackBar('Please fix the errors in red before submitting.');
     } else {
       form.save();
+      saveUserName();
       showInSnackBar('Welcome, ${person.name}!');
       showHomeScreen();
     }
@@ -117,7 +125,6 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
 
   String _validateName(String value) {
     _formWasEdited = true;
-    print(value);
     if (value.isEmpty)
       return 'Full Name is required.';
     final RegExp nameExp = new RegExp(r"^([a-zA-Z]{2,}\s[a-zA-z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)", caseSensitive: false);
@@ -129,8 +136,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
   String _validatePassword(String value) {
     _formWasEdited = true;
     final FormFieldState<String> passwordField = _passwordFieldKey.currentState;
-    print(value);
-    print(passwordField.value);
+
     var password = 'Password';
     if (passwordField.value == null || passwordField.value.isEmpty)
       return 'Please enter a password.';
