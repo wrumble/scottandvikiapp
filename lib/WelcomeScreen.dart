@@ -2,214 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
 import 'Localisations.dart';
-import 'package:flutter/services.dart';
-import 'dart:io';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'main.dart';
-//
-//class WelcomeScreen extends StatelessWidget {
-//  @override
-//
-//  void initState() {
-//    _controller.addListener(onChange);
-//    _textFocus.addListener(onChange);
-//  }
-//
-//  TextEditingController _controller = new TextEditingController();
-//
-//  FocusNode _textFocus = new FocusNode();
-//
-//  void onChange(){
-//    String text = _controller.text;
-//    bool hasFocus = _textFocus.hasFocus;
-//    //do your text transforming
-//    _controller.text = newText;
-//    _controller.selection = new TextSelection(
-//        baseOffset: newText.length,
-//        extentOffset: newText.length
-//    );
-//  }
-//
-//  Widget build(BuildContext context) {
-//
-//    var backgroundImage = new BoxDecoration(
-//      image: new DecorationImage(
-//        image: new AssetImage('assets/background.png'),
-//        fit: BoxFit.cover,
-//      ),
-//    );
-//
-//    var titleText = new TitleText(Localize.of(context).appTitle);
-//
-//    var requestTextContainer = new Container(
-//        child: new Text("Please enter your first and last name.",
-//          style: new TextStyle(
-//              fontFamily: FontName.normalFont,
-//              fontSize: 30.0,
-//              color: Colors.white,
-//          ),
-//          textAlign: TextAlign.center,
-//        ),
-//        margin: new EdgeInsets.only(top: 16.0, bottom: 8.0),
-//        padding: new EdgeInsets.only(left: 8.0, top: 16.0, right: 8.0, bottom: 8.0),
-//        decoration: new BoxDecoration(
-//            color: Colors.black,
-//            boxShadow: [
-//              new BoxShadow(
-//                  color: Colors.black38,
-//                  blurRadius: 5.0,
-//                  offset: new Offset(3.0, 5.0)
-//              ),
-//            ]
-//        )
-//    );
-//
-//
-//
-//    var firstNameContainer = new Container(
-//        child: new TextFormField(
-//          controller: _controller,
-//          focusNode: _textFocus,
-//          style: new TextStyle(
-//            fontFamily: FontName.normalFont,
-//            fontSize: 25.0,
-//            color: Colors.black,
-//          ),
-//          keyboardType: TextInputType.text,
-//          autofocus: true,
-//          decoration: new InputDecoration(
-//            labelText: 'First Name',
-//            fillColor: Colors.white,
-//
-//          ),
-//        ),
-//        margin: new EdgeInsets.only(top: 16.0, bottom: 8.0),
-//        padding: new EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16.0),
-//        decoration: new BoxDecoration(
-//            color: Colors.white,
-//            boxShadow: [
-//              new BoxShadow(
-//                  color: Colors.black38,
-//                  blurRadius: 5.0,
-//                  offset: new Offset(3.0, 5.0)
-//              ),
-//            ]
-//        )
-//    );
-//
-//    var lastNameContainer = new Container(
-//        child: new TextFormField(
-//          style: new TextStyle(
-//            fontFamily: FontName.normalFont,
-//            fontSize: 25.0,
-//            color: Colors.black,
-//          ),
-//          keyboardType: TextInputType.text,
-//          autofocus: true,
-//          decoration: new InputDecoration(
-//            labelText: 'Last Name',
-//            fillColor: Colors.black
-//          ),
-//        ),
-//        margin: new EdgeInsets.only(top: 16.0, bottom: 16.0),
-//        padding: new EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-//        decoration: new BoxDecoration(
-//            color: Colors.white,
-//            boxShadow: [
-//              new BoxShadow(
-//                  color: Colors.black38,
-//                  blurRadius: 5.0,
-//                  offset: new Offset(3.0, 5.0)
-//              ),
-//            ]
-//        )
-//    );
-//
-//    var passwordContainer = new Container(
-//        child: new TextFormField(
-//          style: new TextStyle(
-//            fontFamily: FontName.normalFont,
-//            fontSize: 25.0,
-//            color: Colors.black,
-//          ),
-//          keyboardType: TextInputType.text,
-//          autofocus: true,
-//          decoration: new InputDecoration(
-//            labelText: 'Password',
-//            fillColor: Colors.white,
-//
-//          ),
-//        ),
-//        margin: new EdgeInsets.only(top: 16.0, bottom: 16.0),
-//        padding: new EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-//        decoration: new BoxDecoration(
-//            color: Colors.white,
-//            boxShadow: [
-//              new BoxShadow(
-//                  color: Colors.black38,
-//                  blurRadius: 5.0,
-//                  offset: new Offset(3.0, 5.0)
-//              ),
-//            ]
-//        )
-//    );
-//
-//    void showHomeScreen() {
-//      Navigator.pushReplacement(
-//        context,
-//        new MaterialPageRoute(builder: (context) => new HomeScreen()),
-//      );
-//    }
-//
-//    var doneButton = new FlatButton(
-//      textColor: Colors.white,
-//      padding: new EdgeInsets.only(top: 8.0, bottom: 8.0),
-//      color: Colors.black,
-//      onPressed: () => showHomeScreen(),
-//      child: new Text('Done!',
-//        style: new TextStyle(fontFamily: FontName.normalFont,
-//            fontSize: 30.0,
-//            color: Colors.white),
-//      ),
-//    );
-//
-//    var list = [
-//      requestTextContainer,
-//      firstNameContainer,
-//      lastNameContainer,
-//      passwordContainer,
-//      doneButton
-//    ];
-//
-//    var listView = new ListView.builder(
-//        itemCount: list.length,
-//        itemBuilder: (BuildContext context, int index) {
-//          return new Container(
-//              child: list[index]
-//          );
-//        });
-//
-//    var mainContainer = new Container(
-//        height: double.infinity,
-//        width: double.infinity,
-//        decoration: backgroundImage,
-//        child: new Container(
-//          child: listView,
-//        )
-//    );
-//
-//    return new Scaffold(
-//        appBar: new AppBar(
-//          title: titleText,
-//          backgroundColor: Colors.black,
-//          centerTitle: true,
-//
-//        ),
-//        body: mainContainer
-//    );
-//  }
-//}
-
 import 'dart:async';
 
 class TextFormFieldDemo extends StatefulWidget {
@@ -222,57 +15,6 @@ class TextFormFieldDemo extends StatefulWidget {
 class PersonData {
   String name = '';
   String password = '';
-}
-
-class NameField extends StatefulWidget {
-  const NameField({
-    this.fieldKey,
-    this.hintText,
-    this.labelText,
-    this.helperText,
-    this.onSaved,
-    this.validator,
-    this.onFieldSubmitted,
-  });
-
-  final Key fieldKey;
-  final String hintText;
-  final String labelText;
-  final String helperText;
-  final FormFieldSetter<String> onSaved;
-  final FormFieldValidator<String> validator;
-  final ValueChanged<String> onFieldSubmitted;
-
-  @override
-  _NameFieldState createState() => new _NameFieldState();
-}
-
-class _NameFieldState extends State<NameField> {
-
-  @override
-  Widget build(BuildContext context) {
-    return new TextFormField(
-      onSaved: widget.onSaved,
-      validator: widget.validator,
-      onFieldSubmitted: widget.onFieldSubmitted,
-      decoration: new InputDecoration(
-        border: const UnderlineInputBorder(),
-        hintText: widget.hintText,
-        labelText: widget.labelText,
-        helperText: widget.helperText,
-        labelStyle: new TextStyle(
-          fontFamily: FontName.normalFont,
-          fontSize: 25.0,
-          color: Colors.black,
-        ),
-        hintStyle: new TextStyle(
-          fontFamily: FontName.normalFont,
-          fontSize: 20.0,
-          color: Colors.black,
-        ),
-      )
-    );
-  }
 }
 
 class PasswordField extends StatefulWidget {
@@ -311,18 +53,19 @@ class _PasswordFieldState extends State<PasswordField> {
       onFieldSubmitted: widget.onFieldSubmitted,
       decoration: new InputDecoration(
         border: const UnderlineInputBorder(),
+        filled: true,
         hintText: widget.hintText,
-        labelText: widget.labelText,
         helperText: widget.helperText,
+        labelText: widget.labelText,
         labelStyle: new TextStyle(
           fontFamily: FontName.normalFont,
           fontSize: 25.0,
           color: Colors.black,
         ),
-        hintStyle: new TextStyle(
+        helperStyle: new TextStyle(
           fontFamily: FontName.normalFont,
-          fontSize: 20.0,
-          color: Colors.black,
+          fontSize: 18.0,
+          color: Colors.grey,
         ),
         suffixIcon: new GestureDetector(
           onTap: () {
@@ -352,10 +95,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
   bool _formWasEdited = false;
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  final GlobalKey<FormFieldState<String>> _nameFieldKey = new GlobalKey<FormFieldState<String>>();
   final GlobalKey<FormFieldState<String>> _passwordFieldKey = new GlobalKey<FormFieldState<String>>();
-
-
 
   void showHomeScreen() {
     Navigator.pushReplacement(
@@ -365,6 +105,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
   }
   void _handleSubmitted() {
     final FormState form = _formKey.currentState;
+    print("here");
     if (!form.validate()) {
       _autoValidate = true; // Start validating on every change.
       showInSnackBar('Please fix the errors in red before submitting.');
@@ -377,13 +118,11 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
 
   String _validateName(String value) {
     _formWasEdited = true;
-    final FormFieldState<String> nameField = _nameFieldKey.currentState;
     print(value);
-    print(nameField.value);
-    if (nameField.value.isEmpty)
+    if (value.isEmpty)
       return 'Full Name is required.';
     final RegExp nameExp = new RegExp(r"^([a-zA-Z]{2,}\s[a-zA-z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)", caseSensitive: false);
-    if (!nameExp.hasMatch(nameField.value))
+    if (!nameExp.hasMatch(value))
       return 'Please enter your full name.';
     return null;
   }
@@ -397,7 +136,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
     if (passwordField.value == null || passwordField.value.isEmpty)
       return 'Please enter a password.';
     if (passwordField.value != password)
-      return 'Wrong password ask Viki or Scott for the password';
+      return 'Wrong password ask Scott or Viki for the password';
     return null;
   }
 
@@ -448,10 +187,41 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 const SizedBox(height: 24.0),
-                new NameField(
-                  fieldKey: _nameFieldKey,
-                  helperText: 'Enter first and last name',
-                  labelText: 'Whole Name',
+                new Text("Welcome",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: FontName.titleFont,
+                    fontSize: 40.0,
+                    color: Colors.black,
+                  ),
+                ),
+                new Text("Please enter you information",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: FontName.normalFont,
+                    fontSize: 20.0,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 24.0),
+                new TextFormField(
+                  decoration: const InputDecoration(
+                    border: const UnderlineInputBorder(),
+                    filled: true,
+                    helperText: 'First and Last Name',
+                    labelText: 'Whole Name',
+                    labelStyle: const TextStyle(
+                      fontFamily: FontName.normalFont,
+                      fontSize: 25.0,
+                      color: Colors.black,
+                    ),
+                    helperStyle: const TextStyle(
+                      fontFamily: FontName.normalFont,
+                      fontSize: 20.0,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  onSaved: (String value) { person.name = value; },
                   validator: _validateName,
                 ),
                 const SizedBox(height: 24.0),
@@ -464,9 +234,9 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
                 const SizedBox(height: 24.0),
                 new FlatButton(
                   textColor: Colors.white,
-                  padding: new EdgeInsets.only(top: 8.0, bottom: 8.0),
+                  padding: new EdgeInsets.only(top: 16.0, bottom: 8.0),
                   color: Colors.black,
-                  onPressed: () => _handleSubmitted,
+                  onPressed: () => _handleSubmitted(),
                   child: new Text('Done!',
                     style: new TextStyle(fontFamily: FontName.normalFont,
                         fontSize: 30.0,

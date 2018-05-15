@@ -1,4 +1,4 @@
 class FontName {
-  static final titleFont = 'CallingAngelsPersonalUse';
-  static final normalFont = 'DancingScript-Regular';
+  static const titleFont = 'CallingAngelsPersonalUse';
+  static const normalFont = 'DancingScript-Regular';
 }
