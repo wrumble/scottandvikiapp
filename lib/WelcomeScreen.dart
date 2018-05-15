@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 import 'Localisations.dart';
 import 'main.dart';
 import 'dart:async';
@@ -110,6 +111,17 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
     prefs.setString('FullName', person.name);
   }
 
+  void createUUID() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var uuid = new Uuid().v4();
+    prefs.setString('UUID', uuid.toString());
+  }
+
+  void setImageCountToZero() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('ImageCount', 0);
+  }
+
   void _handleSubmitted() {
     final FormState form = _formKey.currentState;
     if (!form.validate()) {
@@ -118,6 +130,8 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
     } else {
       form.save();
       saveUserName();
+      createUUID();
+      setImageCountToZero();
       showInSnackBar('Welcome, ${person.name}!');
       showHomeScreen();
     }

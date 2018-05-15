@@ -52,8 +52,8 @@ class MyApp extends StatelessWidget {
     return new FutureBuilder<SharedPreferences>(
         future: SharedPreferences.getInstance(),
         builder:(BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
-          print("Rsult of initial name fetch ${snapshot.data.getString('FullName')}");
-          if ((snapshot.data.getString('FullName')) == null) {
+          final String name = snapshot.data.getString('FullName');
+          if (name == null) {
             return new MaterialApp(
               onGenerateTitle: (BuildContext context) => Localize.of(context).appTitle,
               localizationsDelegates: [
@@ -64,6 +64,9 @@ class MyApp extends StatelessWidget {
               supportedLocales: [
                 const Locale('en', '')
               ],
+              theme: new ThemeData(
+                canvasColor: Colors.black,
+              ),
               home: new TextFormFieldDemo(),
             );
           } else {
@@ -77,6 +80,9 @@ class MyApp extends StatelessWidget {
               supportedLocales: [
                 const Locale('en', '')
               ],
+              theme: new ThemeData(
+                canvasColor: Colors.black,
+              ),
               home: new HomeScreen(),
             );
           }
@@ -108,16 +114,21 @@ class _MyHomePageState extends State<HomeScreen> {
 
   Future<Null> uploadFile() async {
 
-    final String folderName = "Waynes Photos";
-    final String imageName = "1";
+    final instance = await SharedPreferences.getInstance();
+    final uuid = instance.getString("UUID");
+    print(uuid);
+    final userName = instance.getString("FullName");
+    print(userName);
+    final int imageCount = instance.getInt("ImageCount");
+    print(imageCount);
+    final String folderName = "$userName's Photos";
     final String currentDateTime = "${DateTime.now()}";
-    final StorageReference ref = FirebaseStorage.instance.ref().child(folderName).child('$imageName-$currentDateTime.jpg');
+    final StorageReference ref = FirebaseStorage.instance.ref().child(uuid).child(folderName).child('$imageCount-$currentDateTime.jpg');
     final StorageUploadTask uploadTask = ref.putFile(savedImage, const StorageMetadata(contentLanguage: "en"));
     final Uri downloadUrl = (await uploadTask.future).downloadUrl;
     final http.Response downloadData = await http.get(downloadUrl);
-
-    print(downloadUrl);
     print(downloadData);
+    instance.setInt("ImageCount", imageCount + 1);
   }
 
   @override
@@ -181,6 +192,101 @@ class _MyHomePageState extends State<HomeScreen> {
         title: titleText,
         backgroundColor: Colors.black,
         centerTitle: true,
+      ),
+      drawer: new Drawer(
+          child: new ListView(
+            children: <Widget> [
+              const SizedBox(height: 16.0),
+              new ListTile(
+                title: new Text('View Photos you\'ve uploaded',
+                  style: new TextStyle(
+                    fontFamily: FontName.normalFont,
+                    fontSize: 25.0,
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              new Container(
+                height: 1.0,
+                margin: new EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                decoration: new BoxDecoration(
+                  color: Colors.white30,
+                ),
+              ),
+              new ListTile(
+                title: new Text('View everyone\'s photos that have been uploaded',
+                  style: new TextStyle(
+                    fontFamily: FontName.normalFont,
+                    fontSize: 25.0,
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              new Container(
+                height: 1.0,
+                margin: new EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                decoration: new BoxDecoration(
+                  color: Colors.white30,
+                ),
+              ),
+              new ListTile(
+                title: new Text('Upload photos from your library',
+                  style: new TextStyle(
+                    fontFamily: FontName.normalFont,
+                    fontSize: 25.0,
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              new Container(
+                height: 1.0,
+                margin: new EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                decoration: new BoxDecoration(
+                  color: Colors.white30,
+                ),
+              ),
+              new ListTile(
+                title: new Text('Delete photos you\'ve uploaded',
+                  style: new TextStyle(
+                    fontFamily: FontName.normalFont,
+                    fontSize: 25.0,
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              new Container(
+                height: 1.0,
+                margin: new EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                decoration: new BoxDecoration(
+                  color: Colors.white30,
+                ),
+              ),
+              new ListTile(
+                title: new Text('Edit your name',
+                  style: new TextStyle(
+                    fontFamily: FontName.normalFont,
+                    fontSize: 25.0,
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          )
       ),
       body: mainContainer,
     );
