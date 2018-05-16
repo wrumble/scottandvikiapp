@@ -126,8 +126,7 @@ class _MyHomePageState extends State<HomeScreen> {
     final StorageReference ref = FirebaseStorage.instance.ref().child(uuid).child(folderName).child(fileName);
     final StorageUploadTask uploadTask = ref.putFile(savedImage, const StorageMetadata(contentLanguage: "en"));
     final Uri downloadUrl = (await uploadTask.future).downloadUrl;
-    final http.Response downloadData = await http.get(downloadUrl);
-    print(downloadUrl);
+
     instance.setInt("ImageCount", imageCount + 1);
 
     FirebaseDatabase.instance.setPersistenceEnabled(true);
@@ -228,25 +227,6 @@ class _MyHomePageState extends State<HomeScreen> {
               ),
               new ListTile(
                 title: new Text('View everyone\'s uploaded photos',
-                  style: new TextStyle(
-                    fontFamily: FontName.normalFont,
-                    fontSize: 25.0,
-                    color: Colors.white,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              new Container(
-                height: 1.0,
-                margin: new EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
-                decoration: new BoxDecoration(
-                  color: Colors.white30,
-                ),
-              ),
-              new ListTile(
-                title: new Text('Upload photos from your library',
                   style: new TextStyle(
                     fontFamily: FontName.normalFont,
                     fontSize: 25.0,

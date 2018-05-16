@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'dart:async';
+import 'dart:io';
 import 'FireImage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'FireImageView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -20,6 +23,9 @@ class MyImages extends StatefulWidget {
 }
 
 class MyImagesState extends State<MyImages>  {
+
+  Future<File> imageFile;
+  File savedImage;
 
   var reference;
   var uuid;
@@ -108,8 +114,59 @@ class MyImagesState extends State<MyImages>  {
         });
   }
 
+  void _onImageButtonPressed(ImageSource source) {
+    setState(() {
+      imageFile = ImagePicker.pickImage(source: source);
+      imageFile.then((image) {
+        savedImage = image;
+        uploadFile();
+      });
+    });
+  }
+  Future<Null> uploadFile() async {
+
+    final instance = await SharedPreferences.getInstance();
+    final int imageCount = instance.getInt("ImageCount");
+    final DateTime currentDateTime = DateTime.now();
+    final String fileName = '$imageCount-$currentDateTime.jpg';
+    final StorageReference ref = FirebaseStorage.instance.ref().child(uuid).child(folderName).child(fileName);
+    final StorageUploadTask uploadTask = ref.putFile(savedImage, const StorageMetadata(contentLanguage: "en"));
+    final Uri downloadUrl = (await uploadTask.future).downloadUrl;
+
+    instance.setInt("ImageCount", imageCount + 1);
+
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
+    final image = new FireImage(fileName, currentDateTime, imageCount, downloadUrl.toString());
+    final DatabaseReference dataBaseReference = FirebaseDatabase.instance.reference();
+    dataBaseReference.child(uuid).child(folderName).push().set(image.toJson());
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    var cameraButton = new FlatButton(
+      textColor: Colors.white,
+      color: Colors.black,
+      onPressed: () => _onImageButtonPressed(ImageSource.gallery),
+      child: new Text("Upload a photo",
+        style: new TextStyle(
+            fontFamily: FontName.normalFont,
+            fontSize: 30.0,
+            color: Colors.white),
+      ),
+    );
+
+    double getBottomMargin() {
+      var mediaQuery = MediaQuery.of(context);
+      if (Platform.isIOS) {
+        var size = mediaQuery.size;
+        if (size.height == 812.0 || size.width == 812.0) {
+          return mediaQuery.padding.bottom;
+        }
+      }
+      return mediaQuery.padding.bottom + 8;
+    }
+
     return new Scaffold(
         appBar: new AppBar(
           title: titleText,
@@ -205,47 +262,76 @@ class MyImagesState extends State<MyImages>  {
                     height: double.infinity,
                     width: double.infinity,
                     decoration: backgroundImage,
-                    child: new GridView.count(
-                      crossAxisCount: 3,
-                      padding: new EdgeInsets.all(8.0),
-                      mainAxisSpacing: 16.0,
-                      crossAxisSpacing: 16.0,
-                      children: imageList.map((FireImage image) {
-                        return new Container(
-                          child: new Stack(
+                    child: new Column(
+                      children: <Widget>[
+                        new Expanded(
+                          child: new Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              new Center(
-                                child:  new Image.network(image.url),
+                              new Expanded(
+                                  child: new GridView.count(
+                                    crossAxisCount: 3,
+                                    padding: new EdgeInsets.all(8.0),
+                                    mainAxisSpacing: 16.0,
+                                    crossAxisSpacing: 16.0,
+                                    children: imageList.map((FireImage image) {
+                                      return new Container(
+                                        child: new Stack(
+                                          children: <Widget>[
+                                            new Center(
+                                              child: new InkWell(
+                                                child: new Image.network(image.url),
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    new MaterialPageRoute(builder: (context) => new FireImageView(image)),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                            new Positioned(
+                                              child: new Container(
+                                                child: new FloatingActionButton(
+                                                  onPressed: () => showDialogue(image),
+                                                  child: new Icon(
+                                                    Icons.delete,
+                                                    size: 20.0,
+                                                  ),
+                                                  heroTag: image.key,
+                                                ),
+                                                height: 30.0,
+                                                width: 30.0,
+                                              ),
+                                              bottom: 6.0,
+                                              left: 6.0,
+                                            )
+                                          ],
+                                        ),
+                                        decoration: new BoxDecoration(
+                                            color: Colors.black,
+                                            boxShadow: [
+                                              new BoxShadow(
+                                                  color: Colors.black38,
+                                                  blurRadius: 5.0,
+                                                  offset: new Offset(3.0, 5.0)
+                                              ),
+                                            ]
+                                        ) ,
+                                      );
+                                    }).toList(),
+                                  )
                               ),
-                              new Positioned(
-                                child: new Container(
-                                  child: new FloatingActionButton(
-                                    onPressed: () => showDialogue(image),
-                                    child: new Icon(
-                                      Icons.delete,
-                                      size: 20.0,
-                                    ),
-                                  ),
-                                  height: 30.0,
-                                  width: 30.0,
-                                ),
-                                bottom: 6.0,
-                                left: 6.0,
-                              )
-                            ],
+                              new Container(
+                                height: 44.0,
+                                width: MediaQuery.of(context).size.width,
+                                child: cameraButton,
+                                margin: new EdgeInsets.only(bottom: getBottomMargin(), top: 8.0),
+                              )],
                           ),
-                          decoration: new BoxDecoration(
-                              color: Colors.black,
-                              boxShadow: [
-                                new BoxShadow(
-                                    color: Colors.black38,
-                                    blurRadius: 5.0,
-                                    offset: new Offset(3.0, 5.0)
-                                ),
-                              ]
-                          ) ,
-                        );
-                      }).toList(),
+                        )
+                      ],
                     ),
                   );
                 }
@@ -255,4 +341,3 @@ class MyImagesState extends State<MyImages>  {
     );
   }
 }
-
