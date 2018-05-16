@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'Localisations.dart';
@@ -98,6 +99,22 @@ class HomeScreen extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
+class FireImage {
+  DateTime dateTime;
+  int count;
+  String url;
+
+  FireImage(this.dateTime, this.count, this.url);
+
+  toJson() {
+    return {
+      "dateTime": dateTime.millisecondsSinceEpoch,
+      "count": count,
+      "url": url
+    };
+  }
+}
+
 class _MyHomePageState extends State<HomeScreen> {
   Future<File> imageFile;
   File savedImage;
@@ -111,24 +128,27 @@ class _MyHomePageState extends State<HomeScreen> {
       });
     });
   }
-
   Future<Null> uploadFile() async {
+
 
     final instance = await SharedPreferences.getInstance();
     final uuid = instance.getString("UUID");
-    print(uuid);
     final userName = instance.getString("FullName");
-    print(userName);
     final int imageCount = instance.getInt("ImageCount");
-    print(imageCount);
     final String folderName = "$userName's Photos";
-    final String currentDateTime = "${DateTime.now()}";
-    final StorageReference ref = FirebaseStorage.instance.ref().child(uuid).child(folderName).child('$imageCount-$currentDateTime.jpg');
+    final DateTime currentDateTime = DateTime.now();
+    final String fileName = '$imageCount-$currentDateTime.jpg';
+    final StorageReference ref = FirebaseStorage.instance.ref().child(uuid).child(folderName).child(fileName);
     final StorageUploadTask uploadTask = ref.putFile(savedImage, const StorageMetadata(contentLanguage: "en"));
     final Uri downloadUrl = (await uploadTask.future).downloadUrl;
     final http.Response downloadData = await http.get(downloadUrl);
-    print(downloadData);
+    print(downloadUrl);
     instance.setInt("ImageCount", imageCount + 1);
+
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
+    final image = new FireImage(currentDateTime, imageCount, downloadUrl.toString());
+    final DatabaseReference dataBaseReference = FirebaseDatabase.instance.reference();
+    dataBaseReference.child(uuid).child(folderName).push().set(image.toJson());
   }
 
   @override
