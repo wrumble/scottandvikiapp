@@ -123,7 +123,7 @@ class _MyHomePageState extends State<HomeScreen> {
     final int imageCount = instance.getInt("ImageCount");
     final DateTime currentDateTime = DateTime.now();
     final String fileName = '$imageCount-$currentDateTime.jpg';
-    final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(userName).child(fileName);
+    final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(fileName);
     final StorageUploadTask uploadTask = ref.putFile(savedImage, const StorageMetadata(contentLanguage: "en"));
     final Uri downloadUrl = (await uploadTask.future).downloadUrl;
 
@@ -131,8 +131,9 @@ class _MyHomePageState extends State<HomeScreen> {
 
     FirebaseDatabase.instance.setPersistenceEnabled(true);
     final image = new FireImage(fileName, currentDateTime, imageCount, downloadUrl.toString());
-    final DatabaseReference dataBaseReference = FirebaseDatabase.instance.reference();
-    dataBaseReference.child("AllUsers").child(uuid).child(userName).push().set(image.toJson());
+    final DatabaseReference dataBaseReference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid);
+    dataBaseReference.child("images").push().set(image.toJson());
+    dataBaseReference.child("name").set(userName);
   }
 
   @override

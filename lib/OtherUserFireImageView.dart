@@ -21,11 +21,6 @@ class OtherUserFireImageView extends StatefulWidget {
 class OtherUserFireImageViewState extends State<OtherUserFireImageView>  {
   final FireImage image;
 
-  var reference;
-  var uuid;
-  var userName;
-  var folderName;
-
   OtherUserFireImageViewState(this.image);
 
   timeFromDate() {
@@ -33,21 +28,9 @@ class OtherUserFireImageViewState extends State<OtherUserFireImageView>  {
     return formatter.format(image.dateTime).toString();
   }
 
-  Future<Null> getReference() async {
-    final instance = await SharedPreferences.getInstance();
-    uuid = instance.getString("UUID");
-    userName = instance.getString("FullName");
-    folderName = "$userName";
-
-    setState(() {
-      reference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child(folderName).orderByChild("count").onValue;
-    });
-  }
-
   @override void initState() {
     super.initState();
 
-    getReference();
   }
 
   @override

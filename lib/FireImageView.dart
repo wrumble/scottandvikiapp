@@ -23,7 +23,6 @@ class FireImageViewState extends State<FireImageView>  {
 
   var reference;
   var uuid;
-  var userName;
   var folderName;
 
   FireImageViewState(this.image);
@@ -36,11 +35,9 @@ class FireImageViewState extends State<FireImageView>  {
   Future<Null> getReference() async {
     final instance = await SharedPreferences.getInstance();
     uuid = instance.getString("UUID");
-    userName = instance.getString("FullName");
-    folderName = "$userName";
 
     setState(() {
-      reference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child(folderName).orderByChild("count").onValue;
+      reference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child("images").orderByChild("count").onValue;
     });
   }
 
@@ -50,7 +47,7 @@ class FireImageViewState extends State<FireImageView>  {
     getReference();
   }
 
-  Future<Null> showDialogue() async {
+  Future<Null> showDialogue(BuildContext viewContext) async {
     return showDialog<Null>(
       context: context,
       barrierDismissible: true,
@@ -86,8 +83,8 @@ class FireImageViewState extends State<FireImageView>  {
                 ),
               ),
               onPressed: () {
-                deleteImage();
                 Navigator.of(context).pop();
+                deleteImage(viewContext);
               },
             ),
             new FlatButton(
@@ -106,10 +103,11 @@ class FireImageViewState extends State<FireImageView>  {
     );
   }
 
-  void deleteImage() async {
-      FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child(folderName).child(image.key).remove().then( (success) {
-      FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(folderName).child(image.name).delete();
+  void deleteImage(BuildContext context) async {
+    FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child("images").child(image.key).remove().then( (success) {
+      FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(image.name).delete();
     });
+    Navigator.of(context).pop();
   }
 
   @override
@@ -143,7 +141,7 @@ class FireImageViewState extends State<FireImageView>  {
       textColor: Colors.white,
       color: Colors.black,
       onPressed: () {
-        showDialogue();
+        showDialogue(context);
       },
       child: new Text("Delete photo",
         style: new TextStyle(

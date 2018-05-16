@@ -29,18 +29,14 @@ class MyImagesState extends State<MyImages>  {
 
   var reference;
   var uuid;
-  var userName;
-  var folderName;
   List<FireImage> imageList;
 
   Future<Null> getReference() async {
     final instance = await SharedPreferences.getInstance();
     uuid = instance.getString("UUID");
-    userName = instance.getString("FullName");
-    folderName = "$userName's Photos";
 
     setState(() {
-      reference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child(folderName).orderByChild("count").onValue;
+      reference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child("images").orderByChild("count").onValue;
     });
   }
 
@@ -109,8 +105,8 @@ class MyImagesState extends State<MyImages>  {
   }
 
   void deleteImage(FireImage image) async {
-        FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child(folderName).child(image.key).remove().then( (success) {
-            FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(folderName).child(image.name).delete();
+        FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child("images").child(image.key).remove().then( (success) {
+            FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(image.name).delete();
         });
   }
 
@@ -129,7 +125,7 @@ class MyImagesState extends State<MyImages>  {
     final int imageCount = instance.getInt("ImageCount");
     final DateTime currentDateTime = DateTime.now();
     final String fileName = '$imageCount-$currentDateTime.jpg';
-    final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(folderName).child(fileName);
+    final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(fileName);
     final StorageUploadTask uploadTask = ref.putFile(savedImage, const StorageMetadata(contentLanguage: "en"));
     final Uri downloadUrl = (await uploadTask.future).downloadUrl;
 
@@ -138,7 +134,7 @@ class MyImagesState extends State<MyImages>  {
     FirebaseDatabase.instance.setPersistenceEnabled(true);
     final image = new FireImage(fileName, currentDateTime, imageCount, downloadUrl.toString());
     final DatabaseReference dataBaseReference = FirebaseDatabase.instance.reference().child("AllUsers");
-    dataBaseReference.child(uuid).child(folderName).push().set(image.toJson());
+    dataBaseReference.child(uuid).child("images").push().set(image.toJson());
   }
 
   @override

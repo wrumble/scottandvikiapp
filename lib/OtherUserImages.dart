@@ -44,7 +44,7 @@ class OtherUserImagesState extends State<OtherUserImages>  {
     userName = userInfo.name;
     firstName = userName.substring(0, userName.indexOf(' '));
     setState(() {
-      reference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child(userName).orderByChild("count").onValue;
+      reference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child("images").orderByChild("count").onValue;
     });
   }
 
@@ -56,17 +56,6 @@ class OtherUserImagesState extends State<OtherUserImages>  {
 
   @override
   Widget build(BuildContext context) {
-
-    double getBottomMargin() {
-      var mediaQuery = MediaQuery.of(context);
-      if (Platform.isIOS) {
-        var size = mediaQuery.size;
-        if (size.height == 812.0 || size.width == 812.0) {
-          return mediaQuery.padding.bottom;
-        }
-      }
-      return mediaQuery.padding.bottom + 8;
-    }
 
     return new Scaffold(
       appBar: new AppBar(
