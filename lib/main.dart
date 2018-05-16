@@ -6,12 +6,14 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'Localisations.dart';
+import 'FireImage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'package:scott_and_viki/Factories/HomeScreenCardFactory.dart';
 import 'WelcomeScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'MyImages.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -99,22 +101,6 @@ class HomeScreen extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class FireImage {
-  DateTime dateTime;
-  int count;
-  String url;
-
-  FireImage(this.dateTime, this.count, this.url);
-
-  toJson() {
-    return {
-      "dateTime": dateTime.millisecondsSinceEpoch,
-      "count": count,
-      "url": url
-    };
-  }
-}
-
 class _MyHomePageState extends State<HomeScreen> {
   Future<File> imageFile;
   File savedImage;
@@ -129,7 +115,6 @@ class _MyHomePageState extends State<HomeScreen> {
     });
   }
   Future<Null> uploadFile() async {
-
 
     final instance = await SharedPreferences.getInstance();
     final uuid = instance.getString("UUID");
@@ -227,6 +212,10 @@ class _MyHomePageState extends State<HomeScreen> {
                 ),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(builder: (context) => new MyImages()),
+                  );
                 },
               ),
               new Container(

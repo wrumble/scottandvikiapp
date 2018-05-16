@@ -5,7 +5,6 @@ dependencies:
   map_view: ^0.0.12
   image_picker: ^0.4.1
   url_launcher: ^3.0.0
-  firebase_auth: ^0.5.10
   firebase_storage: ^0.3.4
   firebase_database: ^0.4.6
   shared_preferences: ^0.4.1
