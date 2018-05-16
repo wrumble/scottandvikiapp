@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'dart:async';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'OtherUserImages.dart';
-import 'MyImages.dart';
+import 'dart:io';
+import 'FireImage.dart';
 import 'GalleryFolderView.dart';
-import 'dart:math' as math;
+import 'OtherUserFireImageView.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 var backgroundImage = new BoxDecoration(
@@ -16,25 +15,36 @@ var backgroundImage = new BoxDecoration(
   ),
 );
 
-class Gallery extends StatefulWidget {
+class OtherUserImages extends StatefulWidget {
+  final GalleryFolderView userInfo;
+
+  OtherUserImages(this.userInfo);
+
   @override
-  GalleryState createState() => new GalleryState();
+  OtherUserImagesState createState() => new OtherUserImagesState(userInfo);
 }
 
-class GalleryState extends State<Gallery>  {
+class OtherUserImagesState extends State<OtherUserImages>  {
+  final GalleryFolderView userInfo;
+
+  OtherUserImagesState(this.userInfo);
+
+  Future<File> imageFile;
+  File savedImage;
 
   var reference;
-  var ownerUUID;
+  var uuid;
+  var userName;
+  var firstName;
 
-  List<GalleryFolderView> folderList;
+  List<FireImage> imageList;
 
   Future<Null> getReference() async {
-    final instance = await SharedPreferences.getInstance();
-    final uuid = instance.getString("UUID");
-
+    uuid = userInfo.uuid;
+    userName = userInfo.name;
+    firstName = userName.substring(0, userName.indexOf(' '));
     setState(() {
-      ownerUUID = uuid;
-      reference = FirebaseDatabase.instance.reference().child("AllUsers").onValue;
+      reference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child(userName).orderByChild("count").onValue;
     });
   }
 
@@ -47,16 +57,27 @@ class GalleryState extends State<Gallery>  {
   @override
   Widget build(BuildContext context) {
 
+    double getBottomMargin() {
+      var mediaQuery = MediaQuery.of(context);
+      if (Platform.isIOS) {
+        var size = mediaQuery.size;
+        if (size.height == 812.0 || size.width == 812.0) {
+          return mediaQuery.padding.bottom;
+        }
+      }
+      return mediaQuery.padding.bottom + 8;
+    }
+
     return new Scaffold(
       appBar: new AppBar(
-        title: new TitleText("Gallery", 30.0),
+        title: new TitleText(firstName, 25.0),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),
       body: new StreamBuilder<Event>(
           stream: reference,
-          builder: (BuildContext context, AsyncSnapshot<Event> event) {
-            switch (event.connectionState) {
+          builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
+            switch (snapshot.connectionState) {
               case ConnectionState.waiting:
               case ConnectionState.none:
                 return new Container(
@@ -92,55 +113,67 @@ class GalleryState extends State<Gallery>  {
                   ),
                 );
               default:
-                if ( event.data.snapshot.value == null ){
+                if ( snapshot.data.snapshot.value == null ){
                   return new Container(
                     height: double.infinity,
                     width: double.infinity,
                     decoration: backgroundImage,
                     child: new Column(
                       children: <Widget>[
-                        new  SizedBox(height: 32.0),
-                        new Container(
-                          child: new Text('No images have been uploaded yet. Go back and tap "Take a photo" to upload the first photo.',
-                            textAlign: TextAlign.center,
-                            style: new TextStyle(
-                                fontFamily: FontName.normalFont,
-                                fontSize: 25.0,
-                                color: Colors.black
-                            ),
+                        new Expanded(
+                          child: new Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              new Expanded(
+                                  child: new Column(
+                                    children: <Widget>[
+                                      new  SizedBox(height: 32.0),
+                                      new Container(
+                                        child: new Text('You havent uploaded any images yet. Go back and tap "Take a photo" to upload your first image.',
+                                          textAlign: TextAlign.center,
+                                          style: new TextStyle(
+                                              fontFamily: FontName.normalFont,
+                                              fontSize: 25.0,
+                                              color: Colors.black
+                                          ),
+                                        ),
+                                        padding: new EdgeInsets.all(16.0),
+                                        margin: new EdgeInsets.only(left: 8.0, right: 8.0),
+                                        decoration: new BoxDecoration(
+                                            color: Colors.white,
+                                            boxShadow: [
+                                              new BoxShadow(
+                                                  color: Colors.black38,
+                                                  blurRadius: 5.0,
+                                                  offset: new Offset(3.0, 5.0)
+                                              ),
+                                            ]
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                              )
+                            ],
                           ),
-                          padding: new EdgeInsets.all(16.0),
-                          margin: new EdgeInsets.only(left: 8.0, right: 8.0),
-                          decoration: new BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                new BoxShadow(
-                                    color: Colors.black38,
-                                    blurRadius: 5.0,
-                                    offset: new Offset(3.0, 5.0)
-                                ),
-                              ]
-                          ),
-                        ),
+                        )
                       ],
                     ),
                   );
                 } else {
-                  var value = event.data.snapshot.value;
-                  var uuids = value.keys;
-                  folderList = new List<GalleryFolderView>();
-                  for(var uuid in uuids) {
-                    var userNames = value[uuid].keys;
-                    for(var userName in userNames) {
-                      var images = value[uuid][userName].values;
-                      var lowestId = images.map((img) => img['count']).reduce((a, b) => math.min<int>(a, b));
-                      var firstImage = images.firstWhere((img) => img['count']== lowestId);
-                      var imageURL = firstImage['url'];
-                      var folderView = GalleryFolderView(uuid, userName, imageURL);
-                      folderList.add(folderView);
-                      folderList.sort((a, b) => a.name.compareTo(b.name));
-                    }
-                  }
+                  Map content = snapshot.data.snapshot.value;
+                  imageList = new List<FireImage>();
+                  content.forEach((key, value) {
+                    var name = value["name"];
+                    var dateTime = new DateTime.fromMillisecondsSinceEpoch(value["dateTime"]);
+                    var count = value["count"];
+                    var url = value["url"];
+                    FireImage image = new FireImage(name, dateTime, count, url);
+                    image.key = key;
+                    imageList.add(image);
+                  });
+
                   return new Container(
                     height: double.infinity,
                     width: double.infinity,
@@ -155,49 +188,24 @@ class GalleryState extends State<Gallery>  {
                             children: <Widget>[
                               new Expanded(
                                   child: new GridView.count(
-                                    crossAxisCount: 2,
+                                    crossAxisCount: 3,
                                     padding: new EdgeInsets.all(8.0),
                                     mainAxisSpacing: 16.0,
                                     crossAxisSpacing: 16.0,
-                                    children: folderList.map((GalleryFolderView folderView) {
+                                    children: imageList.map((FireImage image) {
                                       return new Container(
                                         child: new Stack(
                                           children: <Widget>[
                                             new Center(
                                               child: new InkWell(
-                                                child: new Image.network(folderView.firstImageUrl),
+                                                child: new Image.network(image.url),
                                                 onTap: () {
-                                                  print(ownerUUID);
-                                                  print(folderView.uuid);
-                                                  var destinationView = ownerUUID == folderView.uuid ? new MyImages() : new OtherUserImages(folderView);
-                                                  Navigator.push(context,
-                                                    new MaterialPageRoute(builder: (context) => destinationView),
+                                                  Navigator.push(
+                                                    context,
+                                                    new MaterialPageRoute(builder: (context) => new OtherUserFireImageView(image)),
                                                   );
                                                 },
                                               ),
-                                            ),
-                                            new Positioned(
-                                              child: new Container(
-                                                  child: new FittedBox(
-                                                    fit: BoxFit.scaleDown,
-                                                    child: new Text(
-                                                      folderView.name,
-                                                      style: new TextStyle(
-                                                        fontFamily: FontName.normalFont,
-                                                        fontSize: 18.0,
-                                                        color: Colors.white,
-                                                      ),
-                                                      textAlign: TextAlign.center,
-                                                    ),
-                                                  ),
-                                                decoration: new BoxDecoration(
-                                                    color: Colors.black54,
-                                                ) ,
-                                                height: 28.0,
-                                              ),
-                                              bottom: 0.0,
-                                              left: 0.0,
-                                              right: 0.0,
                                             ),
                                           ],
                                         ),
@@ -214,8 +222,7 @@ class GalleryState extends State<Gallery>  {
                                       );
                                     }).toList(),
                                   )
-                              )
-                            ],
+                              )],
                           ),
                         )
                       ],
