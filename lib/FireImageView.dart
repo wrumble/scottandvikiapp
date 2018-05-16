@@ -37,7 +37,7 @@ class FireImageViewState extends State<FireImageView>  {
     final instance = await SharedPreferences.getInstance();
     uuid = instance.getString("UUID");
     userName = instance.getString("FullName");
-    folderName = "$userName's Photos";
+    folderName = "$userName";
 
     setState(() {
       reference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child(folderName).orderByChild("count").onValue;

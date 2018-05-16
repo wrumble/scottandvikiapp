@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'dart:async';
-import 'dart:io';
-import 'FireImage.dart';
-import 'FireImageView.dart';
+import 'dart:math' as math;
 import 'package:firebase_database/firebase_database.dart';
 
 var backgroundImage = new BoxDecoration(
@@ -14,13 +12,13 @@ var backgroundImage = new BoxDecoration(
   ),
 );
 
-class GalleryFolderView {
-  String uuid;
-  String name;
-  String firstImageUrl;
+    class GalleryFolderView {
+      String uuid;
+      String name;
+      String firstImageUrl;
 
-  GalleryFolderView(this.uuid, this.name, this.firstImageUrl);
-}
+      GalleryFolderView(this.uuid, this.name, this.firstImageUrl);
+    }
 
 class Gallery extends StatefulWidget {
   @override
@@ -31,16 +29,11 @@ class GalleryState extends State<Gallery>  {
 
   var reference;
 
-  List<FireImage> imageList;
+  List<GalleryFolderView> folderList;
 
   Future<Null> getReference() async {
-
     setState(() {
-      reference = FirebaseDatabase.instance.reference().child("AllUsers");
-      print(reference);
-      print(reference);
-      print(reference);
-      print(reference);
+      reference = FirebaseDatabase.instance.reference().child("AllUsers").onValue;
     });
   }
 
@@ -53,17 +46,6 @@ class GalleryState extends State<Gallery>  {
   @override
   Widget build(BuildContext context) {
 
-    double getBottomMargin() {
-      var mediaQuery = MediaQuery.of(context);
-      if (Platform.isIOS) {
-        var size = mediaQuery.size;
-        if (size.height == 812.0 || size.width == 812.0) {
-          return mediaQuery.padding.bottom;
-        }
-      }
-      return mediaQuery.padding.bottom + 8;
-    }
-
     return new Scaffold(
       appBar: new AppBar(
         title: new TitleText("Gallery", 30.0),
@@ -72,8 +54,8 @@ class GalleryState extends State<Gallery>  {
       ),
       body: new StreamBuilder<Event>(
           stream: reference,
-          builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
-            switch (snapshot.connectionState) {
+          builder: (BuildContext context, AsyncSnapshot<Event> event) {
+            switch (event.connectionState) {
               case ConnectionState.waiting:
               case ConnectionState.none:
                 return new Container(
@@ -109,7 +91,7 @@ class GalleryState extends State<Gallery>  {
                   ),
                 );
               default:
-                if ( snapshot.data.snapshot.value == null ){
+                if ( event.data.snapshot.value == null ){
                   return new Container(
                     height: double.infinity,
                     width: double.infinity,
@@ -143,18 +125,21 @@ class GalleryState extends State<Gallery>  {
                     ),
                   );
                 } else {
-                  Map content = snapshot.data.snapshot.value;
-                  imageList = new List<FireImage>();
-                  content.forEach((key, value) {
-                    var name = value["name"];
-                    var dateTime = new DateTime.fromMillisecondsSinceEpoch(value["dateTime"]);
-                    var count = value["count"];
-                    var url = value["url"];
-                    FireImage image = new FireImage(name, dateTime, count, url);
-                    image.key = key;
-                    imageList.add(image);
-                  });
-
+                  var value = event.data.snapshot.value;
+                  var uuids = value.keys;
+                  folderList = new List<GalleryFolderView>();
+                  for(var uuid in uuids) {
+                    var userNames = value[uuid].keys;
+                    for(var userName in userNames) {
+                      var images = value[uuid][userName].values;
+                      var lowestId = images.map((img) => img['count']).reduce((a, b) => math.min<int>(a, b));
+                      var firstImage = images.firstWhere((img) => img['count']== lowestId);
+                      var imageURL = firstImage['url'];
+                      var folderView = GalleryFolderView(uuid, userName, imageURL);
+                      folderList.add(folderView);
+                      folderList.sort((a, b) => a.name.compareTo(b.name));
+                    }
+                  }
                   return new Container(
                     height: double.infinity,
                     width: double.infinity,
@@ -169,41 +154,48 @@ class GalleryState extends State<Gallery>  {
                             children: <Widget>[
                               new Expanded(
                                   child: new GridView.count(
-                                    crossAxisCount: 3,
+                                    crossAxisCount: 2,
                                     padding: new EdgeInsets.all(8.0),
                                     mainAxisSpacing: 16.0,
                                     crossAxisSpacing: 16.0,
-                                    children: imageList.map((FireImage image) {
+                                    children: folderList.map((GalleryFolderView folderView) {
                                       return new Container(
                                         child: new Stack(
                                           children: <Widget>[
                                             new Center(
                                               child: new InkWell(
-                                                child: new Image.network(image.url),
+                                                child: new Image.network(folderView.firstImageUrl),
                                                 onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    new MaterialPageRoute(builder: (context) => new FireImageView(image)),
-                                                  );
+//                                                  Navigator.push(
+//                                                    context,
+//                                                    new MaterialPageRoute(builder: (context) => new FireImageView(image)),
+//                                                  );
                                                 },
                                               ),
                                             ),
                                             new Positioned(
                                               child: new Container(
-                                                child: new FloatingActionButton(
-                                                  onPressed: () => null,
-                                                  child: new Icon(
-                                                    Icons.delete,
-                                                    size: 20.0,
+                                                  child: new FittedBox(
+                                                    fit: BoxFit.scaleDown,
+                                                    child: new Text(
+                                                      folderView.name,
+                                                      style: new TextStyle(
+                                                        fontFamily: FontName.normalFont,
+                                                        fontSize: 18.0,
+                                                        color: Colors.white,
+                                                      ),
+                                                      textAlign: TextAlign.center,
+                                                    ),
                                                   ),
-                                                  heroTag: image.key,
-                                                ),
-                                                height: 30.0,
-                                                width: 30.0,
+                                                decoration: new BoxDecoration(
+                                                    color: Colors.black54,
+                                                ) ,
+                                                height: 28.0,
                                               ),
-                                              bottom: 6.0,
-                                              left: 6.0,
-                                            )
+                                              bottom: 0.0,
+                                              left: 0.0,
+                                              right: 0.0,
+                                            ),
                                           ],
                                         ),
                                         decoration: new BoxDecoration(
