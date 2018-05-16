@@ -131,7 +131,7 @@ class _MyHomePageState extends State<HomeScreen> {
     instance.setInt("ImageCount", imageCount + 1);
 
     FirebaseDatabase.instance.setPersistenceEnabled(true);
-    final image = new FireImage(currentDateTime, imageCount, downloadUrl.toString());
+    final image = new FireImage(fileName, currentDateTime, imageCount, downloadUrl.toString());
     final DatabaseReference dataBaseReference = FirebaseDatabase.instance.reference();
     dataBaseReference.child(uuid).child(folderName).push().set(image.toJson());
   }
@@ -157,7 +157,8 @@ class _MyHomePageState extends State<HomeScreen> {
       color: Colors.black,
       onPressed: () => _onImageButtonPressed(ImageSource.camera),
       child: new Text(Localize.of(context).takeAPhoto,
-        style: new TextStyle(fontFamily: FontName.normalFont,
+        style: new TextStyle(
+            fontFamily: FontName.normalFont,
             fontSize: 30.0,
             color: Colors.white),
       ),
@@ -203,7 +204,7 @@ class _MyHomePageState extends State<HomeScreen> {
             children: <Widget> [
               const SizedBox(height: 16.0),
               new ListTile(
-                title: new Text('View Photos you\'ve uploaded',
+                title: new Text('View and delete photos you\'ve uploaded',
                   style: new TextStyle(
                     fontFamily: FontName.normalFont,
                     fontSize: 25.0,
@@ -226,7 +227,7 @@ class _MyHomePageState extends State<HomeScreen> {
                 ),
               ),
               new ListTile(
-                title: new Text('View everyone\'s photos that have been uploaded',
+                title: new Text('View everyone\'s uploaded photos',
                   style: new TextStyle(
                     fontFamily: FontName.normalFont,
                     fontSize: 25.0,
@@ -246,25 +247,6 @@ class _MyHomePageState extends State<HomeScreen> {
               ),
               new ListTile(
                 title: new Text('Upload photos from your library',
-                  style: new TextStyle(
-                    fontFamily: FontName.normalFont,
-                    fontSize: 25.0,
-                    color: Colors.white,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              new Container(
-                height: 1.0,
-                margin: new EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
-                decoration: new BoxDecoration(
-                  color: Colors.white30,
-                ),
-              ),
-              new ListTile(
-                title: new Text('Delete photos you\'ve uploaded',
                   style: new TextStyle(
                     fontFamily: FontName.normalFont,
                     fontSize: 25.0,

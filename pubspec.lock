@@ -78,13 +78,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.14.1"
-  firebase_auth:
-    dependency: transitive
-    description:
-      name: firebase_auth
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.10"
   firebase_core:
     dependency: transitive
     description:
@@ -111,20 +104,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_facebook_login:
-    dependency: transitive
-    description:
-      name: flutter_facebook_login
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.1"
-  flutter_firebase_ui:
-    dependency: "direct main"
-    description:
-      name: flutter_firebase_ui
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.4"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -149,13 +128,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.5"
-  google_sign_in:
-    dependency: transitive
-    description:
-      name: google_sign_in
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.3"
   html:
     dependency: transitive
     description:
