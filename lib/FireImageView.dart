@@ -40,7 +40,7 @@ class FireImageViewState extends State<FireImageView>  {
     folderName = "$userName's Photos";
 
     setState(() {
-      reference = FirebaseDatabase.instance.reference().child(uuid).child(folderName).orderByChild("count").onValue;
+      reference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child(folderName).orderByChild("count").onValue;
     });
   }
 
@@ -50,9 +50,65 @@ class FireImageViewState extends State<FireImageView>  {
     getReference();
   }
 
+  Future<Null> showDialogue() async {
+    return showDialog<Null>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+          title: new Text('Delete image?',
+            style: new TextStyle(
+                fontFamily: FontName.titleFont,
+                fontSize: 25.0,
+                color: Colors.black
+            ),
+          ),
+          content: new SingleChildScrollView(
+            child: new ListBody(
+              children: <Widget>[
+                new Text('Are you sure you want to delete this image?',
+                  style: new TextStyle(
+                      fontFamily: FontName.normalFont,
+                      fontSize: 25.0,
+                      color: Colors.black
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text('Yes',
+                style: new TextStyle(
+                    fontFamily: FontName.normalFont,
+                    fontSize: 25.0,
+                    color: Colors.black
+                ),
+              ),
+              onPressed: () {
+                deleteImage();
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text('No',
+                style: new TextStyle(
+                    fontFamily: FontName.normalFont,
+                    fontSize: 25.0,
+                    color: Colors.black
+                ),
+              ),
+              onPressed: () { Navigator.of(context).pop(); },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void deleteImage() async {
-      FirebaseDatabase.instance.reference().child(uuid).child(folderName).child(image.key).remove().then( (success) {
-      FirebaseStorage.instance.ref().child(uuid).child(folderName).child(image.name).delete();
+      FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child(folderName).child(image.key).remove().then( (success) {
+      FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(folderName).child(image.name).delete();
     });
   }
 
@@ -87,8 +143,7 @@ class FireImageViewState extends State<FireImageView>  {
       textColor: Colors.white,
       color: Colors.black,
       onPressed: () {
-        deleteImage();
-        Navigator.of(context).pop();
+        showDialogue();
       },
       child: new Text("Delete photo",
         style: new TextStyle(

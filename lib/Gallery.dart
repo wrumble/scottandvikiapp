@@ -4,11 +4,8 @@ import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'dart:async';
 import 'dart:io';
 import 'FireImage.dart';
-import 'package:image_picker/image_picker.dart';
 import 'FireImageView.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -17,30 +14,33 @@ var backgroundImage = new BoxDecoration(
   ),
 );
 
-class MyImages extends StatefulWidget {
-  @override
-  MyImagesState createState() => new MyImagesState();
+class GalleryFolderView {
+  String uuid;
+  String name;
+  String firstImageUrl;
+
+  GalleryFolderView(this.uuid, this.name, this.firstImageUrl);
 }
 
-class MyImagesState extends State<MyImages>  {
+class Gallery extends StatefulWidget {
+  @override
+  GalleryState createState() => new GalleryState();
+}
 
-  Future<File> imageFile;
-  File savedImage;
+class GalleryState extends State<Gallery>  {
 
   var reference;
-  var uuid;
-  var userName;
-  var folderName;
+
   List<FireImage> imageList;
 
   Future<Null> getReference() async {
-    final instance = await SharedPreferences.getInstance();
-    uuid = instance.getString("UUID");
-    userName = instance.getString("FullName");
-    folderName = "$userName's Photos";
 
     setState(() {
-      reference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child(folderName).orderByChild("count").onValue;
+      reference = FirebaseDatabase.instance.reference().child("AllUsers");
+      print(reference);
+      print(reference);
+      print(reference);
+      print(reference);
     });
   }
 
@@ -50,111 +50,8 @@ class MyImagesState extends State<MyImages>  {
     getReference();
   }
 
-  var titleText = new TitleText("My Images", 30.0);
-
-  Future<Null> showDialogue(FireImage image) async {
-    return showDialog<Null>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return new AlertDialog(
-          title: new Text('Delete image?',
-            style: new TextStyle(
-              fontFamily: FontName.titleFont,
-              fontSize: 25.0,
-              color: Colors.black
-            ),
-          ),
-          content: new SingleChildScrollView(
-            child: new ListBody(
-              children: <Widget>[
-                new Text('Are you sure you want to delete this image?',
-                  style: new TextStyle(
-                  fontFamily: FontName.normalFont,
-                  fontSize: 25.0,
-                  color: Colors.black
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text('Yes',
-                style: new TextStyle(
-                    fontFamily: FontName.normalFont,
-                    fontSize: 25.0,
-                    color: Colors.black
-                ),
-              ),
-              onPressed: () {
-                deleteImage(image);
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text('No',
-                style: new TextStyle(
-                    fontFamily: FontName.normalFont,
-                    fontSize: 25.0,
-                    color: Colors.black
-                ),
-              ),
-              onPressed: () { Navigator.of(context).pop(); },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void deleteImage(FireImage image) async {
-        FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child(folderName).child(image.key).remove().then( (success) {
-            FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(folderName).child(image.name).delete();
-        });
-  }
-
-  void _onImageButtonPressed(ImageSource source) {
-    setState(() {
-      imageFile = ImagePicker.pickImage(source: source);
-      imageFile.then((image) {
-        savedImage = image;
-        uploadFile();
-      });
-    });
-  }
-  Future<Null> uploadFile() async {
-
-    final instance = await SharedPreferences.getInstance();
-    final int imageCount = instance.getInt("ImageCount");
-    final DateTime currentDateTime = DateTime.now();
-    final String fileName = '$imageCount-$currentDateTime.jpg';
-    final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(folderName).child(fileName);
-    final StorageUploadTask uploadTask = ref.putFile(savedImage, const StorageMetadata(contentLanguage: "en"));
-    final Uri downloadUrl = (await uploadTask.future).downloadUrl;
-
-    instance.setInt("ImageCount", imageCount + 1);
-
-    FirebaseDatabase.instance.setPersistenceEnabled(true);
-    final image = new FireImage(fileName, currentDateTime, imageCount, downloadUrl.toString());
-    final DatabaseReference dataBaseReference = FirebaseDatabase.instance.reference().child("AllUsers");
-    dataBaseReference.child(uuid).child(folderName).push().set(image.toJson());
-  }
-
   @override
   Widget build(BuildContext context) {
-
-    var uploadButton = new FlatButton(
-      textColor: Colors.white,
-      color: Colors.black,
-      onPressed: () => _onImageButtonPressed(ImageSource.gallery),
-      child: new Text("Upload a photo",
-        style: new TextStyle(
-            fontFamily: FontName.normalFont,
-            fontSize: 30.0,
-            color: Colors.white),
-      ),
-    );
 
     double getBottomMargin() {
       var mediaQuery = MediaQuery.of(context);
@@ -168,11 +65,11 @@ class MyImagesState extends State<MyImages>  {
     }
 
     return new Scaffold(
-        appBar: new AppBar(
-          title: titleText,
-          backgroundColor: Colors.black,
-          centerTitle: true,
-        ),
+      appBar: new AppBar(
+        title: new TitleText("Gallery", 30.0),
+        backgroundColor: Colors.black,
+        centerTitle: true,
+      ),
       body: new StreamBuilder<Event>(
           stream: reference,
           builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
@@ -219,49 +116,29 @@ class MyImagesState extends State<MyImages>  {
                     decoration: backgroundImage,
                     child: new Column(
                       children: <Widget>[
-                        new Expanded(
-                          child: new Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              new Expanded(
-                                  child: new Column(
-                                    children: <Widget>[
-                                      new  SizedBox(height: 32.0),
-                                      new Container(
-                                        child: new Text('You havent uploaded any images yet. Go back and tap "Take a photo" to upload your first image.',
-                                          textAlign: TextAlign.center,
-                                          style: new TextStyle(
-                                              fontFamily: FontName.normalFont,
-                                              fontSize: 25.0,
-                                              color: Colors.black
-                                          ),
-                                        ),
-                                        padding: new EdgeInsets.all(16.0),
-                                        margin: new EdgeInsets.only(left: 8.0, right: 8.0),
-                                        decoration: new BoxDecoration(
-                                            color: Colors.white,
-                                            boxShadow: [
-                                              new BoxShadow(
-                                                  color: Colors.black38,
-                                                  blurRadius: 5.0,
-                                                  offset: new Offset(3.0, 5.0)
-                                              ),
-                                            ]
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                              ),
-                              new Container(
-                                height: 44.0,
-                                width: MediaQuery.of(context).size.width,
-                                child: uploadButton,
-                                margin: new EdgeInsets.only(bottom: getBottomMargin(), top: 8.0),
-                              )],
+                        new  SizedBox(height: 32.0),
+                        new Container(
+                          child: new Text('No images have been uploaded yet. Go back and tap "Take a photo" to upload the first photo.',
+                            textAlign: TextAlign.center,
+                            style: new TextStyle(
+                                fontFamily: FontName.normalFont,
+                                fontSize: 25.0,
+                                color: Colors.black
+                            ),
                           ),
-                        )
+                          padding: new EdgeInsets.all(16.0),
+                          margin: new EdgeInsets.only(left: 8.0, right: 8.0),
+                          decoration: new BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                new BoxShadow(
+                                    color: Colors.black38,
+                                    blurRadius: 5.0,
+                                    offset: new Offset(3.0, 5.0)
+                                ),
+                              ]
+                          ),
+                        ),
                       ],
                     ),
                   );
@@ -314,7 +191,7 @@ class MyImagesState extends State<MyImages>  {
                                             new Positioned(
                                               child: new Container(
                                                 child: new FloatingActionButton(
-                                                  onPressed: () => showDialogue(image),
+                                                  onPressed: () => null,
                                                   child: new Icon(
                                                     Icons.delete,
                                                     size: 20.0,
@@ -342,13 +219,8 @@ class MyImagesState extends State<MyImages>  {
                                       );
                                     }).toList(),
                                   )
-                              ),
-                              new Container(
-                                height: 44.0,
-                                width: MediaQuery.of(context).size.width,
-                                child: uploadButton,
-                                margin: new EdgeInsets.only(bottom: getBottomMargin(), top: 8.0),
-                              )],
+                              )
+                            ],
                           ),
                         )
                       ],
