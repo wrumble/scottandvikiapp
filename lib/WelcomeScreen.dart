@@ -53,6 +53,8 @@ class _PasswordFieldState extends State<PasswordField> {
       onSaved: widget.onSaved,
       validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,
+      autocorrect: false,
+      keyboardType: TextInputType.text,
       decoration: new InputDecoration(
         border: const UnderlineInputBorder(),
         filled: true,
