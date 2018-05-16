@@ -3,7 +3,11 @@ import 'package:zoomable_image/zoomable_image.dart';
 import 'package:intl/intl.dart';
 import 'FireImage.dart';
 import 'dart:io';
+import 'dart:async';
 import 'package:scott_and_viki/Constants/FontNames.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FireImageView extends StatefulWidget {
   final FireImage image;
@@ -17,7 +21,10 @@ class FireImageView extends StatefulWidget {
 class FireImageViewState extends State<FireImageView>  {
   final FireImage image;
 
-  var timeOfPhoto;
+  var reference;
+  var uuid;
+  var userName;
+  var folderName;
 
   FireImageViewState(this.image);
 
@@ -26,16 +33,33 @@ class FireImageViewState extends State<FireImageView>  {
     return formatter.format(image.dateTime).toString();
   }
 
+  Future<Null> getReference() async {
+    final instance = await SharedPreferences.getInstance();
+    uuid = instance.getString("UUID");
+    userName = instance.getString("FullName");
+    folderName = "$userName's Photos";
+
+    setState(() {
+      reference = FirebaseDatabase.instance.reference().child(uuid).child(folderName).orderByChild("count").onValue;
+    });
+  }
+
   @override void initState() {
     super.initState();
 
-    timeOfPhoto = timeFromDate();
+    getReference();
+  }
+
+  void deleteImage() async {
+      FirebaseDatabase.instance.reference().child(uuid).child(folderName).child(image.key).remove().then( (success) {
+      FirebaseStorage.instance.ref().child(uuid).child(folderName).child(image.name).delete();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
 
-    var titleText = new Text(timeOfPhoto,
+    var titleText = new Text(timeFromDate(),
         style: new TextStyle(fontFamily: FontName.normalFont,
             fontSize: 30.0,
             color: Colors.white)
@@ -62,7 +86,10 @@ class FireImageViewState extends State<FireImageView>  {
     var deleteButton = new FlatButton(
       textColor: Colors.white,
       color: Colors.black,
-      onPressed: () => { },
+      onPressed: () {
+        deleteImage();
+        Navigator.of(context).pop();
+      },
       child: new Text("Delete photo",
         style: new TextStyle(
             fontFamily: FontName.normalFont,
