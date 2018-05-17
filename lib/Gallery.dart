@@ -92,7 +92,7 @@ class GalleryState extends State<Gallery>  {
                   ),
                 );
               default:
-                if ( event.data.snapshot.value == null ){
+                if (event.data.snapshot.value == null) {
                   return new Container(
                     height: double.infinity,
                     width: double.infinity,
@@ -130,14 +130,16 @@ class GalleryState extends State<Gallery>  {
                   var uuids = value.keys;
                   folderList = new List<GalleryFolderView>();
                   for(var uuid in uuids) {
+                    if (value[uuid]["images"] != null) {
                       var images = value[uuid]["images"].values;
-                      var userName =  value[uuid]["name"];
+                      var userName = value[uuid]["name"];
                       var lowestId = images.map((img) => img['count']).reduce((a, b) => math.min<int>(a, b));
                       var firstImage = images.firstWhere((img) => img['count']== lowestId);
                       var imageURL = firstImage['url'];
                       var folderView = GalleryFolderView(uuid, userName, imageURL);
                       folderList.add(folderView);
                       folderList.sort((a, b) => a.name.compareTo(b.name));
+                    }
                   }
                   return new Container(
                     height: double.infinity,

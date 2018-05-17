@@ -15,6 +15,7 @@ import 'package:scott_and_viki/Factories/HomeScreenCardFactory.dart';
 import 'WelcomeScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'MyImages.dart';
+import 'Firebase.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -116,6 +117,9 @@ class _MyHomePageState extends State<HomeScreen> {
     });
   }
   Future<Null> uploadFile() async {
+
+    var fb = Firebase();
+    fb.uploadImage(savedImage);
 
     final instance = await SharedPreferences.getInstance();
     final uuid = instance.getString("UUID");
