@@ -95,8 +95,8 @@ class EditNameState extends State<EditName> {
       context: context,
       builder: (BuildContext context) {
         return new AlertDialog(
-          title: const Text('This form has errors'),
-          content: const Text('Really leave this form?'),
+          title: const Text('New name hasn\'t been saved'),
+          content: const Text('Exit this page?'),
           actions: <Widget> [
             new FlatButton(
               child: const Text('Yes'),
@@ -117,7 +117,7 @@ class EditNameState extends State<EditName> {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: new AppBar(
-        title: new TitleText("Edit Name"),
+        title: new TitleText(currentName),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),
