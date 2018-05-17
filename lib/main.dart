@@ -150,7 +150,10 @@ class _MyHomePageState extends State<HomeScreen> {
       return mediaQuery.padding.bottom + 8;
     }
 
-    var titleText = new TitleText(Localize.of(context).appTitle);
+    var titleText = new FittedBox(
+      fit: BoxFit.scaleDown,
+      child: new TitleText(Localize.of(context).appTitle),
+    );
 
     var cameraButton = new FlatButton(
       textColor: Colors.white,

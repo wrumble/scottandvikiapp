@@ -9,10 +9,18 @@ class TitleText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Text(titleText,
-        style: new TextStyle(fontFamily: FontName.titleFont,
+
+
+    return new FittedBox(
+      fit: BoxFit.scaleDown,
+      child: new Text(titleText,
+        textAlign: TextAlign.left,
+        style: new TextStyle(
+            fontFamily: FontName.titleFont,
             fontSize: textSize,
-            color: Colors.white)
+            color: Colors.white
+        ),
+      ),
     );
   }
 }

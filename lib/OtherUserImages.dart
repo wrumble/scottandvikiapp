@@ -120,7 +120,7 @@ class OtherUserImagesState extends State<OtherUserImages>  {
                                     children: <Widget>[
                                       new  SizedBox(height: 32.0),
                                       new Container(
-                                        child: new Text('You havent uploaded any images yet. Go back and tap "Take a photo" to upload your first image.',
+                                        child: new Text('$firstName hasn\'t uploaded any images yet, or deleted what they did, what are they hiding!?',
                                           textAlign: TextAlign.center,
                                           style: new TextStyle(
                                               fontFamily: FontName.normalFont,
