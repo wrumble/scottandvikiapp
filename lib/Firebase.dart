@@ -14,20 +14,18 @@ class Firebase {
   
     void uploadImage(File image) async {
 
-      instance = await SharedPreferences.getInstance();
-      uuid = instance.getString("UUID");
-      userName = instance.getString("FullName");
-      imageCount = instance.getInt("ImageCount");
+      getSharedPreferences();
   
       final DateTime currentDateTime = DateTime.now();
       final String fileName = '$imageCount-$currentDateTime.jpg';
+      FirebaseStorage.instance.setMaxOperationRetryTimeMillis(1);
       final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(fileName);
       final StorageUploadTask uploadTask = ref.putFile(image, const StorageMetadata(contentLanguage: "en"));
       Uri downloadUrl;
       print("here FGDAHJGHSJLFGSDLFJGHDLSJFGHDSFLJGH");
       await uploadTask.future.then( (err) {
         print("not here FGDAHJGHSJLFGSDLFJGHDLSJFGHDSFLJGH");
-        print('catchError1: $err');
+        print('then: $err');
       }).catchError( (error) {
         print("here here FGDAHJGHSJLFGSDLFJGHDLSJFGHDSFLJGH");
         print('catchError1: $error');
@@ -42,6 +40,9 @@ class Firebase {
     }
     
     void getSharedPreferences() async {
-
+      instance = await SharedPreferences.getInstance();
+      uuid = instance.getString("UUID");
+      userName = instance.getString("FullName");
+      imageCount = instance.getInt("ImageCount");
     }
 }

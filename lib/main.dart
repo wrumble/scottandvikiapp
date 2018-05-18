@@ -123,7 +123,6 @@ class _MyHomePageState extends State<HomeScreen> {
 
     final instance = await SharedPreferences.getInstance();
     final uuid = instance.getString("UUID");
-    final userName = instance.getString("FullName");
     final int imageCount = instance.getInt("ImageCount");
     final DateTime currentDateTime = DateTime.now();
     final String fileName = '$imageCount-$currentDateTime.jpg';
@@ -137,7 +136,6 @@ class _MyHomePageState extends State<HomeScreen> {
     final image = new FireImage(fileName, currentDateTime, imageCount, downloadUrl.toString());
     final DatabaseReference dataBaseReference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid);
     dataBaseReference.child("images").push().set(image.toJson());
-    dataBaseReference.child("name").set(userName);
   }
 
   @override

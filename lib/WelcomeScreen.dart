@@ -3,6 +3,7 @@ import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'Localisations.dart';
 import 'main.dart';
 import 'dart:async';
@@ -17,6 +18,7 @@ class TextFormFieldDemo extends StatefulWidget {
 class PersonData {
   String name = '';
   String password = '';
+  String uuid = '';
 }
 
 class PasswordField extends StatefulWidget {
@@ -108,20 +110,18 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
     );
   }
 
-  void saveUserName() async {
+  void saveDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('FullName', person.name);
-  }
 
-  void createUUID() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var uuid = new Uuid().v4();
-    prefs.setString('UUID', uuid.toString());
-  }
+    var uuid = new Uuid().v4().toString();
+    person.uuid = uuid;
+    prefs.setString('UUID', uuid);
 
-  void setImageCountToZero() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('ImageCount', 0);
+
+    final DatabaseReference dataBaseReference = FirebaseDatabase.instance.reference().child("AllUsers").child(person.uuid).child("name");
+    dataBaseReference.set(person.name);
   }
 
   void _handleSubmitted() {
@@ -131,9 +131,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
       showInSnackBar('Please fix the errors in red before submitting.');
     } else {
       form.save();
-      saveUserName();
-      createUUID();
-      setImageCountToZero();
+      saveDetails();
       showInSnackBar('Welcome, ${person.name}!');
       showHomeScreen();
     }
@@ -267,6 +265,8 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
                         color: Colors.grey,
                       ),
                     ),
+                    autocorrect: false,
+                    keyboardType: TextInputType.text,
                     onSaved: (String value) { person.name = value; },
                     validator: _validateName,
                   ),
