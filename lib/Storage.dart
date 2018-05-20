@@ -1,8 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:convert';
 import 'FireImage.dart';
-import 'Firebase.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'package:connectivity/connectivity.dart';
@@ -15,14 +15,12 @@ class Storage {
   String jsonDirectory;
   SharedPreferences instance;
   String uuid;
-  Firebase firebase;
 
   init() async {
     imageDirectory = '${(await getApplicationDocumentsDirectory()).path}/image_cache/';
     jsonDirectory = '${(await getApplicationDocumentsDirectory()).path}/json_cache/';
     instance = await SharedPreferences.getInstance();
     uuid = instance.getString("UUID");
-    firebase = Firebase();
   }
 
   Future<File> saveImageFile(File toBeSaved, String fileName) async {
@@ -90,9 +88,9 @@ class Storage {
         myDir.exists().then((isThere) {
           print(myDir.list);
           myDir.list(recursive: true, followLinks: false)
-              .listen((FileSystemEntity imageFile) {
+              .listen((FileSystemEntity entity) {
             print("after recursion");
-            firebase.saveToStorage(imageFile);
+            saveToStorage(entity);
           });
         });
       } else {
@@ -101,6 +99,25 @@ class Storage {
       }
     }).catchError((error) {
       print("Error getting connectivity status, was error: $error");
+    });
+  }
+
+  Future saveToStorage(FileSystemEntity entity) async {
+    FirebaseStorage.instance.setMaxOperationRetryTimeMillis(10);
+    String fileName = basename(entity.path);
+    print("retry upload imageFileName: $fileName");
+    var storageReference = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(fileName);
+    final StorageUploadTask uploadTask = storageReference.putFile(entity, const StorageMetadata(contentLanguage: "en"));
+    await uploadTask.future.then((UploadTaskSnapshot snapshot) {
+      if (snapshot.downloadUrl != null) {
+        var imageCount = instance.getInt("ImageCount");
+        String downloadUrl = snapshot.downloadUrl.toString();
+        deleteImageFile(fileName);
+        print('download URL: $downloadUrl');
+        instance.setInt("ImageCount", imageCount + 1);
+        FireImage fireImage = fireImageFromFileName(fileName, downloadUrl);
+        saveToDatabase(fireImage);
+      }
     });
   }
 
@@ -132,6 +149,26 @@ class Storage {
       }
     }).catchError((error) {
       print("Error getting connectivity status, was error: $error");
+    });
+  }
+
+  Future<bool> saveToDatabase(FireImage image) async {
+
+    checkConnectivity().then((isConnected) {
+      if (!isConnected) {
+        print("Is connected: $isConnected");
+        instance.setBool("hasJsonToUpload", true);
+        print("Set has JSON to upload to true");
+      } else {
+        final DatabaseReference dataBaseReference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid);
+        dataBaseReference.child("images").push().set(image.toJson()).whenComplete (() {
+          print("image json created and sent to db");
+          print("file to be delete name: ${image.name}");
+          deleteJsonFile(basename(image.name));
+        }).catchError((success) {
+          print("Error saving file to database, was succesful: $success");
+        });
+      }
     });
   }
 

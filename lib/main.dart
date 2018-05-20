@@ -62,7 +62,6 @@ void subscribeToConnectionState() async {
 void checkFailedUploads() async{
   SharedPreferences instance = await SharedPreferences.getInstance();
   Storage storage = Storage();
-  await storage.init();
 
   var hasJsonToUpload = instance.getBool("hasJsonToUpload") ?? false;
   print("has json to upload: $hasJsonToUpload");
