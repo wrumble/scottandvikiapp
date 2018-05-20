@@ -26,8 +26,15 @@
 	<string>Can we use your camera please?</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Use your location when using the map</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>My description about why I need this capability</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Can we use your photos please?</string>
+	<string>So you can upload photos!</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

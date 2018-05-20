@@ -1,14 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:connectivity/connectivity.dart';
 import 'EditName.dart';
 import 'Gallery.dart';
 import 'package:image_picker/image_picker.dart';
-import 'Localisations.dart';
-import 'FireImage.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'Localisations.dart';import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'package:scott_and_viki/Factories/HomeScreenCardFactory.dart';
@@ -16,6 +13,7 @@ import 'WelcomeScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'MyImages.dart';
 import 'Firebase.dart';
+import 'Storage.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -47,7 +45,39 @@ class App extends StatelessWidget {
 }
 
 void main() {
+  checkFailedUploads();
+  subscribeToConnectionState();
   runApp(new MyApp());
+}
+
+void subscribeToConnectionState() async {
+
+  new Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    if (result != ConnectivityResult.none) {
+      checkFailedUploads();
+    }
+  });
+}
+
+void checkFailedUploads() async{
+  SharedPreferences instance = await SharedPreferences.getInstance();
+  Storage storage = Storage();
+  await storage.init();
+
+  var hasJsonToUpload = instance.getBool("hasJsonToUpload") ?? false;
+  print("has json to upload: $hasJsonToUpload");
+  var hasimagesToUpload = instance.getBool("hasImagesToUpload") ?? false;
+  print("has images to upload: $hasimagesToUpload");
+
+  if (hasJsonToUpload) {
+    print("uploading Json");
+    storage.uploadFailedJsonToDatabase();
+  }
+
+  if (hasimagesToUpload) {
+    print("uploading Images");
+    storage.uploadFailedImagesToStorage();
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -120,22 +150,6 @@ class _MyHomePageState extends State<HomeScreen> {
 
     var fb = Firebase();
     fb.uploadImage(savedImage);
-
-    final instance = await SharedPreferences.getInstance();
-    final uuid = instance.getString("UUID");
-    final int imageCount = instance.getInt("ImageCount");
-    final DateTime currentDateTime = DateTime.now();
-    final String fileName = '$imageCount-$currentDateTime.jpg';
-    final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(fileName);
-    final StorageUploadTask uploadTask = ref.putFile(savedImage, const StorageMetadata(contentLanguage: "en"));
-    final Uri downloadUrl = (await uploadTask.future).downloadUrl;
-
-    instance.setInt("ImageCount", imageCount + 1);
-
-    FirebaseDatabase.instance.setPersistenceEnabled(true);
-    final image = new FireImage(fileName, currentDateTime, imageCount, downloadUrl.toString());
-    final DatabaseReference dataBaseReference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid);
-    dataBaseReference.child("images").push().set(image.toJson());
   }
 
   @override

@@ -8,8 +8,11 @@ dependencies:
   firebase_storage: ^0.3.4
   firebase_database: ^0.4.6
   shared_preferences: ^0.4.1
+  path_provider: ^0.4.0
   connectivity: ^0.3.0
   zoomable_image: ^1.2.0
+  json_annotation: ^0.2.4
+  path: ^1.5.1
   uuid: ^1.0.0
   flutter:
     sdk: flutter
@@ -17,6 +20,8 @@ dependencies:
           sdk: flutter
 
 dev_dependencies:
+  build_runner: ^0.8.0
+  json_serializable: ^0.5.2
   flutter_test:
     sdk: flutter
 
