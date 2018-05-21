@@ -145,10 +145,11 @@ class _MyHomePageState extends State<HomeScreen> {
       });
     });
   }
-  Future<Null> uploadFile() async {
 
+  Future<Null> uploadFile() async {
     var fb = Firebase();
-    fb.uploadImage(savedImage);
+    await fb.init();
+    fb.saveFile(savedImage);
   }
 
   @override

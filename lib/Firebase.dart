@@ -17,11 +17,10 @@ class Firebase {
     DateTime currentDateTime;
     String imageFileName;
     StorageReference storageReference;
-    StorageUploadTask uploadTask;
     final storage = Storage();
     String filePath;
 
-    Future setVariables() async {
+    Future init() async {
       await storage.init();
       instance = await SharedPreferences.getInstance();
       uuid = instance.getString("UUID");
@@ -29,14 +28,6 @@ class Firebase {
       imageCount = instance.getInt("ImageCount");
       currentDateTime = DateTime.now();
       imageFileName = '$imageCount+$currentDateTime.jpg';
-    }
-
-    Future uploadImage(File passedImage) async {
-      setVariables().then((_) {
-        saveFile(passedImage);
-      }).catchError((success) {
-        print("Error saving variables to shared preferences, was succesful: $success");
-      });
     }
 
     Future saveFile(File image) async {
@@ -74,16 +65,15 @@ class Firebase {
     }
 
     Future saveToStorage(File image) async {
-      FirebaseStorage.instance.setMaxOperationRetryTimeMillis(10);
-      storageReference = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(imageFileName);
-
+      FirebaseStorage.instance.setMaxUploadRetryTimeMillis(100)
+      final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(imageFileName);
+      final StorageUploadTask uploadTask = ref.putFile(image, const StorageMetadata(contentLanguage: "en"));
       print("Saving to storage here with file: $image");
-      final StorageUploadTask uploadTask = storageReference.putFile(image, const StorageMetadata(contentLanguage: "en"));
-      await uploadTask.future.then( (UploadTaskSnapshot snapshot) {
+      final url = (await uploadTask.future).downloadUrl;
         print("uploading image: $image");
-        if (snapshot.downloadUrl != null) {
+        if (url != null) {
           print("got here with url");
-          String downloadUrl = snapshot.downloadUrl.toString();
+          String downloadUrl = url.toString();
           final fireImage = new FireImage(imageFileName, currentDateTime, imageCount, downloadUrl);
           storage.deleteImageFile(imageFileName);
           print('download URL: $downloadUrl');
@@ -93,10 +83,6 @@ class Firebase {
           print("got here without url");
           saveFile(image);
         }
-      }).catchError((error) {
-        print("got here without url");
-        saveFile(image);
-      });
     }
 
     Future<bool> saveToDatabase(FireImage image) async {
