@@ -16,6 +16,7 @@ class Firebase {
     int imageCount;
     DateTime currentDateTime;
     String imageFileName;
+    String thumbnailFileName;
     StorageReference storageReference;
     final storage = Storage();
     String filePath;
@@ -28,21 +29,26 @@ class Firebase {
       imageCount = instance.getInt("ImageCount");
       currentDateTime = DateTime.now();
       imageFileName = '$imageCount+$currentDateTime.jpg';
+      thumbnailFileName = 'thumb_$imageFileName';
+
+      FirebaseStorage.instance.setMaxUploadRetryTimeMillis(3000);
     }
 
-    Future saveFile(File image) async {
-      storage.saveImageFile(image, imageFileName).then((file) {
-        filePath = file.path.toString();
-        print("This is the filepath $filePath");
+    Future saveImageFile(File image) async {
+      storage.saveImageFile(image, imageFileName).then((imageFile) {
+        print("This is the image filepath $filePath");
 
-        checkConnectivity().then((isConnected) {
+        checkConnectivity().then((isConnected) async {
           if (!isConnected) {
             print("Is connected: $isConnected");
             instance.setBool("hasImagesToUpload", true);
             print("Set has files to upload to true");
           } else {
             print("Is connected: $isConnected");
-            saveToStorage(image);
+            final imageUrl = await saveImageToStorage(image);
+            if (imageUrl != null) {
+              saveThumbFile(image, imageUrl);
+            }
           }
         }).catchError((error) {
           print("Error getting connectivity status, was error: $error");
@@ -50,6 +56,23 @@ class Firebase {
 
       }).catchError((error) {
         print("Error saving file to shared preferences, error: $error");
+      });
+    }
+
+    Future saveThumbFile(File image, String imageUrl) async {
+      final thumbFile = storage.saveThumbFile(image, imageUrl, thumbnailFileName);
+
+      checkConnectivity().then((isConnected) async {
+        if (!isConnected) {
+          print("Is connected: $isConnected");
+          instance.setBool("hasThumbsToUpload", true);
+          print("Set has files to upload to true");
+        } else {
+          print("Is connected: $isConnected");
+          saveThumbnailToStorage(thumbFile, imageUrl);
+        }
+      }).catchError((error) {
+        print("Error getting connectivity status, was error: $error");
       });
     }
 
@@ -64,29 +87,40 @@ class Firebase {
       }
     }
 
-    Future saveToStorage(File image) async {
-      FirebaseStorage.instance.setMaxUploadRetryTimeMillis(100)
+    Future<String> saveImageToStorage(File imageFile) async {
       final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(imageFileName);
-      final StorageUploadTask uploadTask = ref.putFile(image, const StorageMetadata(contentLanguage: "en"));
-      print("Saving to storage here with file: $image");
+      final StorageUploadTask uploadTask = ref.putFile(imageFile, const StorageMetadata(contentLanguage: "en"));
+      print("Saving to image storage with file: $imageFile");
       final url = (await uploadTask.future).downloadUrl;
-        print("uploading image: $image");
+      if (url != null) {
+        return url.toString();
+      } else {
+        print("got here without url");
+        saveImageFile(imageFile);
+      }
+    }
+
+    Future saveThumbnailToStorage(File thumbFile, String imageUrl) async {
+      final ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(thumbnailFileName);
+      final StorageUploadTask uploadTask = ref.putFile(thumbFile, const StorageMetadata(contentLanguage: "en"));
+      print("Saving to storage here with file: $thumbFile");
+      final url = (await uploadTask.future).downloadUrl;
+        print("uploading image: $thumbFile");
         if (url != null) {
           print("got here with url");
-          String downloadUrl = url.toString();
-          final fireImage = new FireImage(imageFileName, currentDateTime, imageCount, downloadUrl);
-          storage.deleteImageFile(imageFileName);
-          print('download URL: $downloadUrl');
-          saveToDatabase(fireImage);
+          String thumbnailUrl = url.toString();
+          final fireImage = new FireImage(imageFileName, currentDateTime, imageCount, thumbnailUrl, imageUrl);
+          storage.deleteThumbFiles(imageFileName);
+          print('thumbnail URL: $thumbnailUrl');
+          saveImageJsonToDatabase(fireImage);
           instance.setInt("ImageCount", imageCount + 1);
         } else {
           print("got here without url");
-          saveFile(image);
+          saveThumbFile(thumbFile, imageUrl);
         }
     }
 
-    Future<bool> saveToDatabase(FireImage image) async {
-
+    Future<bool> saveImageJsonToDatabase(FireImage image) async {
       checkConnectivity().then((isConnected) {
         if (!isConnected) {
           print("Is connected: $isConnected");
@@ -100,8 +134,8 @@ class Firebase {
             print("image json created and sent to db");
             storage.deleteJsonFile(basename(image.name));
           }).catchError((error) {
-            saveToDatabase(image);
-            print("Error saving file to database, was succesful: $error");
+            saveImageJsonToDatabase(image);
+            print("Error saving image json to database error: $error");
           });
         }
       });

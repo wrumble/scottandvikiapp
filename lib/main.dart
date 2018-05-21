@@ -63,19 +63,26 @@ void checkFailedUploads() async{
   SharedPreferences instance = await SharedPreferences.getInstance();
   Storage storage = Storage();
 
-  var hasJsonToUpload = instance.getBool("hasJsonToUpload") ?? false;
-  print("has json to upload: $hasJsonToUpload");
   var hasimagesToUpload = instance.getBool("hasImagesToUpload") ?? false;
   print("has images to upload: $hasimagesToUpload");
-
-  if (hasJsonToUpload) {
-    print("uploading Json");
-    storage.uploadFailedJsonToDatabase();
-  }
+  var hasthumbsToUpload = instance.getBool("hasThumbsToUpload") ?? false;
+  print("has images to upload: $hasimagesToUpload");
+  var hasJsonToUpload = instance.getBool("hasJsonToUpload") ?? false;
+  print("has json to upload: $hasJsonToUpload");
 
   if (hasimagesToUpload) {
     print("uploading Images");
     storage.uploadFailedImagesToStorage();
+  }
+
+  if (hasthumbsToUpload) {
+    print("uploading Images");
+    storage.uploadFailedThumbsToStorage();
+  }
+
+  if (hasJsonToUpload) {
+    print("uploading Json");
+    storage.uploadFailedJsonToDatabase();
   }
 }
 
@@ -149,7 +156,7 @@ class _MyHomePageState extends State<HomeScreen> {
   Future<Null> uploadFile() async {
     var fb = Firebase();
     await fb.init();
-    fb.saveFile(savedImage);
+    fb.saveImageFile(savedImage);
   }
 
   @override

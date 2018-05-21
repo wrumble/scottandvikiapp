@@ -12,6 +12,7 @@ dependencies:
   connectivity: ^0.3.0
   zoomable_image: ^1.2.0
   json_annotation: ^0.2.4
+  image: ^1.1.33
   path: ^1.5.1
   uuid: ^1.0.0
   flutter:

@@ -1,6 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:convert';
 import 'FireImage.dart';
 import 'package:path_provider/path_provider.dart';
@@ -8,28 +7,51 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'dart:io';
 import 'package:path/path.dart';
+import 'package:image/image.dart';
+import 'Firebase.dart';
 
 class Storage {
 
+  Firebase firebase = Firebase();
   String imageDirectory;
+  String thumbDirectory;
   String jsonDirectory;
   SharedPreferences instance;
   String uuid;
 
   init() async {
+    await firebase.init();
     imageDirectory = '${(await getApplicationDocumentsDirectory()).path}/image_cache/';
+    thumbDirectory = '${(await getApplicationDocumentsDirectory()).path}/thumb_cache/';
     jsonDirectory = '${(await getApplicationDocumentsDirectory()).path}/json_cache/';
     instance = await SharedPreferences.getInstance();
     uuid = instance.getString("UUID");
   }
 
   Future<File> saveImageFile(File toBeSaved, String fileName) async {
-    imageDirectory = '${(await getApplicationDocumentsDirectory()).path}/image_cache/';
     final filePath = '$imageDirectory$fileName';
     print("saving image to $filePath");
     return File(filePath)
       ..createSync(recursive: true)
       ..writeAsBytes(toBeSaved.readAsBytesSync());
+  }
+
+  File saveThumbFile(File fullImage, String imageUrl, String fileName) {
+    Image image = decodeImage(fullImage.readAsBytesSync());
+    Image thumbnail = copyResize(image, 150);
+
+    final imagePath = '$thumbDirectory$fileName';
+    final jsonFileName = fileName.split('.jpg')[0] + '.json';
+    final jsonPath = '$thumbDirectory$jsonFileName';
+    print("saving thumbnail to $imagePath");
+    print("saving thumbnail json to $jsonPath");
+    File(jsonPath)
+      ..createSync(recursive: true)
+      ..writeAsString(json.encode(imageUrl));
+
+    return File(imagePath)
+      ..createSync(recursive: true)
+      ..writeAsBytes(encodeJpg(thumbnail));
   }
 
   Future<File> saveJsonFile(FireImage image) async {
@@ -46,6 +68,15 @@ class Storage {
     File(filePath).delete();
   }
 
+  deleteThumbFiles(String fileName) async {
+    final filePath = '$thumbDirectory$fileName';
+    final jsonFileName = fileName.split('.jpg')[0] + '.json';
+    final jsonPath = '$thumbDirectory$jsonFileName';
+
+    File(filePath).delete();
+    File(jsonPath).delete();
+  }
+
   deleteJsonFile(String fileName) async {
     final filePath = '$jsonDirectory$fileName';
     File(filePath).delete();
@@ -57,30 +88,15 @@ class Storage {
     String name = imageJson["name"];
     DateTime dateTime = new DateTime.fromMillisecondsSinceEpoch(imageJson["dateTime"]);
     int count = imageJson["count"];
+    String thumbnailUrl = imageJson["thumbnailUrl"];
     String url = imageJson["url"];
 
-    print("Image retrieved from file to json: $name, $dateTime, $count, $url");
+    print("Image retrieved from file to json: $name, $dateTime, $count, $thumbnailUrl, $url");
 
-    return new FireImage(name, dateTime, count, url);
-  }
-
-  FireImage fireImageFromFileName(String fileName, String url) {
-    var splitName = fileName.split("+");
-    var dateString = splitName[1].split(".jpg");
-    print(splitName);
-    print(dateString);
-    DateTime dateTime = DateTime.parse(dateString[0]);
-    int count = int.parse(splitName[0]);
-
-    print("Image converted from name: $fileName, $dateTime, $count, $url");
-
-    return new FireImage(fileName, dateTime, count, url);
+    return new FireImage(name, dateTime, count, thumbnailUrl, url);
   }
 
   uploadFailedImagesToStorage() async {
-    instance = await SharedPreferences.getInstance();
-    imageDirectory = '${(await getApplicationDocumentsDirectory()).path}/image_cache/';
-    uuid = instance.getString("UUID");
     checkConnectivity().then((isConnected) {
       if (isConnected) {
         final myDir = Directory(imageDirectory);
@@ -90,7 +106,7 @@ class Storage {
           myDir.list(recursive: true, followLinks: false)
               .listen((FileSystemEntity entity) {
             print("after recursion");
-            saveToStorage(entity);
+            firebase.saveImageFile(entity);
           });
         });
       } else {
@@ -102,29 +118,38 @@ class Storage {
     });
   }
 
-  Future saveToStorage(FileSystemEntity entity) async {
-    FirebaseStorage.instance.setMaxOperationRetryTimeMillis(10);
-    String fileName = basename(entity.path);
-    print("retry upload imageFileName: $fileName");
-    var storageReference = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(fileName);
-    final StorageUploadTask uploadTask = storageReference.putFile(entity, const StorageMetadata(contentLanguage: "en"));
-    await uploadTask.future.then((UploadTaskSnapshot snapshot) {
-      if (snapshot.downloadUrl != null) {
-        var imageCount = instance.getInt("ImageCount");
-        String downloadUrl = snapshot.downloadUrl.toString();
-        deleteImageFile(fileName);
-        print('download URL: $downloadUrl');
-        instance.setInt("ImageCount", imageCount + 1);
-        FireImage fireImage = fireImageFromFileName(fileName, downloadUrl);
-        saveToDatabase(fireImage);
+  String imageUrlFromThumbEntity(FileSystemEntity entity) {
+    final fileName = basename(entity.path);
+    final jsonFileName = fileName.split('.jpg')[0] + '.json';
+    final jsonPath = '$jsonDirectory$jsonFileName';
+    final jsonFile = File("$jsonPath");
+    return json.decode(jsonFile.readAsStringSync());
+  }
+
+  uploadFailedThumbsToStorage() async {
+    checkConnectivity().then((isConnected) {
+      if (isConnected) {
+        final myDir = Directory(thumbDirectory);
+        print('thumbs to be uploaded: ');
+        myDir.exists().then((isThere) {
+          print(myDir.list);
+          myDir.list(recursive: true, followLinks: false)
+              .listen((FileSystemEntity entity) {
+            print("after recursion");
+            var imageUrl = imageUrlFromThumbEntity(entity);
+            firebase.saveThumbFile(entity, imageUrl);
+          });
+        });
+      } else {
+        print("Is connected: $isConnected");
+        print("failed to upload stored images as still not connected to internet");
       }
+    }).catchError((error) {
+      print("Error getting connectivity status, was error: $error");
     });
   }
 
   uploadFailedJsonToDatabase() async {
-    instance = await SharedPreferences.getInstance();
-    jsonDirectory = '${(await getApplicationDocumentsDirectory()).path}/json_cache/';
-    uuid = instance.getString("UUID");
     checkConnectivity().then((isConnected) {
       if (isConnected) {
         final myDir = Directory(jsonDirectory);
@@ -133,14 +158,7 @@ class Storage {
           myDir.list(recursive: true, followLinks: false)
               .listen((FileSystemEntity entity) {
             FireImage fireImage = fireImageFromJsonFile(basename(entity.path));
-            final DatabaseReference dataBaseReference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid);
-            dataBaseReference.child("images").push().set(fireImage.toJson()).whenComplete (() {
-              print("image json created and sent to db");
-              print("file to be delete name: ${entity.path}");
-              deleteImageFile(basename(entity.path));
-            }).catchError((success) {
-              print("Error saving file to database, was succesful: $success");
-            });
+            firebase.saveImageJsonToDatabase(fireImage);
           });
         });
       } else {
@@ -152,7 +170,7 @@ class Storage {
     });
   }
 
-  Future<bool> saveToDatabase(FireImage image) async {
+  saveToDatabase(FireImage image) async {
 
     checkConnectivity().then((isConnected) {
       if (!isConnected) {

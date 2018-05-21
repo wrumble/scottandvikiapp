@@ -131,7 +131,7 @@ class MyImagesState extends State<MyImages>  {
   Future<Null> uploadFile() async {
     var fb = Firebase();
     await fb.init();
-    fb.saveFile(savedImage);
+    fb.saveImageFile(savedImage);
   }
 
   @override
@@ -265,8 +265,9 @@ class MyImagesState extends State<MyImages>  {
                     var name = value["name"];
                     var dateTime = new DateTime.fromMillisecondsSinceEpoch(value["dateTime"]);
                     var count = value["count"];
+                    var thumbnailUrl = value["thumbnailUrl"];
                     var url = value["url"];
-                    FireImage image = new FireImage(name, dateTime, count, url);
+                    FireImage image = new FireImage(name, dateTime, count, thumbnailUrl, url);
                     image.key = key;
                     imageList.add(image);
                   });
@@ -295,7 +296,7 @@ class MyImagesState extends State<MyImages>  {
                                           children: <Widget>[
                                             new Center(
                                               child: new InkWell(
-                                                child: new Image.network(image.url),
+                                                child: new Image.network(image.thumbnailUrl),
                                                 onTap: () {
                                                   Navigator.push(
                                                     context,
