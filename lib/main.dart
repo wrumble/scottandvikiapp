@@ -62,6 +62,7 @@ void subscribeToConnectionState() async {
 void checkFailedUploads() async{
   SharedPreferences instance = await SharedPreferences.getInstance();
   Storage storage = Storage();
+  await storage.init();
 
   var hasimagesToUpload = instance.getBool("hasImagesToUpload") ?? false;
   print("has images to upload: $hasimagesToUpload");

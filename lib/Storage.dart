@@ -12,7 +12,7 @@ import 'Firebase.dart';
 
 class Storage {
 
-  Firebase firebase = Firebase();
+  Firebase firebase;
   String imageDirectory;
   String thumbDirectory;
   String jsonDirectory;
@@ -20,6 +20,7 @@ class Storage {
   String uuid;
 
   init() async {
+    firebase = Firebase();
     await firebase.init();
     imageDirectory = '${(await getApplicationDocumentsDirectory()).path}/image_cache/';
     thumbDirectory = '${(await getApplicationDocumentsDirectory()).path}/thumb_cache/';
@@ -97,6 +98,7 @@ class Storage {
   }
 
   uploadFailedImagesToStorage() async {
+    await firebase.init();
     checkConnectivity().then((isConnected) {
       if (isConnected) {
         final myDir = Directory(imageDirectory);
@@ -127,6 +129,7 @@ class Storage {
   }
 
   uploadFailedThumbsToStorage() async {
+    await firebase.init();
     checkConnectivity().then((isConnected) {
       if (isConnected) {
         final myDir = Directory(thumbDirectory);
@@ -150,6 +153,7 @@ class Storage {
   }
 
   uploadFailedJsonToDatabase() async {
+    await firebase.init();
     checkConnectivity().then((isConnected) {
       if (isConnected) {
         final myDir = Directory(jsonDirectory);

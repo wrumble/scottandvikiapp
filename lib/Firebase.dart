@@ -22,7 +22,6 @@ class Firebase {
     String filePath;
 
     Future init() async {
-      await storage.init();
       instance = await SharedPreferences.getInstance();
       uuid = instance.getString("UUID");
       userName = instance.getString("FullName");
@@ -35,6 +34,7 @@ class Firebase {
     }
 
     Future saveImageFile(File image) async {
+      await storage.init();
       storage.saveImageFile(image, imageFileName).then((imageFile) {
         print("This is the image filepath $filePath");
 
@@ -60,6 +60,7 @@ class Firebase {
     }
 
     Future saveThumbFile(File image, String imageUrl) async {
+      await storage.init();
       final thumbFile = storage.saveThumbFile(image, imageUrl, thumbnailFileName);
 
       checkConnectivity().then((isConnected) async {
@@ -121,6 +122,7 @@ class Firebase {
     }
 
     Future<bool> saveImageJsonToDatabase(FireImage image) async {
+      await storage.init();
       checkConnectivity().then((isConnected) {
         if (!isConnected) {
           print("Is connected: $isConnected");
