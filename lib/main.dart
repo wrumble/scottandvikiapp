@@ -75,7 +75,7 @@ void checkFailedUploads() async{
   var hasImagesToUpload = instance.getBool("hasImagesToUpload") ?? false;
   print("has images to upload: $hasImagesToUpload");
   var hasThumbsToUpload = instance.getBool("hasThumbsToUpload") ?? false;
-  print("has images to upload: $hasImagesToUpload");
+  print("has thumbs to upload: $hasImagesToUpload");
   var hasJsonToUpload = instance.getBool("hasJsonToUpload") ?? false;
   print("has json to upload: $hasJsonToUpload");
 
