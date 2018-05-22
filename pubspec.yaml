@@ -12,6 +12,7 @@ dependencies:
   connectivity: ^0.3.0
   zoomable_image: ^1.2.0
   json_annotation: ^0.2.4
+  firebase_messaging: ^1.0.0
   image: ^1.1.33
   path: ^1.5.1
   uuid: ^1.0.0
@@ -23,8 +24,14 @@ dependencies:
 dev_dependencies:
   build_runner: ^0.8.0
   json_serializable: ^0.5.2
+  flutter_launcher_icons: ^0.3.2
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  image_path: assets/SVAppIcon.jpg
+  android: true
+  ios: true
 
 flutter:
   fonts:
@@ -39,17 +46,18 @@ flutter:
         - asset: fonts/Strawberry_Whipped_Cream.ttf
 
   assets:
-    - assets/background.png
-    - assets/SVSunset.jpg
-    - assets/1.jpg
-    - assets/2.jpg
-    - assets/3.jpg
-    - assets/4.jpg
-    - assets/5.jpg
-    - assets/6.jpg
-    - assets/7.jpg
+    - background.png
+    - SVSunset.jpg
+    - 1.jpg
+    - 2.jpg
+    - 3.jpg
+    - 4.jpg
+    - 5.jpg
+    - 6.jpg
+    - 7.jpg
     - backIcon.png
     - churchLocation.png
     - farmLocation.png
+    - SVAppIcon.jpg
 
   uses-material-design: true

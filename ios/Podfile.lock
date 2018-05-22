@@ -10,6 +10,9 @@ PODS:
   - Firebase/Database (5.0.0):
     - Firebase/CoreOnly
     - FirebaseDatabase (= 5.0.0)
+  - Firebase/Messaging (5.0.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (= 3.0.0)
   - Firebase/Storage (5.0.0):
     - Firebase/CoreOnly
     - FirebaseStorage (= 3.0.0)
@@ -18,6 +21,10 @@ PODS:
     - Flutter
   - firebase_database (0.0.1):
     - Firebase/Database
+    - Flutter
+  - firebase_messaging (0.0.1):
+    - Firebase/Core
+    - Firebase/Messaging
     - Flutter
   - firebase_storage (0.0.1):
     - Firebase/Storage
@@ -34,6 +41,11 @@ PODS:
     - leveldb-library (~> 1.18)
   - FirebaseInstanceID (3.0.0):
     - FirebaseCore (~> 5.0)
+  - FirebaseMessaging (3.0.0):
+    - FirebaseCore (~> 5.0)
+    - FirebaseInstanceID (~> 3.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - Protobuf (~> 3.1)
   - FirebaseStorage (3.0.0):
     - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
@@ -44,6 +56,8 @@ PODS:
   - GoogleMaps/Maps (2.7.0):
     - GoogleMaps/Base
   - GoogleToolboxForMac/Defines (2.1.4)
+  - GoogleToolboxForMac/Logger (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
   - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
     - GoogleToolboxForMac/Defines (= 2.1.4)
   - GTMSessionFetcher/Core (1.1.15)
@@ -60,6 +74,7 @@ PODS:
   - nanopb/encode (0.3.8)
   - path_provider (0.0.1):
     - Flutter
+  - Protobuf (3.5.0)
   - Reachability (3.2)
   - shared_preferences (0.0.1):
     - Flutter
@@ -70,6 +85,7 @@ DEPENDENCIES:
   - connectivity (from `Pods/.symlinks/plugins/connectivity/ios`)
   - firebase_core (from `Pods/.symlinks/plugins/firebase_core/ios`)
   - firebase_database (from `Pods/.symlinks/plugins/firebase_database/ios`)
+  - firebase_messaging (from `Pods/.symlinks/plugins/firebase_messaging/ios`)
   - firebase_storage (from `Pods/.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Pods/.symlinks/flutter/ios`)
   - image_picker (from `Pods/.symlinks/plugins/image_picker/ios`)
@@ -85,12 +101,14 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseDatabase
     - FirebaseInstanceID
+    - FirebaseMessaging
     - FirebaseStorage
     - GoogleMaps
     - GoogleToolboxForMac
     - GTMSessionFetcher
     - leveldb-library
     - nanopb
+    - Protobuf
     - Reachability
 
 EXTERNAL SOURCES:
@@ -100,6 +118,8 @@ EXTERNAL SOURCES:
     :path: Pods/.symlinks/plugins/firebase_core/ios
   firebase_database:
     :path: Pods/.symlinks/plugins/firebase_database/ios
+  firebase_messaging:
+    :path: Pods/.symlinks/plugins/firebase_messaging/ios
   firebase_storage:
     :path: Pods/.symlinks/plugins/firebase_storage/ios
   Flutter:
@@ -120,11 +140,13 @@ SPEC CHECKSUMS:
   Firebase: 4bd804448ab2596794698773d41520a0af101e65
   firebase_core: c96aa8b2fcf7f5167d32f22034f502f9304952b8
   firebase_database: dd62ab9f71967c9011ce2fd03a89e762dcc364df
+  firebase_messaging: a5f5d4a9491b660f33a1f94bd0596558f820bad1
   firebase_storage: e34d30ff8bb57e691191b70e9d255ec2eba2351f
   FirebaseAnalytics: 19812b49fa5f283dd6b23edf8a14b5d477029ab8
   FirebaseCore: e46e4babb9de298fb2f736958edcc6da1dc60d73
   FirebaseDatabase: 697eb53e5b4fe7cd4fa8756c1f82a9fca011345f
   FirebaseInstanceID: 83e0040351565df711a5db3d8ebe5ea21aca998a
+  FirebaseMessaging: f2360a966ecfb0d14facf0fbdf306efc2df0ddbe
   FirebaseStorage: 7ca4bb7b58a25fa647b04f524033fc7cb7eb272b
   Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
   GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
@@ -135,6 +157,7 @@ SPEC CHECKSUMS:
   map_view: da5875d2bc7b2871e4b7ed3e9e8e4509fc62d7bd
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   path_provider: 09407919825bfe3c2deae39453b7a5b44f467873
+  Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
   url_launcher: 92b89c1029a0373879933c21642958c874539095

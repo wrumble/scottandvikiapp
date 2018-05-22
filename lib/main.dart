@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'MyImages.dart';
 import 'Firebase.dart';
 import 'Storage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -23,6 +24,7 @@ var backgroundImage = new BoxDecoration(
 );
 
 class App extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -45,9 +47,15 @@ class App extends StatelessWidget {
 }
 
 void main() {
+  setupNotifications();
   checkFailedUploads();
   subscribeToConnectionState();
   runApp(new MyApp());
+}
+
+void setupNotifications() {
+  final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+  _firebaseMessaging.requestNotificationPermissions();
 }
 
 void subscribeToConnectionState() async {
@@ -64,19 +72,19 @@ void checkFailedUploads() async{
   Storage storage = Storage();
   await storage.init();
 
-  var hasimagesToUpload = instance.getBool("hasImagesToUpload") ?? false;
-  print("has images to upload: $hasimagesToUpload");
-  var hasthumbsToUpload = instance.getBool("hasThumbsToUpload") ?? false;
-  print("has images to upload: $hasimagesToUpload");
+  var hasImagesToUpload = instance.getBool("hasImagesToUpload") ?? false;
+  print("has images to upload: $hasImagesToUpload");
+  var hasThumbsToUpload = instance.getBool("hasThumbsToUpload") ?? false;
+  print("has images to upload: $hasImagesToUpload");
   var hasJsonToUpload = instance.getBool("hasJsonToUpload") ?? false;
   print("has json to upload: $hasJsonToUpload");
 
-  if (hasimagesToUpload) {
+  if (hasImagesToUpload) {
     print("uploading Images");
     storage.uploadFailedImagesToStorage();
   }
 
-  if (hasthumbsToUpload) {
+  if (hasThumbsToUpload) {
     print("uploading Images");
     storage.uploadFailedThumbsToStorage();
   }
