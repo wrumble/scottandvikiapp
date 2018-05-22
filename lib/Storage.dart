@@ -30,7 +30,9 @@ class Storage {
   }
 
   Future<File> saveImageFile(File toBeSaved, String fileName) async {
+    print(fileName);
     final filePath = '$imageDirectory$fileName';
+    print(filePath);
     print("saving image to $filePath");
     return new File(filePath)
       ..createSync(recursive: true)
@@ -67,6 +69,7 @@ class Storage {
   deleteImageFile(String fileName) async {
     final filePath = '$imageDirectory$fileName';
     File(filePath).delete();
+    print("$fileName deleted");
   }
 
   deleteThumbFiles(String fileName) async {
@@ -76,11 +79,14 @@ class Storage {
 
     File(filePath).delete();
     File(jsonPath).delete();
+    print("$fileName deleted");
+    print("$jsonFileName deleted");
   }
 
   deleteJsonFile(String fileName) async {
     final filePath = '$jsonDirectory$fileName';
     File(filePath).delete();
+    print("$fileName deleted");
   }
 
   FireImage fireImageFromJsonFile(String fileName) {
@@ -106,9 +112,9 @@ class Storage {
         myDir.exists().then((isThere) {
           print(myDir.list);
           myDir.list(recursive: true, followLinks: false)
-              .listen((FileSystemEntity entity) {
+              .listen((FileSystemEntity entity) async {
             print("after recursion");
-            firebase.saveImageFile(entity);
+            await firebase.saveImageFile(entity);
           });
         });
       } else {
@@ -145,7 +151,7 @@ class Storage {
         });
       } else {
         print("Is connected: $isConnected");
-        print("failed to upload stored images as still not connected to internet");
+        print("failed to upload stored thumbnails as still not connected to internet");
       }
     }).catchError((error) {
       print("Error getting connectivity status, was error: $error");
@@ -167,7 +173,7 @@ class Storage {
         });
       } else {
         print("Is connected: $isConnected");
-        print("failed to upload stored images as still not connected to internet");
+        print("failed to upload stored json data as still not connected to internet");
       }
     }).catchError((error) {
       print("Error getting connectivity status, was error: $error");

@@ -67,7 +67,7 @@ void subscribeToConnectionState() async {
   });
 }
 
-void checkFailedUploads() async{
+void checkFailedUploads() async {
   SharedPreferences instance = await SharedPreferences.getInstance();
   Storage storage = Storage();
   await storage.init();
@@ -85,7 +85,7 @@ void checkFailedUploads() async{
   }
 
   if (hasThumbsToUpload) {
-    print("uploading Images");
+    print("uploading Thumbs");
     storage.uploadFailedThumbsToStorage();
   }
 

@@ -93,6 +93,7 @@ class Firebase {
       print("Saving to image storage with file: $imageFile");
       final url = (await uploadTask.future).downloadUrl;
       if (url != null) {
+        storage.deleteImageFile(imageFileName);
         return url.toString();
       } else {
         print("got here without url");
