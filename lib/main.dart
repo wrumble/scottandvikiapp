@@ -48,8 +48,8 @@ class App extends StatelessWidget {
 
 void main() {
   setupNotifications();
-  checkFailedUploads();
   subscribeToConnectionState();
+  checkFailedUploads();
   runApp(new MyApp());
 }
 

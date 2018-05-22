@@ -20,6 +20,9 @@
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyA3V8XTkmpTZOeCTUd4J4WZceMOL_Cg-NU	"/>
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/not_icon" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

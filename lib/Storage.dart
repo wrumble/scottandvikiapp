@@ -32,7 +32,7 @@ class Storage {
   Future<File> saveImageFile(File toBeSaved, String fileName) async {
     final filePath = '$imageDirectory$fileName';
     print("saving image to $filePath");
-    return File(filePath)
+    return new File(filePath)
       ..createSync(recursive: true)
       ..writeAsBytes(toBeSaved.readAsBytesSync());
   }
@@ -46,11 +46,11 @@ class Storage {
     final jsonPath = '$thumbDirectory$jsonFileName';
     print("saving thumbnail to $imagePath");
     print("saving thumbnail json to $jsonPath");
-    File(jsonPath)
+    new File(jsonPath)
       ..createSync(recursive: true)
       ..writeAsString(json.encode(imageUrl));
 
-    return File(imagePath)
+    return new File(imagePath)
       ..createSync(recursive: true)
       ..writeAsBytes(encodeJpg(thumbnail));
   }
@@ -59,7 +59,7 @@ class Storage {
     jsonDirectory = '${(await getApplicationDocumentsDirectory()).path}/json_cache/';
     final filePath = '$jsonDirectory${image.name}';
     print("saving json to $filePath");
-    return File(filePath)
+    return new File(filePath)
       ..createSync(recursive: true)
       ..writeAsString(json.encode(image));
   }

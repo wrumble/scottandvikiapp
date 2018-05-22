@@ -29,7 +29,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter_icons:
-  image_path: assets/SVAppIcon.jpg
+  image_path: assets/icon.jpg
   android: true
   ios: true
 
@@ -58,6 +58,6 @@ flutter:
     - backIcon.png
     - churchLocation.png
     - farmLocation.png
-    - SVAppIcon.jpg
+    - icon.jpg
 
   uses-material-design: true

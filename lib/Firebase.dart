@@ -40,9 +40,9 @@ class Firebase {
 
         checkConnectivity().then((isConnected) async {
           if (!isConnected) {
-            print("Is connected: $isConnected");
+            print("saveImageFile Is connected: $isConnected");
             instance.setBool("hasImagesToUpload", true);
-            print("Set has files to upload to true");
+            print("Set hasImagesToUpload to true");
           } else {
             print("Is connected: $isConnected");
             final imageUrl = await saveImageToStorage(image);
@@ -80,7 +80,6 @@ class Firebase {
     Future<bool> checkConnectivity() async {
       var connectivityResult = await (new Connectivity().checkConnectivity());
 
-      print("before connection check");
       if (connectivityResult == ConnectivityResult.none) {
         return false;
       } else {
@@ -104,15 +103,14 @@ class Firebase {
     Future saveThumbnailToStorage(File thumbFile, String imageUrl) async {
       final ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(thumbnailFileName);
       final StorageUploadTask uploadTask = ref.putFile(thumbFile, const StorageMetadata(contentLanguage: "en"));
-      print("Saving to storage here with file: $thumbFile");
+      print("saveThumbnailToStorage Firebase with file: $thumbFile");
       final url = (await uploadTask.future).downloadUrl;
         print("uploading image: $thumbFile");
         if (url != null) {
-          print("got here with url");
+          print("got here with thumbnail url: $url");
           String thumbnailUrl = url.toString();
           final fireImage = new FireImage(imageFileName, currentDateTime, imageCount, thumbnailUrl, imageUrl);
-          storage.deleteThumbFiles(imageFileName);
-          print('thumbnail URL: $thumbnailUrl');
+          storage.deleteThumbFiles(thumbnailFileName);
           saveImageJsonToDatabase(fireImage);
           instance.setInt("ImageCount", imageCount + 1);
         } else {
@@ -123,6 +121,7 @@ class Firebase {
 
     saveImageJsonToDatabase(FireImage image) async {
       await storage.init();
+      storage.saveJsonFile(image);
       checkConnectivity().then((isConnected) {
         if (!isConnected) {
           print("Is connected: $isConnected");
