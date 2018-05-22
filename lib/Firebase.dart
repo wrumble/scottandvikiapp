@@ -88,7 +88,7 @@ class Firebase {
       }
     }
 
-    Future<String> saveImageToStorage(File imageFile) async {
+    saveImageToStorage(File imageFile) async {
       final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(imageFileName);
       final StorageUploadTask uploadTask = ref.putFile(imageFile, const StorageMetadata(contentLanguage: "en"));
       print("Saving to image storage with file: $imageFile");
@@ -121,7 +121,7 @@ class Firebase {
         }
     }
 
-    Future<bool> saveImageJsonToDatabase(FireImage image) async {
+    saveImageJsonToDatabase(FireImage image) async {
       await storage.init();
       checkConnectivity().then((isConnected) {
         if (!isConnected) {

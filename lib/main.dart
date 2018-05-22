@@ -107,7 +107,6 @@ class MyApp extends StatelessWidget {
     return new FutureBuilder<String>(
         future: getNameIfAvailable(),
         builder:(BuildContext context, AsyncSnapshot<String> snapshot) {
-          print(snapshot.data);
           final String name = snapshot.data;
           if (name == null) {
             return new MaterialApp(
