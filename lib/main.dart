@@ -97,12 +97,18 @@ void checkFailedUploads() async{
 
 class MyApp extends StatelessWidget {
 
+  Future<String> getNameIfAvailable() async {
+    final instance = await SharedPreferences.getInstance();
+    return instance.getString('FullName');
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder<SharedPreferences>(
-        future: SharedPreferences.getInstance(),
-        builder:(BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
-          final String name = snapshot.data.getString('FullName');
+    return new FutureBuilder<String>(
+        future: getNameIfAvailable(),
+        builder:(BuildContext context, AsyncSnapshot<String> snapshot) {
+          print(snapshot.data);
+          final String name = snapshot.data;
           if (name == null) {
             return new MaterialApp(
               onGenerateTitle: (BuildContext context) => Localize.of(context).appTitle,
