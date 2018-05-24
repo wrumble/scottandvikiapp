@@ -210,7 +210,7 @@ class GalleryState extends State<Gallery>  {
                                                   offset: new Offset(3.0, 5.0)
                                               ),
                                             ]
-                                        ) ,
+                                        ),
                                       );
                                     }).toList(),
                                   )

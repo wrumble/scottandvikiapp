@@ -21,21 +21,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
-                                <rect key="frame" x="187" y="333" width="1" height="1"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background.png" translatesAutoresizingMaskIntoConstraints="NO" id="4Hd-ic-TSc">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
+                                <rect key="frame" x="0.0" y="120" width="375" height="427"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="YRO-k0-Ey4" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="1a2-6s-vTC"/>
-                            <constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="4Hd-ic-TSc" secondAttribute="bottom" id="469-H3-y4q"/>
                             <constraint firstItem="YRO-k0-Ey4" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="4X2-HB-R7a"/>
-                            <constraint firstAttribute="trailing" secondItem="4Hd-ic-TSc" secondAttribute="trailing" id="8KE-xa-tN8"/>
-                            <constraint firstItem="4Hd-ic-TSc" firstAttribute="top" secondItem="Ydg-fD-yQy" secondAttribute="bottom" id="ER6-aA-C4I"/>
-                            <constraint firstItem="4Hd-ic-TSc" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="h6X-fo-cYH"/>
+                            <constraint firstAttribute="trailing" secondItem="YRO-k0-Ey4" secondAttribute="trailing" id="Vb4-mA-SdN"/>
+                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="c1O-I0-8oS"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -45,7 +40,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchImage" width="1" height="1"/>
-        <image name="background.png" width="1935" height="1935"/>
+        <image name="LaunchImage" width="427" height="427"/>
     </resources>
 </document>

@@ -10,13 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'Firebase.dart';
-import 'Storage.dart';
-import 'package:path_provider/path_provider.dart';
-//import 'package:path/path.dart';
-import 'package:connectivity/connectivity.dart';
-
-
-
+import 'UploadImage.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -131,7 +125,11 @@ class MyImagesState extends State<MyImages>  {
   Future<Null> uploadFile() async {
     var fb = Firebase();
     await fb.init();
-    fb.saveImageFile(savedImage);
+    final instance = await SharedPreferences.getInstance();
+    final count = instance.getInt("ImageCount");
+
+    final image = new UploadImage(savedImage, new DateTime.now(), count);
+    fb.saveImageFile(image);
   }
 
   @override

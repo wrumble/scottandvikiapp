@@ -9,6 +9,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:image/image.dart';
 import 'Firebase.dart';
+import 'UploadImage.dart';
 
 class Storage {
 
@@ -113,8 +114,12 @@ class Storage {
           print(myDir.list);
           myDir.list(recursive: true, followLinks: false)
               .listen((FileSystemEntity entity) async {
-            print("after recursion");
-            await firebase.saveImageFile(entity);
+            print("in image file recursion");
+            final fileName = basename(entity.path);
+            final dateTime = getDateFromFileName(fileName);
+            final count = getCountFromFileName(fileName);
+            final uploadImage = UploadImage(entity, dateTime, count);
+            await firebase.saveImageFile(uploadImage);
           });
         });
       } else {
@@ -144,9 +149,9 @@ class Storage {
           print(myDir.list);
           myDir.list(recursive: true, followLinks: false)
               .listen((FileSystemEntity entity) {
-            print("after recursion");
+            print("in thumb file  recursion");
             var imageUrl = imageUrlFromThumbEntity(entity);
-            firebase.saveThumbFile(entity, imageUrl);
+            firebase.checkConnectionThenUploadThumbnail(entity, imageUrl);
           });
         });
       } else {
@@ -167,8 +172,11 @@ class Storage {
         myDir.exists().then((isThere) {
           myDir.list(recursive: true, followLinks: false)
               .listen((FileSystemEntity entity) {
+            print("in json file  recursion");
             FireImage fireImage = fireImageFromJsonFile(basename(entity.path));
             firebase.saveImageJsonToDatabase(fireImage);
+          }).onError((error) {
+            print("Error listing json files: $error");
           });
         });
       } else {
@@ -198,6 +206,21 @@ class Storage {
         });
       }
     });
+  }
+
+  DateTime getDateFromFileName(String fileName) {
+    print("date from filename: $fileName");
+    var dateString = removeTagAndTypeFromFileName(fileName).split("+")[1].replaceAll("+", "");
+    print(dateString);
+    return  DateTime.parse(dateString);
+  }
+
+  int getCountFromFileName(String fileName) {
+    return int.parse(removeTagAndTypeFromFileName(fileName).split("+")[0].replaceAll("+", ""));
+  }
+
+  String removeTagAndTypeFromFileName(String fileName) {
+    return  fileName.replaceAll("thumb_", "").replaceAll(".jpg", "").replaceAll(".json", "");
   }
 
   Future<bool> checkConnectivity() async {

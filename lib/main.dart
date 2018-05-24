@@ -15,6 +15,8 @@ import 'MyImages.dart';
 import 'Firebase.dart';
 import 'Storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:path_provider/path_provider.dart';
+import 'UploadImage.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -48,8 +50,8 @@ class App extends StatelessWidget {
 
 void main() {
   setupNotifications();
-  subscribeToConnectionState();
   checkFailedUploads();
+  subscribeToConnectionState();
   runApp(new MyApp());
 }
 
@@ -58,12 +60,11 @@ void setupNotifications() {
   _firebaseMessaging.requestNotificationPermissions();
 }
 
-void subscribeToConnectionState() async {
+void subscribeToConnectionState() {
 
   new Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-    if (result != ConnectivityResult.none) {
+      print("connection listener result: $result");
       checkFailedUploads();
-    }
   });
 }
 
@@ -157,6 +158,40 @@ class _MyHomePageState extends State<HomeScreen> {
   Future<File> imageFile;
   File savedImage;
 
+  printDirectories() async {
+    var firebase = Firebase();
+    await firebase.init();
+    var imageDirectory = '${(await getApplicationDocumentsDirectory()).path}/image_cache/';
+    var thumbDirectory = '${(await getApplicationDocumentsDirectory()).path}/thumb_cache/';
+    var jsonDirectory = '${(await getApplicationDocumentsDirectory()).path}/json_cache/';
+    final iD = Directory(imageDirectory);
+    print("images list");
+    Directory(imageDirectory).exists().then((isThere) {
+      iD.list(recursive: true, followLinks: false)
+          .listen((FileSystemEntity entity) async {
+        print("image files in directory: $entity");
+      });
+    });
+    print("thumb list");
+    final tD = Directory(thumbDirectory);
+    tD.exists().then((isThere) {
+      print(tD.list);
+      tD.list(recursive: true, followLinks: false)
+          .listen((FileSystemEntity entity) async {
+        print("thumb files in directory: $entity");
+      });
+    });
+    print("json list");
+    final jD = Directory(jsonDirectory);
+    jD.exists().then((isThere) {
+      print(jD.list);
+      jD.list(recursive: true, followLinks: false)
+          .listen((FileSystemEntity entity) async {
+        print("json files in directory: $entity");
+      });
+    });
+  }
+
   void _onImageButtonPressed(ImageSource source) {
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);
@@ -170,11 +205,17 @@ class _MyHomePageState extends State<HomeScreen> {
   Future<Null> uploadFile() async {
     var fb = Firebase();
     await fb.init();
-    fb.saveImageFile(savedImage);
+    final instance = await SharedPreferences.getInstance();
+    final count = instance.getInt("ImageCount");
+
+    final image = new UploadImage(savedImage, new DateTime.now(), count);
+    fb.saveImageFile(image);
   }
 
   @override
   Widget build(BuildContext context) {
+
+    printDirectories();
 
     double getBottomMargin() {
       var mediaQuery = MediaQuery.of(context);
