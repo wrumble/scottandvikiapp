@@ -121,7 +121,7 @@ class MyApp extends StatelessWidget {
                 const Locale('en', '')
               ],
               theme: new ThemeData(
-                canvasColor: Colors.black,
+                canvasColor: Colors.white,
               ),
               home: new TextFormFieldDemo(),
             );
@@ -137,7 +137,7 @@ class MyApp extends StatelessWidget {
                 const Locale('en', '')
               ],
               theme: new ThemeData(
-                canvasColor: Colors.black,
+                canvasColor: Colors.white,
               ),
               home: new HomeScreen(),
             );
@@ -215,8 +215,6 @@ class _MyHomePageState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-    printDirectories();
-
     double getBottomMargin() {
       var mediaQuery = MediaQuery.of(context);
       if (Platform.isIOS) {
@@ -289,7 +287,7 @@ class _MyHomePageState extends State<HomeScreen> {
                   style: new TextStyle(
                     fontFamily: FontName.normalFont,
                     fontSize: 25.0,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
                 onTap: () {
@@ -312,7 +310,7 @@ class _MyHomePageState extends State<HomeScreen> {
                   style: new TextStyle(
                     fontFamily: FontName.normalFont,
                     fontSize: 25.0,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
                 onTap: () {
@@ -335,7 +333,7 @@ class _MyHomePageState extends State<HomeScreen> {
                   style: new TextStyle(
                     fontFamily: FontName.normalFont,
                     fontSize: 25.0,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
                 onTap: () {

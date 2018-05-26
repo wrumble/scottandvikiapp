@@ -190,7 +190,20 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: new AppBar(
-        title: new TitleText(Localize.of(context).appTitle),
+        title: new Container(
+          child: new FittedBox(
+            fit: BoxFit.scaleDown,
+            child: new Text("Welcome",
+              textAlign: TextAlign.left,
+              style: new TextStyle(
+                  fontFamily: FontName.titleFont,
+                  fontSize: 40.0,
+                  color: Colors.white
+              ),
+            ),
+          ),
+          margin: new EdgeInsets.only(top: 8.0),
+        ),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),
@@ -216,25 +229,25 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
                 new Container(
                   child: new Column(
                     children: <Widget>[
-                      new Text("Welcome",
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontFamily: FontName.titleFont,
-                          fontSize: 40.0,
-                          color: Colors.black,
-                        ),
-                      ),
+//                      new Text("Welcome",
+//                        textAlign: TextAlign.center,
+//                        style: const TextStyle(
+//                          fontFamily: FontName.titleFont,
+//                          fontSize: 40.0,
+//                          color: Colors.black,
+//                        ),
+//                      ),
                       new Text("Please enter your whole name and password to enter the app. If you cant remember the password just ask Scott or Viki.",
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontFamily: FontName.normalFont,
-                          fontSize: 20.0,
+                          fontSize: 25.0,
                           color: Colors.black,
                         ),
                       ),
                     ],
                   ),
-                  padding: const EdgeInsets.only(top: 16.0, bottom: 8.0, left: 8.0, right: 8.0),
+                  padding: const EdgeInsets.only(top: 16.0, bottom: 16.0, left: 8.0, right: 8.0),
                   decoration: new BoxDecoration(
                       color: Colors.white,
                       boxShadow: [
