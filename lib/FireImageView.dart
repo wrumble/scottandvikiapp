@@ -146,6 +146,35 @@ class FireImageViewState extends State<FireImageView>  {
       ),
     );
 
+    var placeHolder = new Row(
+      children: <Widget>[
+        new Container(
+          child: new Text('Loading image ...',
+            textAlign: TextAlign.center,
+            style: new TextStyle(
+                fontFamily: FontName.normalFont,
+                fontSize: 25.0,
+                color: Colors.black
+            ),
+          ),
+          padding: new EdgeInsets.all(16.0),
+          margin: new EdgeInsets.only(left: 8.0, right: 8.0),
+          decoration: new BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                new BoxShadow(
+                    color: Colors.black38,
+                    blurRadius: 5.0,
+                    offset: new Offset(3.0, 5.0)
+                ),
+              ]
+          ),
+        )
+      ],
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+    );
+
     var mainContainer = new Container(
       height: double.infinity,
       width: double.infinity,
@@ -162,6 +191,7 @@ class FireImageViewState extends State<FireImageView>  {
                     child: new Container(
                       child: new ZoomableImage(
                           new NetworkImage(image.url),
+                        placeholder: placeHolder,
                         backgroundColor: Colors.transparent,
                       ),
                       margin: new EdgeInsets.all(8.0),

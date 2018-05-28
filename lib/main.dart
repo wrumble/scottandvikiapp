@@ -121,7 +121,7 @@ class MyApp extends StatelessWidget {
                 const Locale('en', '')
               ],
               theme: new ThemeData(
-                canvasColor: Colors.white,
+                canvasColor: Colors.black,
               ),
               home: new TextFormFieldDemo(),
             );
@@ -137,7 +137,7 @@ class MyApp extends StatelessWidget {
                 const Locale('en', '')
               ],
               theme: new ThemeData(
-                canvasColor: Colors.white,
+                canvasColor: Colors.black,
               ),
               home: new HomeScreen(),
             );
@@ -287,7 +287,7 @@ class _MyHomePageState extends State<HomeScreen> {
                   style: new TextStyle(
                     fontFamily: FontName.normalFont,
                     fontSize: 25.0,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
                 onTap: () {
@@ -310,7 +310,7 @@ class _MyHomePageState extends State<HomeScreen> {
                   style: new TextStyle(
                     fontFamily: FontName.normalFont,
                     fontSize: 25.0,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
                 onTap: () {
@@ -333,7 +333,7 @@ class _MyHomePageState extends State<HomeScreen> {
                   style: new TextStyle(
                     fontFamily: FontName.normalFont,
                     fontSize: 25.0,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
                 onTap: () {
