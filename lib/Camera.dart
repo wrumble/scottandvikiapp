@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
+import 'package:scott_and_viki/Constants/FontNames.dart';
 
 class CameraExampleHome extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -40,6 +41,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
   VideoPlayerController videoController;
   VoidCallback videoPlayerListener;
   List<CameraDescription> cameras;
+  bool isRecording = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -52,7 +54,8 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
         title: titleText,
         backgroundColor: Colors.black,
         centerTitle: true,
-      )
+      ),
+      backgroundColor: Colors.white,
       key: _scaffoldKey,
       body: new Column(
         children: <Widget>[
@@ -70,13 +73,25 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
           _captureControlRowWidget(),
           new Padding(
             padding: const EdgeInsets.all(5.0),
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                _cameraTogglesRowWidget(),
-                _thumbnailWidget(),
-              ],
+            child: new Container(
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  _cameraTogglesRowWidget(),
+                ],
+              ),
+              margin: new EdgeInsets.only(left: 8.0, top: 16.0, right: 8.0, bottom: 16.0),
+              decoration: new BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    new BoxShadow(
+                        color: Colors.black38,
+                        blurRadius: 5.0,
+                        offset: new Offset(3.0, 5.0)
+                    ),
+                  ]
+                )
             ),
           ),
         ],
@@ -143,6 +158,22 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
     );
   }
 
+  // Click function for changing the state on click
+  setRecording() {
+    var newVal = true;
+    if(isRecording) {
+      newVal = false;
+    } else {
+      newVal = true;
+    }
+
+    // This function is required for changing the state.
+    // Whenever this function is called it refresh the page with new value
+    setState((){
+      isRecording = newVal;
+    });
+  }
+
   /// Display the control bar with buttons to take pictures and record videos.
   Widget _captureControlRowWidget() {
     return new Row(
@@ -152,9 +183,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
         new IconButton(
           icon: const Icon(
             Icons.camera_alt,
-            color: Colors.white,
+            color: Colors.black,
           ),
-          color: Colors.blue,
+          color: Colors.black,
           onPressed: controller != null &&
               controller.value.isInitialized &&
               !controller.value.isRecordingVideo
@@ -162,28 +193,16 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
               : null,
         ),
         new IconButton(
-          icon: const Icon(
+          icon: new Icon(
               Icons.videocam,
-              color: Colors.white
+              color: isRecording ? Colors.red : Colors.black,
           ),
-          color: Colors.blue,
+          color: isRecording ? Colors.red : Colors.black,
           onPressed: controller != null &&
               controller.value.isInitialized &&
               !controller.value.isRecordingVideo
               ? onVideoRecordButtonPressed
-              : null,
-        ),
-        new IconButton(
-          icon: const Icon(
-            Icons.stop,
-            color: Colors.white,
-          ),
-          color: Colors.red,
-          onPressed: controller != null &&
-              controller.value.isInitialized &&
-              controller.value.isRecordingVideo
-              ? onStopButtonPressed
-              : null,
+              : onStopButtonPressed,
         )
       ],
     );
@@ -199,12 +218,17 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
       for (CameraDescription cameraDescription in cameras) {
         toggles.add(
           new SizedBox(
-            width: 90.0,
+            width: 150.0,
             child: new RadioListTile<CameraDescription>(
-              title:
-              new Icon(
-                getCameraLensIcon(cameraDescription.lensDirection),
-                color: Colors.white,
+              activeColor: Colors.black,
+              selected: cameraDescription.lensDirection == CameraLensDirection.back ? true : false,
+              title: new Text(
+                  cameraDescription.lensDirection == CameraLensDirection.front ? "Front" : "Back",
+                  style: new TextStyle(
+                    fontFamily: FontName.normalFont,
+                    fontSize: 20.0,
+                    color: Colors.black,
+                  )
               ),
               groupValue: controller?.description,
               value: cameraDescription,
@@ -268,6 +292,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
   void onVideoRecordButtonPressed() {
     startVideoRecording().then((String filePath) {
       if (mounted) setState(() {});
+      setRecording();
       if (filePath != null) showInSnackBar('Saving video to $filePath');
     });
   }
@@ -275,6 +300,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
   void onStopButtonPressed() {
     stopVideoRecording().then((_) {
       if (mounted) setState(() {});
+      setRecording();
       showInSnackBar('Video recorded to: $videoPath');
     });
   }
