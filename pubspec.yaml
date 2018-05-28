@@ -8,7 +8,6 @@ dependencies:
   firebase_storage: ^0.3.4
   firebase_database: ^0.4.6
   shared_preferences: ^0.4.1
-  flutter_advanced_networkimage: any
   path_provider: ^0.4.0
   connectivity: ^0.3.0
   zoomable_image: ^1.2.0

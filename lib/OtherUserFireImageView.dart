@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zoomable_image/zoomable_image.dart';
 import 'package:intl/intl.dart';
 import 'FireImage.dart';
-import 'dart:io';
-import 'dart:async';
 import 'package:scott_and_viki/Constants/FontNames.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class OtherUserFireImageView extends StatefulWidget {
   final FireImage image;
@@ -32,6 +27,35 @@ class OtherUserFireImageViewState extends State<OtherUserFireImageView>  {
     super.initState();
 
   }
+
+  var placeHolder = new Row(
+    children: <Widget>[
+      new Container(
+        child: new Text('Loading image ...',
+          textAlign: TextAlign.center,
+          style: new TextStyle(
+              fontFamily: FontName.normalFont,
+              fontSize: 25.0,
+              color: Colors.black
+          ),
+        ),
+        padding: new EdgeInsets.all(16.0),
+        margin: new EdgeInsets.only(left: 8.0, right: 8.0),
+        decoration: new BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              new BoxShadow(
+                  color: Colors.black38,
+                  blurRadius: 5.0,
+                  offset: new Offset(3.0, 5.0)
+              ),
+            ]
+        ),
+      )
+    ],
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +89,7 @@ class OtherUserFireImageViewState extends State<OtherUserFireImageView>  {
                     child: new Container(
                       child: new ZoomableImage(
                         new NetworkImage(image.url),
+                        placeholder: placeHolder,
                         backgroundColor: Colors.transparent,
                       ),
                       margin: new EdgeInsets.all(8.0),
