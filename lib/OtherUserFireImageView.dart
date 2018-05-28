@@ -28,10 +28,13 @@ class OtherUserFireImageViewState extends State<OtherUserFireImageView>  {
 
   }
 
-  var placeHolder = new Row(
+  var placeHolder = new Column(
     children: <Widget>[
+      new Center(
+          child: CircularProgressIndicator(),
+      ),
       new Container(
-        child: new Text('Loading image ...',
+        child: new Text('Loading image...',
           textAlign: TextAlign.center,
           style: new TextStyle(
               fontFamily: FontName.normalFont,
@@ -40,7 +43,7 @@ class OtherUserFireImageViewState extends State<OtherUserFireImageView>  {
           ),
         ),
         padding: new EdgeInsets.all(16.0),
-        margin: new EdgeInsets.only(left: 8.0, right: 8.0),
+        margin: new EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
         decoration: new BoxDecoration(
             color: Colors.white,
             boxShadow: [

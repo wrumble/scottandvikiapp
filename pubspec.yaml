@@ -8,6 +8,8 @@ dependencies:
   firebase_storage: ^0.3.4
   firebase_database: ^0.4.6
   shared_preferences: ^0.4.1
+  camera: ^0.2.0
+  video_player: ^0.5.3
   path_provider: ^0.4.0
   connectivity: ^0.3.0
   zoomable_image: ^1.2.0

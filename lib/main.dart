@@ -15,8 +15,10 @@ import 'MyImages.dart';
 import 'Firebase.dart';
 import 'Storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:video_player/video_player.dart';
 import 'UploadImage.dart';
+import 'package:camera/camera.dart';
+import 'Camera.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -48,11 +50,22 @@ class App extends StatelessWidget {
   }
 }
 
-void main() {
+void main() async {
+  getCameras();
   setupNotifications();
   checkFailedUploads();
   subscribeToConnectionState();
   runApp(new MyApp());
+}
+
+List<CameraDescription> cameras;
+
+getCameras() async {
+  try {
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    logError(e.code, e.description);
+  }
 }
 
 void setupNotifications() {
@@ -157,39 +170,24 @@ class HomeScreen extends StatefulWidget {
 class _MyHomePageState extends State<HomeScreen> {
   Future<File> imageFile;
   File savedImage;
+  CameraController controller;
+  String imagePath;
+  String videoPath;
+  VideoPlayerController videoController;
+  VoidCallback videoPlayerListener;
 
-  printDirectories() async {
-    var firebase = Firebase();
-    await firebase.init();
-    var imageDirectory = '${(await getApplicationDocumentsDirectory()).path}/image_cache/';
-    var thumbDirectory = '${(await getApplicationDocumentsDirectory()).path}/thumb_cache/';
-    var jsonDirectory = '${(await getApplicationDocumentsDirectory()).path}/json_cache/';
-    final iD = Directory(imageDirectory);
-    print("images list");
-    Directory(imageDirectory).exists().then((isThere) {
-      iD.list(recursive: true, followLinks: false)
-          .listen((FileSystemEntity entity) async {
-        print("image files in directory: $entity");
-      });
-    });
-    print("thumb list");
-    final tD = Directory(thumbDirectory);
-    tD.exists().then((isThere) {
-      print(tD.list);
-      tD.list(recursive: true, followLinks: false)
-          .listen((FileSystemEntity entity) async {
-        print("thumb files in directory: $entity");
-      });
-    });
-    print("json list");
-    final jD = Directory(jsonDirectory);
-    jD.exists().then((isThere) {
-      print(jD.list);
-      jD.list(recursive: true, followLinks: false)
-          .listen((FileSystemEntity entity) async {
-        print("json files in directory: $entity");
-      });
-    });
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  IconData getCameraLensIcon(CameraLensDirection direction) {
+    switch (direction) {
+      case CameraLensDirection.back:
+        return Icons.camera_rear;
+      case CameraLensDirection.front:
+        return Icons.camera_front;
+      case CameraLensDirection.external:
+        return Icons.camera;
+    }
+    throw new ArgumentError('Unknown lens direction');
   }
 
   void _onImageButtonPressed(ImageSource source) {
@@ -234,7 +232,12 @@ class _MyHomePageState extends State<HomeScreen> {
     var cameraButton = new FlatButton(
       textColor: Colors.white,
       color: Colors.black,
-      onPressed: () => _onImageButtonPressed(ImageSource.camera),
+      onPressed: () {
+        Navigator.push(
+          context,
+          new MaterialPageRoute(builder: (context) => new CameraExampleHome(cameras)),
+        );
+      },
       child: new Text(Localize.of(context).takeAPhoto,
         style: new TextStyle(
             fontFamily: FontName.normalFont,

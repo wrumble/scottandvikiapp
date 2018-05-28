@@ -54,6 +54,38 @@ class OtherUserImagesState extends State<OtherUserImages>  {
     getReference();
   }
 
+  var placeHolder = new Column(
+    children: <Widget>[
+      new Center(
+        child: CircularProgressIndicator(),
+      ),
+      new Container(
+        child: new Text('Loading images...',
+          textAlign: TextAlign.center,
+          style: new TextStyle(
+              fontFamily: FontName.normalFont,
+              fontSize: 25.0,
+              color: Colors.black
+          ),
+        ),
+        padding: new EdgeInsets.all(16.0),
+        margin: new EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
+        decoration: new BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              new BoxShadow(
+                  color: Colors.black38,
+                  blurRadius: 5.0,
+                  offset: new Offset(3.0, 5.0)
+              ),
+            ]
+        ),
+      )
+    ],
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
+  );
+
   @override
   Widget build(BuildContext context) {
 
@@ -69,38 +101,7 @@ class OtherUserImagesState extends State<OtherUserImages>  {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
               case ConnectionState.none:
-                return new Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  decoration: backgroundImage,
-                  child: new Column(
-                    children: <Widget>[
-                      new  SizedBox(height: 32.0),
-                      new Container(
-                        child: new Text('Loading images ... ',
-                          textAlign: TextAlign.center,
-                          style: new TextStyle(
-                              fontFamily: FontName.normalFont,
-                              fontSize: 25.0,
-                              color: Colors.black
-                          ),
-                        ),
-                        padding: new EdgeInsets.all(16.0),
-                        margin: new EdgeInsets.only(left: 8.0, right: 8.0),
-                        decoration: new BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              new BoxShadow(
-                                  color: Colors.black38,
-                                  blurRadius: 5.0,
-                                  offset: new Offset(3.0, 5.0)
-                              ),
-                            ]
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                return placeHolder;
               default:
                 if ( snapshot.data.snapshot.value == null ){
                   return new Container(
