@@ -271,20 +271,27 @@ class AspectRatioVideoState extends State<AspectRatioVideo> {
     controller.addListener(listener);
   }
 
+  detectOrientationForAppBar() {
+    final mediaQueryData = MediaQuery.of(context);
+    if (mediaQueryData.orientation == Orientation.portrait) {
+      return new AppBar(
+        title: new Text(timeFromDate(),
+            style: new TextStyle(fontFamily: FontName.normalFont,
+                fontSize: 30.0,
+                color: Colors.white)
+        ),
+        backgroundColor: Colors.black,
+        centerTitle: true,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (initialized) {
       final Size size = controller.value.size;
       return new Scaffold(
-        appBar: new AppBar(
-          title: new Text(timeFromDate(),
-              style: new TextStyle(fontFamily: FontName.normalFont,
-                  fontSize: 30.0,
-                  color: Colors.white)
-          ),
-          backgroundColor: Colors.black,
-          centerTitle: true,
-        ),
+        appBar: detectOrientationForAppBar(),
         body: new Center(
           child: new AspectRatio(
             aspectRatio: size.width / size.height,

@@ -212,12 +212,19 @@ class FireImageViewState extends State<FireImageView>  {
       ),
     );
 
-    return new Scaffold(
-        appBar: new AppBar(
+    detectOrientationForAppBar() {
+      final mediaQueryData = MediaQuery.of(context);
+      if (mediaQueryData.orientation == Orientation.portrait) {
+        return new AppBar(
           title: titleText,
           backgroundColor: Colors.black,
           centerTitle: true,
-        ),
+        );
+      }
+    }
+
+    return new Scaffold(
+        appBar: detectOrientationForAppBar(),
         body: mainContainer,
     );
   }
