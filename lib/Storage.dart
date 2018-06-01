@@ -15,6 +15,7 @@ class Storage {
 
   Firebase firebase;
   String imageDirectory;
+  String videoDirectory;
   String thumbDirectory;
   String jsonDirectory;
   SharedPreferences instance;
@@ -24,6 +25,7 @@ class Storage {
     firebase = Firebase();
     await firebase.init();
     imageDirectory = '${(await getApplicationDocumentsDirectory()).path}/image_cache/';
+    videoDirectory = '${(await getApplicationDocumentsDirectory()).path}/video_cache/';
     thumbDirectory = '${(await getApplicationDocumentsDirectory()).path}/thumb_cache/';
     jsonDirectory = '${(await getApplicationDocumentsDirectory()).path}/json_cache/';
     instance = await SharedPreferences.getInstance();
@@ -40,22 +42,14 @@ class Storage {
       ..writeAsBytes(toBeSaved.readAsBytesSync());
   }
 
-  File saveThumbFile(File fullImage, String imageUrl, String fileName) {
-    Image image = decodeImage(fullImage.readAsBytesSync());
-    Image thumbnail = copyResize(image, 150);
-
-    final imagePath = '$thumbDirectory$fileName';
-    final jsonFileName = fileName.split('.jpg')[0] + '.json';
-    final jsonPath = '$thumbDirectory$jsonFileName';
-    print("saving thumbnail to $imagePath");
-    print("saving thumbnail json to $jsonPath");
-    new File(jsonPath)
+  Future<File> saveVideoFile(File toBeSaved, String fileName) async {
+    print(fileName);
+    final filePath = '$videoDirectory$fileName';
+    print(filePath);
+    print("saving video to $filePath");
+    return new File(filePath)
       ..createSync(recursive: true)
-      ..writeAsString(json.encode(imageUrl));
-
-    return new File(imagePath)
-      ..createSync(recursive: true)
-      ..writeAsBytes(encodeJpg(thumbnail));
+      ..writeAsBytes(toBeSaved.readAsBytesSync());
   }
 
   Future<File> saveJsonFile(FireImage image) async {
@@ -73,15 +67,10 @@ class Storage {
     print("$fileName deleted");
   }
 
-  deleteThumbFiles(String fileName) async {
-    final filePath = '$thumbDirectory$fileName';
-    final jsonFileName = fileName.split('.jpg')[0] + '.json';
-    final jsonPath = '$thumbDirectory$jsonFileName';
-
+  deleteVideoFile(String fileName) async {
+    final filePath = '$videoDirectory$fileName';
     File(filePath).delete();
-    File(jsonPath).delete();
     print("$fileName deleted");
-    print("$jsonFileName deleted");
   }
 
   deleteJsonFile(String fileName) async {
@@ -131,32 +120,24 @@ class Storage {
     });
   }
 
-  String imageUrlFromThumbEntity(FileSystemEntity entity) {
-    final fileName = basename(entity.path);
-    final jsonFileName = fileName.split('.jpg')[0] + '.json';
-    final jsonPath = '$jsonDirectory$jsonFileName';
-    final jsonFile = File("$jsonPath");
-    return json.decode(jsonFile.readAsStringSync());
-  }
-
-  uploadFailedThumbsToStorage() async {
+  uploadFailedVideosToStorage() async {
     await firebase.init();
     checkConnectivity().then((isConnected) {
       if (isConnected) {
-        final myDir = Directory(thumbDirectory);
-        print('thumbs to be uploaded: ');
+        final myDir = Directory(videoDirectory);
+        print('video to be uploaded: ');
         myDir.exists().then((isThere) {
           print(myDir.list);
           myDir.list(recursive: true, followLinks: false)
-              .listen((FileSystemEntity entity) {
-            print("in thumb file  recursion");
-            var imageUrl = imageUrlFromThumbEntity(entity);
-            firebase.checkConnectionThenUploadThumbnail(entity, imageUrl);
+              .listen((FileSystemEntity entity) async {
+            print("in video file recursion");
+            final videoFile = new File(entity.path);
+            await firebase.saveVideoFile(videoFile);
           });
         });
       } else {
         print("Is connected: $isConnected");
-        print("failed to upload stored thumbnails as still not connected to internet");
+        print("failed to upload stored videos as still not connected to internet");
       }
     }).catchError((error) {
       print("Error getting connectivity status, was error: $error");
@@ -220,7 +201,7 @@ class Storage {
   }
 
   String removeTagAndTypeFromFileName(String fileName) {
-    return  fileName.replaceAll("thumb_", "").replaceAll(".jpg", "").replaceAll(".json", "");
+    return  fileName.replaceAll("thumb_", "").replaceAll(".jpg", "").replaceAll(".json", "").replaceAll(".mp4", "");
   }
 
   Future<bool> checkConnectivity() async {

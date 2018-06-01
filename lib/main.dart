@@ -88,8 +88,8 @@ void checkFailedUploads() async {
 
   var hasImagesToUpload = instance.getBool("hasImagesToUpload") ?? false;
   print("has images to upload: $hasImagesToUpload");
-  var hasThumbsToUpload = instance.getBool("hasThumbsToUpload") ?? false;
-  print("has thumbs to upload: $hasImagesToUpload");
+  var hasVideosToUpload = instance.getBool("hasVideosToUpload") ?? false;
+  print("has videos to upload: $hasVideosToUpload");
   var hasJsonToUpload = instance.getBool("hasJsonToUpload") ?? false;
   print("has json to upload: $hasJsonToUpload");
 
@@ -98,9 +98,9 @@ void checkFailedUploads() async {
     storage.uploadFailedImagesToStorage();
   }
 
-  if (hasThumbsToUpload) {
-    print("uploading Thumbs");
-    storage.uploadFailedThumbsToStorage();
+  if (hasVideosToUpload) {
+    print("uploading Videos");
+    storage.uploadFailedVideosToStorage();
   }
 
   if (hasJsonToUpload) {

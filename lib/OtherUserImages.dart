@@ -7,6 +7,8 @@ import 'FireImage.dart';
 import 'GalleryFolderView.dart';
 import 'OtherUserFireImageView.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'VideoPlayer.dart';
+import 'package:video_player/video_player.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -53,6 +55,11 @@ class OtherUserImagesState extends State<OtherUserImages>  {
 
     getReference();
   }
+
+  var playIcon = new Container(
+    padding: new EdgeInsets.all(16.0),
+    child: new Image.asset("assets/playVideo.png"),
+  );
 
   var placeHolder = new Column(
     children: <Widget>[
@@ -160,7 +167,8 @@ class OtherUserImagesState extends State<OtherUserImages>  {
                     var count = value["count"];
                     var thumbnailUrl = value["thumbnailUrl"];
                     var url = value["url"];
-                    FireImage image = new FireImage(name, dateTime, count, thumbnailUrl, url);
+                    var isAnImage = value["isAnImage"];
+                    FireImage image = new FireImage(name, dateTime, count, thumbnailUrl, url, isAnImage);
                     image.key = key;
                     imageList.add(image);
                   });
@@ -189,11 +197,15 @@ class OtherUserImagesState extends State<OtherUserImages>  {
                                           children: <Widget>[
                                             new Center(
                                               child: new InkWell(
-                                                child: new Image.network(image.thumbnailUrl),
+                                                child: image.isAnImage ? new Image.network(image.url, scale: 0.1) : playIcon,
                                                 onTap: () {
                                                   Navigator.push(
                                                     context,
-                                                    new MaterialPageRoute(builder: (context) => new OtherUserFireImageView(image)),
+                                                    new MaterialPageRoute(builder: (context) => image.isAnImage ? new OtherUserFireImageViewState(image) : new NetworkPlayerLifeCycle(
+                                                      image.url,
+                                                          (BuildContext context, VideoPlayerController controller) =>
+                                                      new AspectRatioVideo(controller, image),
+                                                    ) ),
                                                   );
                                                 },
                                               ),

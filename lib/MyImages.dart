@@ -11,6 +11,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'Firebase.dart';
 import 'UploadImage.dart';
+import 'VideoPlayer.dart';
+import 'package:video_player/video_player.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -50,23 +52,23 @@ class MyImagesState extends State<MyImages>  {
 
   var titleText = new TitleText("My Images", 30.0);
 
-  Future<Null> showDialogue(FireImage image) async {
+  Future<Null> showDialogue(FireImage image, isAnImage) async {
     return showDialog<Null>(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
         return new AlertDialog(
-          title: new Text('Delete image?',
+          title: new Text(isAnImage ? 'Delete image?' : 'Delete video',
             style: new TextStyle(
               fontFamily: FontName.titleFont,
-              fontSize: 25.0,
+              fontSize: 20.0,
               color: Colors.black
             ),
           ),
           content: new SingleChildScrollView(
             child: new ListBody(
               children: <Widget>[
-                new Text('Are you sure you want to delete this image?',
+                new Text(isAnImage ? 'Are you sure you want to delete this image?' : 'Are you sure you want to delete this video?',
                   style: new TextStyle(
                   fontFamily: FontName.normalFont,
                   fontSize: 25.0,
@@ -157,6 +159,11 @@ class MyImagesState extends State<MyImages>  {
       }
       return mediaQuery.padding.bottom + 8;
     }
+
+    var playIcon = new Container(
+      padding: new EdgeInsets.all(16.0),
+      child: new Image.asset("assets/playVideo.png"),
+    );
 
     var placeHolder = new Column(
       children: <Widget>[
@@ -266,7 +273,8 @@ class MyImagesState extends State<MyImages>  {
                     var count = value["count"];
                     var thumbnailUrl = value["thumbnailUrl"];
                     var url = value["url"];
-                    FireImage image = new FireImage(name, dateTime, count, thumbnailUrl, url);
+                    var isAnImage = value["isAnImage"];
+                    FireImage image = new FireImage(name, dateTime, count, thumbnailUrl, url, isAnImage);
                     image.key = key;
                     imageList.add(image);
                   });
@@ -295,11 +303,15 @@ class MyImagesState extends State<MyImages>  {
                                           children: <Widget>[
                                             new Center(
                                               child: new InkWell(
-                                                child: new Image.network(image.thumbnailUrl),
+                                                child: image.isAnImage ? new Image.network(image.url, scale: 0.1) : playIcon,
                                                 onTap: () {
                                                   Navigator.push(
                                                     context,
-                                                    new MaterialPageRoute(builder: (context) => new FireImageView(image)),
+                                                    new MaterialPageRoute(builder: (context) => image.isAnImage ? new FireImageView(image) : new NetworkPlayerLifeCycle(
+                                                      image.url,
+                                                          (BuildContext context, VideoPlayerController controller) =>
+                                                      new AspectRatioVideo(controller, image),
+                                                    ) ),
                                                   );
                                                 },
                                               ),
@@ -307,7 +319,7 @@ class MyImagesState extends State<MyImages>  {
                                             new Positioned(
                                               child: new Container(
                                                 child: new FloatingActionButton(
-                                                  onPressed: () => showDialogue(image),
+                                                  onPressed: () => showDialogue(image, image.isAnImage),
                                                   child: new Icon(
                                                     Icons.delete,
                                                     size: 20.0,

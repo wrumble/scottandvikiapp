@@ -5,8 +5,9 @@ class FireImage {
   int count;
   String thumbnailUrl;
   String url;
+  bool isAnImage;
 
-  FireImage(this.name, this.dateTime, this.count, this.thumbnailUrl, this.url);
+  FireImage(this.name, this.dateTime, this.count, this.thumbnailUrl, this.url, [this.isAnImage = true]);
 
   toJson() {
     return {
@@ -14,7 +15,8 @@ class FireImage {
       "count": count,
       "dateTime": dateTime.millisecondsSinceEpoch,
       "thumbnailUrl": thumbnailUrl,
-      "url": url
+      "url": url,
+      "isAnImage": isAnImage
     };
   }
 }

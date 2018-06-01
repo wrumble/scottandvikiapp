@@ -27,16 +27,12 @@ class Firebase {
       FirebaseStorage.instance.setMaxUploadRetryTimeMillis(3000);
     }
 
-    String createThumbnailFileName(File imageFile) {
-      return 'thumb_${getNameFromFile(imageFile)}';
+    String createVideoFileName() {
+      return '${imageCount + 1}+${new DateTime.now()}.mp4';
     }
 
     String getNameFromFile(File imageFile) {
       return basename(imageFile.path);
-    }
-
-    String getImageFileNameFromThumbnailName(String thumbnailName) {
-      return thumbnailName.replaceAll("thumb_", "");
     }
 
     Future saveImageFile(UploadImage image) async {
@@ -45,7 +41,17 @@ class Firebase {
         instance.setInt("ImageCount", imageCount + 1);
         checkConnectionThenUploadImage(imageFile);
       }).catchError((error) {
-        print("Error saving file to shared preferences, error: $error");
+        print("Error saving image file to shared preferences, error: $error");
+      });
+    }
+
+    Future saveVideoFile(File videoFile) async {
+      await storage.init();
+      storage.saveVideoFile(videoFile, createVideoFileName()).then((videoFile) {
+        instance.setInt("ImageCount", imageCount + 1);
+        checkConnectionThenUploadVideo(videoFile);
+      }).catchError((error) {
+        print("Error saving video file to shared preferences, error: $error");
       });
     }
 
@@ -64,15 +70,15 @@ class Firebase {
       });
     }
 
-    Future checkConnectionThenUploadThumbnail(File image, String imageUrl) async {
+    checkConnectionThenUploadVideo(File video) {
       checkConnectivity().then((isConnected) async {
         if (!isConnected) {
-          print("Is connected: $isConnected");
-          instance.setBool("hasThumbsToUpload", true);
-          print("Set has files to upload to true");
+          print("saveImageFile Is connected: $isConnected");
+          instance.setBool("hasVideosToUpload", true);
+          print("Set hasImagesToUpload to true");
         } else {
           print("Is connected: $isConnected");
-          saveThumbnailToStorage(image, imageUrl);
+          await saveVideoToStorage(video);
         }
       }).catchError((error) {
         print("Error getting connectivity status, was error: $error");
@@ -98,8 +104,8 @@ class Firebase {
       print("Saving to image storage with file: $imageFile");
       if (url != null) {
         print("saved image to firebase url: $url");
-        final thumbFile = storage.saveThumbFile(imageFile, url.toString(), createThumbnailFileName(imageFile));
-        checkConnectionThenUploadThumbnail(thumbFile, url.toString());
+        final fireImage = new FireImage(getNameFromFile(imageFile), storage.getDateFromFileName(fileName), imageCount, "", url.toString());
+        saveImageJsonToDatabase(fireImage);
         storage.deleteImageFile(fileName);
         return url.toString();
       } else {
@@ -108,23 +114,23 @@ class Firebase {
       }
     }
 
-    Future saveThumbnailToStorage(File thumbFile, String imageUrl) async {
-      final fileName = getNameFromFile(thumbFile);
-      final ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(fileName);
-      final StorageUploadTask uploadTask = ref.putFile(thumbFile, const StorageMetadata(contentLanguage: "en"));
+    saveVideoToStorage(File videoFile) async {
+      final fileName = getNameFromFile(videoFile);
+      final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(fileName);
+      final StorageUploadTask uploadTask = ref.putFile(videoFile, const StorageMetadata(contentLanguage: "en"));
       final url = (await uploadTask.future).downloadUrl;
 
-      print("saveThumbnailToStorage Firebase with file: $thumbFile");
+      print("Saving to video storage with file: $videoFile");
       if (url != null) {
-        print("saved thumbnail to firebase url: $url");
-        String thumbnailUrl = url.toString();
-        print("deleting thumbnail file with name: $fileName");
-        final fireImage = new FireImage(getImageFileNameFromThumbnailName(fileName), storage.getDateFromFileName(fileName), imageCount, thumbnailUrl, imageUrl);
-        storage.deleteThumbFiles(fileName);
-        saveImageJsonToDatabase(fireImage);
+        print("saved video to firebase url: $url");
+        final videoUrl = url.toString();
+        final fireVideo = new FireImage(getNameFromFile(videoFile), storage.getDateFromFileName(fileName), imageCount, "https://imgur.com/a/EZbhPa1", videoUrl, false);
+        saveImageJsonToDatabase(fireVideo);
+        storage.deleteVideoFile(fileName);
+        return videoUrl;
       } else {
         print("got here without url");
-        checkConnectionThenUploadThumbnail(thumbFile, imageUrl);
+        checkConnectionThenUploadVideo(videoFile);
       }
     }
 

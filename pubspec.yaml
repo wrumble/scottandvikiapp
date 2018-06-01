@@ -61,5 +61,6 @@ flutter:
     - churchLocation.png
     - farmLocation.png
     - icon.jpg
+    - playVideo.png
 
   uses-material-design: true

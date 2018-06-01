@@ -84,7 +84,7 @@ packages:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.4.5"
+    version: "5.5.0"
   camera:
     dependency: "direct main"
     description:
@@ -281,7 +281,7 @@ packages:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.1"
+    version: "0.4.2"
   intl:
     dependency: transitive
     description:
@@ -489,7 +489,7 @@ packages:
       name: source_gen
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.1+1"
+    version: "0.8.1+3"
   source_map_stack_trace:
     dependency: transitive
     description:
