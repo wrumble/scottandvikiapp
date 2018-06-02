@@ -83,33 +83,44 @@ class OtherUserFireImageViewState extends State<OtherUserFireImageView>  {
       ),
     );
 
+    var portaitView = new Column(
+      children: <Widget>[
+        new Expanded(
+          child: new Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              new Expanded(
+                  child: new Container(
+                    child: new ZoomableImage(
+                      new NetworkImage(image.url),
+                      placeholder: placeHolder,
+                      backgroundColor: Colors.transparent,
+                    ),
+                    margin: new EdgeInsets.all(8.0),
+                  )
+              )
+            ],
+          ),
+        )
+      ],
+    );
+
+    var landscapeView = new Container(
+      child: new ZoomableImage(
+        new NetworkImage(image.url),
+        placeholder: placeHolder,
+        backgroundColor: Colors.transparent,
+      ),
+      margin: new EdgeInsets.all(8.0),
+    );
+
     var mainContainer = new Container(
       height: double.infinity,
       width: double.infinity,
       decoration: backgroundImage,
-      child: new Column(
-        children: <Widget>[
-          new Expanded(
-            child: new Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                new Expanded(
-                    child: new Container(
-                      child: new ZoomableImage(
-                        new NetworkImage(image.url),
-                        placeholder: placeHolder,
-                        backgroundColor: Colors.transparent,
-                      ),
-                      margin: new EdgeInsets.all(8.0),
-                    )
-                )
-              ],
-            ),
-          )
-        ],
-      ),
+      child: MediaQuery.of(context).orientation == Orientation.portrait ? portaitView : landscapeView,
     );
 
     detectOrientationForAppBar() {

@@ -325,7 +325,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
           videoController?.dispose();
           videoController = null;
         });
-        if (filePath != null) showInSnackBar('Picture saved to $filePath');
+        if (filePath != null) showInSnackBar('Uploading Image');
       }
     });
   }
@@ -334,7 +334,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
     startVideoRecording().then((String filePath) {
       if (mounted) setState(() {});
       setRecording();
-      if (filePath != null) showInSnackBar('Saving video to $filePath');
+      if (filePath != null) showInSnackBar('Recording');
     });
   }
 
@@ -343,7 +343,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
       if (mounted) setState(() {});
       setRecording();
       uploadVideoFile(videoPath);
-      showInSnackBar('Video recorded to: $videoPath');
+      showInSnackBar('Uploading video');
     });
   }
 

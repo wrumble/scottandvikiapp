@@ -185,38 +185,49 @@ class FireImageViewState extends State<FireImageView>  {
       mainAxisAlignment: MainAxisAlignment.center,
     );
 
+    var portraitContainer = new Column(
+      children: <Widget>[
+        new Expanded(
+          child: new Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              new Expanded(
+                  child: new Container(
+                    child: new ZoomableImage(
+                      new NetworkImage(image.url),
+                      placeholder: placeHolder,
+                      backgroundColor: Colors.transparent,
+                    ),
+                    margin: new EdgeInsets.all(8.0),
+                  )
+              ),
+              new Container(
+                height: 44.0,
+                width: MediaQuery.of(context).size.width,
+                child: deleteButton,
+                margin: new EdgeInsets.only(bottom: getBottomMargin()),
+              )],
+          ),
+        )
+      ],
+    );
+
+    var landscapeContainer = new Container(
+      child: new ZoomableImage(
+        new NetworkImage(image.url),
+        placeholder: placeHolder,
+        backgroundColor: Colors.transparent,
+      ),
+      margin: new EdgeInsets.all(8.0),
+    );
+
     var mainContainer = new Container(
       height: double.infinity,
       width: double.infinity,
       decoration: backgroundImage,
-      child: new Column(
-        children: <Widget>[
-          new Expanded(
-            child: new Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                new Expanded(
-                    child: new Container(
-                      child: new ZoomableImage(
-                          new NetworkImage(image.url),
-                        placeholder: placeHolder,
-                        backgroundColor: Colors.transparent,
-                      ),
-                      margin: new EdgeInsets.all(8.0),
-                    )
-                ),
-                new Container(
-                  height: 44.0,
-                  width: MediaQuery.of(context).size.width,
-                  child: deleteButton,
-                  margin: new EdgeInsets.only(bottom: getBottomMargin()),
-                )],
-            ),
-          )
-        ],
-      ),
+      child: MediaQuery.of(context).orientation == Orientation.portrait ? portraitContainer : landscapeContainer
     );
 
     detectOrientationForAppBar() {
