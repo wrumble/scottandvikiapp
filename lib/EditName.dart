@@ -4,6 +4,7 @@ import 'package:scott_and_viki/Text/TitleText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'dart:async';
+import 'package:flutter/services.dart';
 
 class EditName extends StatefulWidget {
   const EditName({ Key key }) : super(key: key);
@@ -19,6 +20,16 @@ class EditNameState extends State<EditName> {
   var currentName;
   var uuid;
 
+  @override initState() {
+    super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp
+    ]);
+
+    getCurrentNameAndUuid();
+  }
+
   Future<Null> getCurrentNameAndUuid() async {
     final instance = await SharedPreferences.getInstance();
 
@@ -27,12 +38,6 @@ class EditNameState extends State<EditName> {
       uuid = instance.getString("UUID");
       newName = "";
     });
-  }
-
-  @override void initState() {
-    super.initState();
-
-    getCurrentNameAndUuid();
   }
 
   void showInSnackBar(String value) {

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
-import 'package:scott_and_viki/Text/TitleText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'Localisations.dart';
+import 'package:flutter/services.dart';
 import 'main.dart';
 import 'dart:async';
 
@@ -90,6 +89,13 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   PersonData person = new PersonData();
+
+  @override void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
 
   void showInSnackBar(String value) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(

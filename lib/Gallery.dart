@@ -8,6 +8,7 @@ import 'MyImages.dart';
 import 'GalleryFolderView.dart';
 import 'dart:math' as math;
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/services.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -37,9 +38,12 @@ class GalleryState extends State<Gallery>  {
       reference = FirebaseDatabase.instance.reference().child("AllUsers").onValue;
     });
   }
-
-  @override void initState() {
+  @override initState() {
     super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp
+    ]);
 
     getReference();
   }

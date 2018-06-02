@@ -19,6 +19,7 @@ import 'package:video_player/video_player.dart';
 import 'UploadImage.dart';
 import 'package:camera/camera.dart';
 import 'Camera.dart';
+import 'package:flutter/services.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -175,6 +176,14 @@ class _MyHomePageState extends State<HomeScreen> {
   String videoPath;
   VideoPlayerController videoController;
   VoidCallback videoPlayerListener;
+
+  @override initState() {
+    super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp
+    ]);
+  }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 

@@ -8,6 +8,7 @@ import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
 
 class FireImageView extends StatefulWidget {
   final FireImage image;
@@ -26,6 +27,18 @@ class FireImageViewState extends State<FireImageView>  {
 
   FireImageViewState(this.image);
 
+  @override initState() {
+    super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight
+    ]);
+
+    init();
+  }
+
   timeFromDate() {
     var formatter = new DateFormat.jm();
     return formatter.format(image.dateTime).toString();
@@ -34,12 +47,6 @@ class FireImageViewState extends State<FireImageView>  {
   Future<Null> init() async {
     final instance = await SharedPreferences.getInstance();
     uuid = instance.getString("UUID");
-  }
-
-  @override void initState() {
-    super.initState();
-
-    init();
   }
 
   Future<Null> showDialogue(BuildContext viewContext) async {

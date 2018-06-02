@@ -8,6 +8,8 @@ import 'package:scott_and_viki/Text/TitleText.dart';
 import 'Firebase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'UploadImage.dart';
+import 'package:flutter/services.dart';
+
 
 class CameraExampleHome extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -51,6 +53,12 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
 
   @override initState() {
     super.initState();
+
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight
+      ]);
 
     if (numberOfCameras() > 0) {
       onNewCameraSelected(cameras[0]);

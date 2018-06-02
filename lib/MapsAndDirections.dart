@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
 import 'CustomMap.dart';
+import 'package:flutter/services.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -10,7 +11,24 @@ var backgroundImage = new BoxDecoration(
   ),
 );
 
-class MapsAndDirections extends StatelessWidget {
+class MapsAndDirections extends StatefulWidget {
+
+  @override
+  MapsAndDirectionsState createState() {
+    return new MapsAndDirectionsState();
+  }
+}
+
+class MapsAndDirectionsState extends State<MapsAndDirections> {
+
+  @override initState() {
+    super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
 

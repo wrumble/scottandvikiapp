@@ -9,6 +9,7 @@ import 'OtherUserFireImageView.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'VideoPlayer.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter/services.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -29,6 +30,15 @@ class OtherUserImages extends StatefulWidget {
 class OtherUserImagesState extends State<OtherUserImages>  {
   final GalleryFolderView userInfo;
 
+  @override void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
+    getReference();
+  }
+
   OtherUserImagesState(this.userInfo);
 
   Future<File> imageFile;
@@ -48,12 +58,6 @@ class OtherUserImagesState extends State<OtherUserImages>  {
     setState(() {
       reference = FirebaseDatabase.instance.reference().child("AllUsers").child(uuid).child("images").orderByChild("count").onValue;
     });
-  }
-
-  @override void initState() {
-    super.initState();
-
-    getReference();
   }
 
   var playIcon = new Container(

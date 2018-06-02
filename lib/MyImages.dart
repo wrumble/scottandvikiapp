@@ -13,6 +13,7 @@ import 'Firebase.dart';
 import 'UploadImage.dart';
 import 'VideoPlayer.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter/services.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -46,7 +47,9 @@ class MyImagesState extends State<MyImages>  {
 
   @override void initState() {
     super.initState();
-
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     getReference();
   }
 

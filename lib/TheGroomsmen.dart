@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -7,7 +8,23 @@ var backgroundImage = new BoxDecoration(
   ),
 );
 
-class TheGroomsmen extends StatelessWidget {
+class TheGroomsmen extends StatefulWidget {
+
+  @override
+  TheGroomsmenState createState() {
+    return new TheGroomsmenState();
+  }
+}
+
+class TheGroomsmenState extends State<TheGroomsmen> {
+
+  @override void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     var titleText = new Text('The Groomsmen',

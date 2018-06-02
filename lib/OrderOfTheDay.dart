@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
+import 'package:flutter/services.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -8,7 +9,23 @@ var backgroundImage = new BoxDecoration(
   ),
 );
 
-class OrderOfTheDay extends StatelessWidget {
+class OrderOfTheDay extends StatefulWidget {
+
+  @override
+  OrderOfTheDayState createState() {
+    return new OrderOfTheDayState();
+  }
+}
+
+class OrderOfTheDayState extends State<OrderOfTheDay> {
+
+  @override void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Firebase.dart';
+import 'package:flutter/services.dart';
 
 
 var backgroundImage = new BoxDecoration(
@@ -9,7 +9,23 @@ var backgroundImage = new BoxDecoration(
   ),
 );
 
-class TheBridesmaids extends StatelessWidget {
+class TheBridesmaids extends StatefulWidget {
+
+  @override
+  TheBridesmaidsState createState() {
+    return new TheBridesmaidsState();
+  }
+}
+
+class TheBridesmaidsState extends State<TheBridesmaids> {
+
+  @override void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
 

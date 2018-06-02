@@ -4,7 +4,7 @@ import 'package:video_player/video_player.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'FireImage.dart';
 import 'package:intl/intl.dart';
-
+import 'package:flutter/services.dart';
 
 /// Controls play and pause of [controller].
 ///
@@ -259,6 +259,11 @@ class AspectRatioVideoState extends State<AspectRatioVideo> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight
+    ]);
     listener = () {
       if (!mounted) {
         return;

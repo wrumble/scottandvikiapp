@@ -3,6 +3,8 @@ import 'package:zoomable_image/zoomable_image.dart';
 import 'package:intl/intl.dart';
 import 'FireImage.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
+import 'package:flutter/services.dart';
+
 
 class OtherUserFireImageView extends StatefulWidget {
   final FireImage image;
@@ -18,14 +20,19 @@ class OtherUserFireImageViewState extends State<OtherUserFireImageView>  {
 
   OtherUserFireImageViewState(this.image);
 
+  @override initState() {
+    super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight
+    ]);
+  }
+
   timeFromDate() {
     var formatter = new DateFormat.jm();
     return formatter.format(image.dateTime).toString();
-  }
-
-  @override void initState() {
-    super.initState();
-
   }
 
   var placeHolder = new Column(
