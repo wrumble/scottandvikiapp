@@ -12,7 +12,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'Firebase.dart';
 import 'UploadImage.dart';
 import 'VideoPlayer.dart';
-import 'package:video_player/video_player.dart';
 import 'package:flutter/services.dart';
 
 var backgroundImage = new BoxDecoration(
@@ -310,11 +309,7 @@ class MyImagesState extends State<MyImages>  {
                                                 onTap: () {
                                                   Navigator.push(
                                                     context,
-                                                    new MaterialPageRoute(builder: (context) => image.isAnImage ? new FireImageView(image) : new NetworkPlayerLifeCycle(
-                                                      image.url,
-                                                          (BuildContext context, VideoPlayerController controller) =>
-                                                      new AspectRatioVideo(controller, image),
-                                                    ) ),
+                                                    new MaterialPageRoute(builder: (context) => image.isAnImage ? new FireImageView(image) : new ChewieDemo(image.dateTime, image.url)),
                                                   );
                                                 },
                                               ),

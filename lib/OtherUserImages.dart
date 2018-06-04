@@ -205,11 +205,7 @@ class OtherUserImagesState extends State<OtherUserImages>  {
                                                 onTap: () {
                                                   Navigator.push(
                                                     context,
-                                                    new MaterialPageRoute(builder: (context) => image.isAnImage ? new OtherUserFireImageView(image) : new NetworkPlayerLifeCycle(
-                                                      image.url,
-                                                          (BuildContext context, VideoPlayerController controller) =>
-                                                      new AspectRatioVideo(controller, image),
-                                                    ) ),
+                                                    new MaterialPageRoute(builder: (context) => image.isAnImage ? new OtherUserFireImageView(image) : new ChewieDemo(image.dateTime, image.url)),
                                                   );
                                                 },
                                               ),
