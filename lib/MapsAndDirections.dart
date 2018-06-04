@@ -3,6 +3,7 @@ import 'package:map_view/map_view.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
 import 'CustomMap.dart';
 import 'package:flutter/services.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -66,15 +67,28 @@ class MapsAndDirectionsState extends State<MapsAndDirections> {
     List<Marker> churchMapMarkers = <Marker>[
       new Marker("Church", "St Dunstan's Church", 51.0206245,0.2605629, color: Colors.red),
     ];
-    var churchPosition = new CameraPosition(
-        churchLocation, 10.0
-    );
+    var churchPosition = new CameraPosition(churchLocation, 10.0);
+
+
     var churchMapContainer = new Container(
       child: new InkWell(
-        child: new Center(
-          child: new Image.network(churchStaticMapUri.toString()),
+        child: new Stack(
+          children: <Widget>[
+            new Container(
+              child: new Center(
+                child: new CircularProgressIndicator(),
+              ),
+              padding: new EdgeInsets.all(16.0),
+            ),
+            new Center(
+              child: new FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: churchStaticMapUri.toString(),
+              ),
+            ),
+          ],
         ),
-        onTap: () { CustomMap(churchMapTitle, churchMapMarkers, churchPosition).showMap(); },
+        onTap: CustomMap(churchMapTitle, churchMapMarkers, churchPosition).showMap,
       ),
       margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
     );
@@ -171,17 +185,31 @@ class MapsAndDirectionsState extends State<MapsAndDirections> {
       margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 16.0),
     );
 
+    var farmTitle = "Reception location";
     List<Marker> farmMarkers = <Marker>[
       new Marker("Farm", "Juddwood Farm", 51.172825, 0.221990, color: Colors.red),
     ];
-    var farmTitle = "Reception location";
     var farmPosition = new CameraPosition(farmLocation, 10.0);
+
     var farmMapContainer = new Container(
       child: new InkWell(
-        child: new Center(
-          child: new Image.network(farmStaticMapUri.toString()),
+        child: new Stack(
+          children: <Widget>[
+            new Container(
+              child: new Center(
+                child: new CircularProgressIndicator(),
+              ),
+              padding: new EdgeInsets.all(16.0),
+            ),
+            new Center(
+              child: new FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: farmStaticMapUri.toString(),
+              ),
+            ),
+          ],
         ),
-        onTap: () { CustomMap(farmTitle, farmMarkers, farmPosition).showMap(); },
+        onTap: CustomMap(farmTitle, farmMarkers, farmPosition).showMap,
       ),
       margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
     );

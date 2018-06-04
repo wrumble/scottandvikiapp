@@ -20,6 +20,7 @@ import 'UploadImage.dart';
 import 'package:camera/camera.dart';
 import 'Camera.dart';
 import 'package:flutter/services.dart';
+import 'package:map_view/map_view.dart';
 
 var backgroundImage = new BoxDecoration(
   image: new DecorationImage(
@@ -56,6 +57,7 @@ void main() async {
   setupNotifications();
   checkFailedUploads();
   subscribeToConnectionState();
+  MapView.setApiKey("AIzaSyACjRNbwrQpuRGVJ375jXJ8G0-AUTtSTX8");
   runApp(new MyApp());
 }
 

@@ -8,11 +8,6 @@ class TaxiNumberContainer extends StatelessWidget {
 
   TaxiNumberContainer(this.name, this.number);
 
-  callNumber() {
-    print("calling $number");
-    launch("tel:$number");
-  }
-
   @override
   Widget build(BuildContext context) {
     return new Container(
