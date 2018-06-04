@@ -58,6 +58,38 @@ class _ChewieDemoState extends State<ChewieDemo> {
     }
   }
 
+  var placeHolder = new Column(
+    children: <Widget>[
+      new Center(
+        child: CircularProgressIndicator(),
+      ),
+      new Container(
+        child: new Text('Loading video...',
+          textAlign: TextAlign.center,
+          style: new TextStyle(
+              fontFamily: FontName.normalFont,
+              fontSize: 25.0,
+              color: Colors.black
+          ),
+        ),
+        padding: new EdgeInsets.all(16.0),
+        margin: new EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
+        decoration: new BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              new BoxShadow(
+                  color: Colors.black38,
+                  blurRadius: 5.0,
+                  offset: new Offset(3.0, 5.0)
+              ),
+            ]
+        ),
+      )
+    ],
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
+  );
+
   @override
   Widget build(BuildContext context) {
     return  new Scaffold(
@@ -78,9 +110,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
                   backgroundColor: Colors.black,
                   bufferedColor: Colors.lightGreen,
                 ),
-                placeholder: new Container(
-                  color: Colors.grey,
-                ),
+                placeholder: placeHolder,
                 autoInitialize: true,
               ),
             ),
