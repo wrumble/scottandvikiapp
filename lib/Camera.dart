@@ -353,7 +353,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
       return null;
     }
 
-    final Directory extDir = await getApplicationDocumentsDirectory();
+    final Directory extDir = await getTemporaryDirectory();
     final String dirPath = '${extDir.path}/Movies/flutter_test';
     await new Directory(dirPath).create(recursive: true);
     final String filePath = '$dirPath/${timestamp()}.mp4';
@@ -424,7 +424,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
       showInSnackBar('Error: select a camera first.');
       return null;
     }
-    final Directory extDir = await getApplicationDocumentsDirectory();
+    final Directory extDir = await getTemporaryDirectory();
     final String dirPath = '${extDir.path}/Pictures/flutter_test';
     await new Directory(dirPath).create(recursive: true);
     final String filePath = '$dirPath/${timestamp()}.jpg';
@@ -435,8 +435,8 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
     }
 
     try {
-      await controller.takePicture(filePath).then((_) {
-        uploadFile(filePath);
+      await controller.takePicture(filePath).then((_) async {
+        await uploadFile(filePath);
       });
     } on CameraException catch (e) {
       _showCameraException(e);

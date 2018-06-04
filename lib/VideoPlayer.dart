@@ -297,12 +297,22 @@ class AspectRatioVideoState extends State<AspectRatioVideo> {
       final Size size = controller.value.size;
       return new Scaffold(
         appBar: detectOrientationForAppBar(),
-        body: new Center(
-          child: new AspectRatio(
-            aspectRatio: size.width / size.height,
-            child: new VideoPlayPause(controller),
-          ),
-        ),
+        body: new Stack(
+          children: <Widget>[
+            new Container(
+              child: new Center(
+                child: new CircularProgressIndicator(),
+              ),
+              padding: new EdgeInsets.all(16.0),
+            ),
+            new Center(
+              child: new AspectRatio(
+                aspectRatio: size.width / size.height,
+                child: new VideoPlayPause(controller),
+              ),
+            ),
+          ],
+        )
       );
     } else {
       return new Container();

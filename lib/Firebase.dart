@@ -37,22 +37,16 @@ class Firebase {
 
     Future saveImageFile(UploadImage image) async {
       await storage.init();
-      storage.saveImageFile(image.file, image.getName()).then((imageFile) {
-        instance.setInt("ImageCount", imageCount + 1);
-        checkConnectionThenUploadImage(imageFile);
-      }).catchError((error) {
-        print("Error saving image file to shared preferences, error: $error");
-      });
+      var imageFile = storage.saveImageFile(image.file, image.getName());
+      instance.setInt("ImageCount", imageCount + 1);
+      checkConnectionThenUploadImage(imageFile);
     }
 
-    Future saveVideoFile(File videoFile) async {
+    Future saveVideoFile(File video) async {
       await storage.init();
-      storage.saveVideoFile(videoFile, createVideoFileName()).then((videoFile) {
-        instance.setInt("ImageCount", imageCount + 1);
-        checkConnectionThenUploadVideo(videoFile);
-      }).catchError((error) {
-        print("Error saving video file to shared preferences, error: $error");
-      });
+      var videoFile = storage.saveVideoFile(video, createVideoFileName());
+      instance.setInt("ImageCount", imageCount + 1);
+      checkConnectionThenUploadVideo(videoFile);
     }
 
     checkConnectionThenUploadImage(File image) {

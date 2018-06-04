@@ -32,33 +32,36 @@ class Storage {
     uuid = instance.getString("UUID");
   }
 
-  Future<File> saveImageFile(File toBeSaved, String fileName) async {
+  File saveImageFile(File toBeSaved, String fileName)  {
     print(fileName);
     final filePath = '$imageDirectory$fileName';
     print(filePath);
     print("saving image to $filePath");
-    return new File(filePath)
+    var file = new File(filePath)
       ..createSync(recursive: true)
       ..writeAsBytes(toBeSaved.readAsBytesSync());
+    return file;
   }
 
-  Future<File> saveVideoFile(File toBeSaved, String fileName) async {
+  File saveVideoFile(File toBeSaved, String fileName) {
     print(fileName);
     final filePath = '$videoDirectory$fileName';
     print(filePath);
     print("saving video to $filePath");
-    return new File(filePath)
+    var file = new File(filePath)
       ..createSync(recursive: true)
       ..writeAsBytes(toBeSaved.readAsBytesSync());
+    return file;
   }
 
   Future<File> saveJsonFile(FireImage image) async {
     jsonDirectory = '${(await getApplicationDocumentsDirectory()).path}/json_cache/';
     final filePath = '$jsonDirectory${image.name}';
     print("saving json to $filePath");
-    return new File(filePath)
+    var file = new File(filePath)
       ..createSync(recursive: true)
       ..writeAsString(json.encode(image));
+    return file;
   }
 
   deleteImageFile(String fileName) async {
