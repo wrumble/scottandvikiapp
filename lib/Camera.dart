@@ -392,8 +392,6 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
       _showCameraException(e);
       return null;
     }
-
-    await _startVideoPlayer();
   }
 
   Future<void> _startVideoPlayer() async {
