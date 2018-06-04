@@ -8,6 +8,11 @@ class TaxiNumberContainer extends StatelessWidget {
 
   TaxiNumberContainer(this.name, this.number);
 
+  callNumber() {
+    print("calling $number");
+    launch("tel:$number");
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Container(
@@ -23,7 +28,7 @@ class TaxiNumberContainer extends StatelessWidget {
                         fontSize: 25.0,
                         color: Colors.black)
                 ),
-                onTap: () => launch("tel:${this.number}"),
+                onTap: () => launch(Uri.encodeFull("tel://$number")),
               ),
               margin: new EdgeInsets.only(
                   left: 8.0, top: 8.0, right: 8.0, bottom: 8.0),

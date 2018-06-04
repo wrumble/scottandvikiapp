@@ -199,7 +199,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
         title: new Container(
           child: new FittedBox(
             fit: BoxFit.scaleDown,
-            child: new Text("Welcome",
+            child: new Text("Our Wedding",
               textAlign: TextAlign.left,
               style: new TextStyle(
                   fontFamily: FontName.titleFont,
@@ -243,7 +243,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
 //                          color: Colors.black,
 //                        ),
 //                      ),
-                      new Text("Please enter your whole name and password to enter the app. If you cant remember the password just ask Scott or Viki.",
+                      new Text("Please enter your whole name, wedding ID and password to enter the app. If you cant remember the password just ask the Bride or Groom.",
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontFamily: FontName.normalFont,
@@ -289,6 +289,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
                     onSaved: (String value) { person.name = value; },
                     validator: _validateName,
                   ),
+
                   margin: const EdgeInsets.only(left: 8.0, right: 8.0),
                   padding: const EdgeInsets.only(bottom: 8.0),
                   decoration: new BoxDecoration(
@@ -301,6 +302,42 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
                         ),
                       ]
                   )
+                ),
+                const SizedBox(height: 24.0),
+                new Container(
+                    child: new TextFormField(
+                      decoration: const InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        filled: true,
+                        helperText: 'Ask the Bride or Groom',
+                        labelText: 'Wedding ID',
+                        labelStyle: const TextStyle(
+                          fontFamily: FontName.normalFont,
+                          fontSize: 25.0,
+                          color: Colors.black,
+                        ),
+                        helperStyle: const TextStyle(
+                          fontFamily: FontName.normalFont,
+                          fontSize: 20.0,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      autocorrect: false,
+                      keyboardType: TextInputType.text,
+                    ),
+
+                    margin: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    decoration: new BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          new BoxShadow(
+                              color: Colors.black38,
+                              blurRadius: 5.0,
+                              offset: new Offset(3.0, 5.0)
+                          ),
+                        ]
+                    )
                 ),
                 const SizedBox(height: 24.0),
                 new Container(
