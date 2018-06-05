@@ -1,4 +1,4 @@
-package com.example.scottandviki;
+package com.rumblewayne.scottandviki;
 
 import android.os.Bundle;
 

@@ -130,7 +130,7 @@ class MyImagesState extends State<MyImages>  {
     var fb = Firebase();
     await fb.init();
     final instance = await SharedPreferences.getInstance();
-    final count = instance.getInt("ImageCount");
+    final count = instance.getInt("ImageCount") + 1;
 
     final image = new UploadImage(savedImage, new DateTime.now(), count);
     fb.saveImageFile(image);

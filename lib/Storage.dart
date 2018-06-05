@@ -37,9 +37,13 @@ class Storage {
     final filePath = '$imageDirectory$fileName';
     print(filePath);
     print("saving image to $filePath");
+    print("22222222Heeeeeeererererererererer");
+    print(toBeSaved.lengthSync());
     var file = new File(filePath)
       ..createSync(recursive: true)
       ..writeAsBytes(toBeSaved.readAsBytesSync());
+    print("33333333Heeeeeeererererererererer");
+    print(file.lengthSync());
     return file;
   }
 
@@ -54,9 +58,9 @@ class Storage {
     return file;
   }
 
-  Future<File> saveJsonFile(FireImage image) async {
+  Future<File> saveJsonFile(FireImage image, fileName) async {
     jsonDirectory = '${(await getApplicationDocumentsDirectory()).path}/json_cache/';
-    final filePath = '$jsonDirectory${image.name}';
+    final filePath = '$jsonDirectory$fileName';
     print("saving json to $filePath");
     var file = new File(filePath)
       ..createSync(recursive: true)
@@ -158,7 +162,7 @@ class Storage {
               .listen((FileSystemEntity entity) {
             print("in json file  recursion");
             FireImage fireImage = fireImageFromJsonFile(basename(entity.path));
-            firebase.saveImageJsonToDatabase(fireImage);
+            firebase.saveImageJsonToDatabase(fireImage, basename(entity.path));
           }).onError((error) {
             print("Error listing json files: $error");
           });

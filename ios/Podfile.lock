@@ -101,7 +101,7 @@ DEPENDENCIES:
   - video_player (from `Pods/.symlinks/plugins/video_player/ios`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -176,4 +176,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 4a84dacbef64ac05c9af2aaa687ffb08fbe5545c
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.5.0

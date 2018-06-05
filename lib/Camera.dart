@@ -452,7 +452,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
     var fb = Firebase();
     await fb.init();
     final instance = await SharedPreferences.getInstance();
-    final count = instance.getInt("ImageCount");
+    final count = instance.getInt("ImageCount") + 1;
     final imageFile = new File(filePath);
 
     final image = new UploadImage(imageFile, new DateTime.now(), count);
