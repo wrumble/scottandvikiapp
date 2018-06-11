@@ -94,7 +94,7 @@ class Firebase {
 
     saveImageToStorage(File imageFile, String fileName) async {
       final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(fileName);
-      final StorageUploadTask uploadTask = ref.putFile(imageFile, const StorageMetadata(contentLanguage: "en"));
+      final StorageUploadTask uploadTask = ref.putFile(imageFile, new StorageMetadata(contentLanguage: "en"));
       final url = (await uploadTask.future).downloadUrl;
 
       if (url != null) {
@@ -111,7 +111,7 @@ class Firebase {
 
     saveVideoToStorage(File videoFile, String fileName) async {
       final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(fileName);
-      final StorageUploadTask uploadTask = ref.putFile(videoFile, const StorageMetadata(contentLanguage: "en"));
+      final StorageUploadTask uploadTask = ref.putFile(videoFile, new StorageMetadata(contentLanguage: "en"));
       final url = (await uploadTask.future).downloadUrl;
 
       print("Saving to video storage with file: $videoFile");
