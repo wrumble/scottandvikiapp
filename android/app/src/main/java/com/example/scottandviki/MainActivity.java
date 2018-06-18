@@ -1,4 +1,4 @@
-package com.rumblewayne.scottandviki;
+package com.rumblewayne.scottandvikiapp;
 
 import android.os.Bundle;
 

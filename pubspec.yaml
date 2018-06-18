@@ -5,18 +5,18 @@ dependencies:
   map_view: ^0.0.12
   image_picker: ^0.4.1
   url_launcher: ^3.0.0
-  firebase_storage: ^0.3.4
-  firebase_database: ^0.4.6
+  firebase_storage: ^0.3.7
+  firebase_database: ^1.0.1
   shared_preferences: ^0.4.1
   transparent_image: ^0.1.0
-  chewie: ^0.5.0
-  camera: ^0.2.0
-  video_player: ^0.5.3
+  chewie: ^0.6.0
+  camera: ^0.2.1
+  video_player: ^0.6.0
   path_provider: ^0.4.0
-  connectivity: ^0.3.0
+  connectivity: ^0.3.1
   zoomable_image: ^1.2.0
   json_annotation: ^0.2.4
-  firebase_messaging: ^1.0.0
+  firebase_messaging: ^1.0.2
   image: ^1.1.33
   path: ^1.5.1
   uuid: ^1.0.0

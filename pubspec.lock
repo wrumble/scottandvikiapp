@@ -105,7 +105,7 @@ packages:
       name: chewie
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0"
+    version: "0.6.0"
   cli_util:
     dependency: transitive
     description:
@@ -182,7 +182,7 @@ packages:
       name: firebase_database
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.6"
+    version: "1.0.1"
   firebase_messaging:
     dependency: "direct main"
     description:
@@ -545,7 +545,7 @@ packages:
       name: stream_transform
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.14"
+    version: "0.0.13"
   string_scanner:
     dependency: transitive
     description:

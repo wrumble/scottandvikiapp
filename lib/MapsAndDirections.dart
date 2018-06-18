@@ -35,7 +35,7 @@ class MapsAndDirectionsState extends State<MapsAndDirections> {
 
     var titleText = TitleText('Maps and Directions', 25.0);
     var churchStaticMarkers = [ new Marker("Church", "St Dunstan's Church", 51.0206245,0.2605629, color: Colors.red)];
-    var churchLocation = new Location(51.0206245,0.2605629);
+    var churchLocation = new Location(51.0206245, 0.2605629);
     var farmStaticMarkers = [ new Marker("Farm", "Juddwood Farm", 51.172825, 0.221990, color: Colors.red)];
     var farmLocation = new Location(51.172825, 0.221990);
     var staticMapProvider = new StaticMapProvider("AIzaSyDV1GknO-dNqnX9RbaKPh7Er6eohOXCZ24");
@@ -88,7 +88,12 @@ class MapsAndDirectionsState extends State<MapsAndDirections> {
             ),
           ],
         ),
-        onTap: CustomMap(churchMapTitle, churchMapMarkers, churchPosition).showMap,
+        onTap: () {
+          Navigator.push(
+            context,
+            new MaterialPageRoute(builder: (context) => new CustomMap(churchMapTitle, churchMapMarkers, churchPosition)),
+          );
+        },
       ),
       margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
     );
@@ -209,7 +214,12 @@ class MapsAndDirectionsState extends State<MapsAndDirections> {
             ),
           ],
         ),
-        onTap: CustomMap(farmTitle, farmMarkers, farmPosition).showMap,
+        onTap: () {
+          Navigator.push(
+            context,
+            new MaterialPageRoute(builder: (context) => new CustomMap(farmTitle, farmMarkers, farmPosition)),
+          );
+        },
       ),
       margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
     );

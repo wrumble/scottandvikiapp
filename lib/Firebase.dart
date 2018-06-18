@@ -49,9 +49,10 @@ class Firebase {
 
     Future saveVideoFile(File video) async {
       await storage.init();
-      var videoFile = storage.saveVideoFile(video, createVideoFileName());
+      var fileName = createVideoFileName();
+      storage.saveVideoFile(video, createVideoFileName());
       instance.setInt("ImageCount", imageCount + 1);
-      checkConnectionThenUploadVideo(videoFile);
+      checkConnectionThenUploadVideo(video, fileName);
     }
 
     checkConnectionThenUploadImage(File image, String fileName) {
@@ -66,7 +67,7 @@ class Firebase {
       });
     }
 
-    checkConnectionThenUploadVideo(File video) {
+    checkConnectionThenUploadVideo(File video, String fileName) {
       checkConnectivity().then((isConnected) async {
         if (!isConnected) {
           print("saveImageFile Is connected: $isConnected");
@@ -74,7 +75,7 @@ class Firebase {
           print("Set hasImagesToUpload to true");
         } else {
           print("Is connected: $isConnected");
-          await saveVideoToStorage(video);
+          await saveVideoToStorage(video, fileName);
         }
       }).catchError((error) {
         print("Error getting connectivity status, was error: $error");
@@ -108,8 +109,7 @@ class Firebase {
       }
     }
 
-    saveVideoToStorage(File videoFile) async {
-      final fileName = getNameFromFile(videoFile);
+    saveVideoToStorage(File videoFile, String fileName) async {
       final StorageReference ref = FirebaseStorage.instance.ref().child("AllUsers").child(uuid).child(fileName);
       final StorageUploadTask uploadTask = ref.putFile(videoFile, new StorageMetadata(contentLanguage: "en"));
       final url = (await uploadTask.future).downloadUrl;
@@ -124,7 +124,7 @@ class Firebase {
         return videoUrl;
       } else {
         print("got here without url");
-        checkConnectionThenUploadVideo(videoFile);
+        checkConnectionThenUploadVideo(videoFile, fileName);
       }
     }
 
