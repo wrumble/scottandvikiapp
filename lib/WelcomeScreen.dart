@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/services.dart';
 import 'main.dart';
 import 'dart:async';
+import 'package:intl/intl.dart';
 
 class TextFormFieldDemo extends StatefulWidget {
   const TextFormFieldDemo({ Key key }) : super(key: key);
@@ -191,6 +192,49 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
     ) ?? false;
   }
 
+  showTemporaryWeddingID() {
+    var now = new DateTime.now();
+    var fromDate = DateTime.parse("2018-06-22 00:00:00.000000");
+    if (fromDate.compareTo(now) < 0) {
+      return new Container(
+          child: new TextFormField(
+            decoration: const InputDecoration(
+              border: const UnderlineInputBorder(),
+              filled: true,
+              helperText: 'Ask the Bride or Groom',
+              labelText: 'Wedding ID',
+              labelStyle: const TextStyle(
+                fontFamily: FontName.normalFont,
+                fontSize: 25.0,
+                color: Colors.black,
+              ),
+              helperStyle: const TextStyle(
+                fontFamily: FontName.normalFont,
+                fontSize: 20.0,
+                color: Colors.grey,
+              ),
+            ),
+            autocorrect: false,
+            keyboardType: TextInputType.text,
+          ),
+          margin: const EdgeInsets.only(left: 8.0, right: 8.0),
+          padding: const EdgeInsets.only(bottom: 8.0),
+          decoration: new BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                new BoxShadow(
+                    color: Colors.black38,
+                    blurRadius: 5.0,
+                    offset: new Offset(3.0, 5.0)
+                ),
+              ]
+          )
+      );
+    } else {
+      return new Container();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -235,14 +279,6 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
                 new Container(
                   child: new Column(
                     children: <Widget>[
-//                      new Text("Welcome",
-//                        textAlign: TextAlign.center,
-//                        style: const TextStyle(
-//                          fontFamily: FontName.titleFont,
-//                          fontSize: 40.0,
-//                          color: Colors.black,
-//                        ),
-//                      ),
                       new Text("Please enter your whole name, wedding ID and password to enter the app. If you cant remember the password just ask the Bride or Groom.",
                         textAlign: TextAlign.center,
                         style: const TextStyle(
@@ -303,42 +339,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
                       ]
                   )
                 ),
-                const SizedBox(height: 24.0),
-                new Container(
-                    child: new TextFormField(
-                      decoration: const InputDecoration(
-                        border: const UnderlineInputBorder(),
-                        filled: true,
-                        helperText: 'Ask the Bride or Groom',
-                        labelText: 'Wedding ID',
-                        labelStyle: const TextStyle(
-                          fontFamily: FontName.normalFont,
-                          fontSize: 25.0,
-                          color: Colors.black,
-                        ),
-                        helperStyle: const TextStyle(
-                          fontFamily: FontName.normalFont,
-                          fontSize: 20.0,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      autocorrect: false,
-                      keyboardType: TextInputType.text,
-                    ),
-
-                    margin: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    decoration: new BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          new BoxShadow(
-                              color: Colors.black38,
-                              blurRadius: 5.0,
-                              offset: new Offset(3.0, 5.0)
-                          ),
-                        ]
-                    )
-                ),
+                showTemporaryWeddingID(),
                 const SizedBox(height: 24.0),
                 new Container(
                   child: new PasswordField(
