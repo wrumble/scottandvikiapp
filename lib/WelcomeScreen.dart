@@ -195,7 +195,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
   showTemporaryWeddingID() {
     var now = new DateTime.now();
     var fromDate = DateTime.parse("2018-06-22 00:00:00.000000");
-    if (fromDate.compareTo(now) < 0) {
+    if (fromDate.compareTo(now) > 0) {
       return new Container(
           child: new TextFormField(
             decoration: const InputDecoration(
@@ -217,7 +217,7 @@ class TextFormFieldDemoState extends State<TextFormFieldDemo> {
             autocorrect: false,
             keyboardType: TextInputType.text,
           ),
-          margin: const EdgeInsets.only(left: 8.0, right: 8.0),
+          margin: const EdgeInsets.only(top: 24.0, left: 8.0, right: 8.0),
           padding: const EdgeInsets.only(bottom: 8.0),
           decoration: new BoxDecoration(
               color: Colors.white,
