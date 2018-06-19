@@ -28,6 +28,16 @@ class HomeScreenCard extends StatelessWidget {
           )
         ],
       ),
+      decoration: new BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            new BoxShadow(
+                color: Colors.black38,
+                blurRadius: 5.0,
+                offset: new Offset(3.0, 5.0)
+            ),
+          ]
+      )
     );
   }
 }

@@ -225,7 +225,7 @@ class MapsAndDirectionsState extends State<MapsAndDirections> {
     );
 
     var farmLocationImageContainer = new Container(
-      child: new Image(image: new AssetImage('assets/farmLocation.png')),
+      child: new Image(image: new AssetImage('assets/farmLocation.jpg')),
       margin: new EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 16.0),
     );
 

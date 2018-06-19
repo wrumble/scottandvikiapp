@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'Factories/BridesmaidFactory.dart';
 
 
 var backgroundImage = new BoxDecoration(
@@ -36,13 +37,27 @@ class TheBridesmaidsState extends State<TheBridesmaids> {
     );
 
     var mainContainer = new Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: backgroundImage,
-        child: new Column(
-            children: <Widget>[
-
-            ])
+      height: double.infinity,
+      width: double.infinity,
+      decoration: backgroundImage,
+      child: new Column(
+        children: <Widget>[
+          new Expanded(
+            child: new Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                new Expanded(
+                    child: new Container(
+                      child: new BridesmaidFactory(),
+                    )
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
 
     return new Scaffold(

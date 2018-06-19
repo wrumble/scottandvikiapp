@@ -84,7 +84,7 @@ packages:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.5.1"
+    version: "5.5.2"
   camera:
     dependency: "direct main"
     description:
@@ -105,7 +105,7 @@ packages:
       name: chewie
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.0"
+    version: "0.6.1"
   cli_util:
     dependency: transitive
     description:
@@ -189,7 +189,7 @@ packages:
       name: firebase_messaging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   firebase_storage:
     dependency: "direct main"
     description:
@@ -545,7 +545,7 @@ packages:
       name: stream_transform
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.13"
+    version: "0.0.14"
   string_scanner:
     dependency: transitive
     description:

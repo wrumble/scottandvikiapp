@@ -61,8 +61,23 @@ flutter:
     - 7.jpg
     - backIcon.png
     - churchLocation.png
-    - farmLocation.png
+    - farmLocation.jpg
     - icon.jpg
     - playVideo.png
+    - wayne.jpg
+    - ben.jpg
+    - harry.jpg
+    - ed.jpg
+    - tomB.jpg
+    - tomJ.jpg
+    - oli.jpg
+    - gary.jpg
+    - AFH.jpg
+    - CL.jpg
+    - HF.jpg
+    - MN.jpg
+    - RF.jpg
+    - SF.jpg
+    - NS.jpg
 
   uses-material-design: true
