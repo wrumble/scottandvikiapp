@@ -263,18 +263,18 @@ class _CameraExampleHomeState extends State<CameraExampleHome> {
                     : null,
               ),
               showSwapCameraButton(),
-              new IconButton(
-                icon: new Icon(
-                  Icons.videocam,
-                  color: isRecording ? Colors.red : Colors.white,
-                ),
-                color: isRecording ? Colors.red : Colors.white,
-                onPressed: controller != null &&
-                    controller.value.isInitialized &&
-                    !controller.value.isRecordingVideo
-                    ? onVideoRecordButtonPressed
-                    : onStopButtonPressed,
-              )
+//              new IconButton(
+//                icon: new Icon(
+//                  Icons.videocam,
+//                  color: isRecording ? Colors.red : Colors.white,
+//                ),
+//                color: isRecording ? Colors.red : Colors.white,
+//                onPressed: controller != null &&
+//                    controller.value.isInitialized &&
+//                    !controller.value.isRecordingVideo
+//                    ? onVideoRecordButtonPressed
+//                    : onStopButtonPressed,
+//              )
             ],
           ),
         ),
