@@ -8,7 +8,6 @@ import 'GalleryFolderView.dart';
 import 'OtherUserFireImageView.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'VideoPlayer.dart';
-import 'package:video_player/video_player.dart';
 import 'package:flutter/services.dart';
 
 var backgroundImage = new BoxDecoration(
@@ -176,6 +175,8 @@ class OtherUserImagesState extends State<OtherUserImages>  {
                     image.key = key;
                     imageList.add(image);
                   });
+
+                  imageList.sort((a, b) => a.count.compareTo(b.count));
 
                   return new Container(
                     height: double.infinity,

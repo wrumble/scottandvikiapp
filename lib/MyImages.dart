@@ -281,6 +281,8 @@ class MyImagesState extends State<MyImages>  {
                     imageList.add(image);
                   });
 
+                  imageList.sort((a, b) => a.count.compareTo(b.count));
+
                   return new Container(
                     height: double.infinity,
                     width: double.infinity,

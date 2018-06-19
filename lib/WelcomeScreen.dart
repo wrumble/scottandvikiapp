@@ -6,7 +6,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/services.dart';
 import 'main.dart';
 import 'dart:async';
-import 'package:intl/intl.dart';
 
 class TextFormFieldDemo extends StatefulWidget {
   const TextFormFieldDemo({ Key key }) : super(key: key);
