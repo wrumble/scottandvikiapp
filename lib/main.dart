@@ -5,7 +5,8 @@ import 'package:connectivity/connectivity.dart';
 import 'EditName.dart';
 import 'Gallery.dart';
 import 'package:image_picker/image_picker.dart';
-import 'Localisations.dart';import 'package:flutter_localizations/flutter_localizations.dart';
+import 'Localisations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:scott_and_viki/Text/TitleText.dart';
 import 'package:scott_and_viki/Constants/FontNames.dart';
 import 'package:scott_and_viki/Factories/HomeScreenCardFactory.dart';
@@ -17,7 +18,6 @@ import 'Storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:video_player/video_player.dart';
 import 'UploadImage.dart';
-import 'package:camera/camera.dart';
 import 'Camera.dart';
 import 'package:flutter/services.dart';
 import 'package:map_view/map_view.dart';
@@ -53,7 +53,7 @@ class App extends StatelessWidget {
 }
 
 void main() async {
-  getCameras();
+//  getCameras();
   setupNotifications();
   checkFailedUploads();
   subscribeToConnectionState();
@@ -61,15 +61,15 @@ void main() async {
   runApp(new MyApp());
 }
 
-List<CameraDescription> cameras;
+//List<CameraDescription> cameras;
 
-getCameras() async {
-  try {
-    cameras = await availableCameras();
-  } on CameraException catch (e) {
-    logError(e.code, e.description);
-  }
-}
+//getCameras() async {
+//  try {
+//    cameras = await availableCameras();
+//  } on CameraException catch (e) {
+//    logError(e.code, e.description);
+//  }
+//}
 
 void setupNotifications() {
   final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
@@ -173,7 +173,7 @@ class HomeScreen extends StatefulWidget {
 class _MyHomePageState extends State<HomeScreen> {
   Future<File> imageFile;
   File savedImage;
-  CameraController controller;
+//  CameraController controller;
   String imagePath;
   String videoPath;
   VideoPlayerController videoController;
@@ -189,17 +189,17 @@ class _MyHomePageState extends State<HomeScreen> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  IconData getCameraLensIcon(CameraLensDirection direction) {
-    switch (direction) {
-      case CameraLensDirection.back:
-        return Icons.camera_rear;
-      case CameraLensDirection.front:
-        return Icons.camera_front;
-      case CameraLensDirection.external:
-        return Icons.camera;
-    }
-    throw new ArgumentError('Unknown lens direction');
-  }
+//  IconData getCameraLensIcon(CameraLensDirection direction) {
+//    switch (direction) {
+//      case CameraLensDirection.back:
+//        return Icons.camera_rear;
+//      case CameraLensDirection.front:
+//        return Icons.camera_front;
+//      case CameraLensDirection.external:
+//        return Icons.camera;
+//    }
+//    throw new ArgumentError('Unknown lens direction');
+//  }
 
   void _onImageButtonPressed(ImageSource source) {
     setState(() {
@@ -243,15 +243,9 @@ class _MyHomePageState extends State<HomeScreen> {
     var cameraButton = new FlatButton(
       textColor: Colors.white,
       color: Colors.black,
-      onPressed: () {
-        Navigator.push(
-          context,
-          new MaterialPageRoute(builder: (context) => new CameraExampleHome(cameras)),
-        );
-      },
+      onPressed: () => _onImageButtonPressed(ImageSource.camera),
       child: new Text(Localize.of(context).takeAPhoto,
-        style: new TextStyle(
-            fontFamily: FontName.normalFont,
+        style: new TextStyle(fontFamily: FontName.normalFont,
             fontSize: 30.0,
             color: Colors.white),
       ),

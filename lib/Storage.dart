@@ -36,14 +36,10 @@ class Storage {
     print(fileName);
     final filePath = '$imageDirectory$fileName';
     print(filePath);
-    print("saving image to $filePath");
-    print("22222222Heeeeeeererererererererer");
     print(toBeSaved.lengthSync());
     var file = new File(filePath)
       ..createSync(recursive: true)
       ..writeAsBytes(toBeSaved.readAsBytesSync());
-    print("33333333Heeeeeeererererererererer");
-    print(file.lengthSync());
     return file;
   }
 
